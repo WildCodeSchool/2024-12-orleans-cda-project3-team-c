@@ -1,8 +1,46 @@
 @import 'tailwindcss';
 
+@theme {
+--color-purple-50: #f1f3fc;
+--color-purple-100: #e5eafa;
+--color-purple-200: #d0d6f5;
+--color-purple-300: #b3bcee;
+--color-purple-400: #959ae4;
+--color-purple-500: #7a7ada;
+--color-purple-600: #6860cb;
+--color-purple-700: #5950b2;
+--color-purple-800: #4a4390;
+--color-purple-900: #3f3c73;
+--color-purple-950: #1c1a32;
+--color-turquoise-blue-50: #eafffe;
+--color-turquoise-blue-100: #cbffff;
+--color-turquoise-blue-200: #9efcff;
+--color-turquoise-blue-300: #5bf6ff;
+--color-turquoise-blue-400: #00e5ff;
+--color-turquoise-blue-500: #00c9e5;
+--color-turquoise-blue-600: #00a0c0;
+--color-turquoise-blue-700: #037f9b;
+--color-turquoise-blue-800: #0d657d;
+--color-turquoise-blue-900: #105469;
+--color-turquoise-blue-950: #033749;
+--color-rose-50: #fff0f9;
+--color-rose-100: #ffe3f5;
+--color-rose-200: #ffc6eb;
+--color-rose-300: #ff98d9;
+--color-rose-400: #ff58be;
+--color-rose-500: #ff27a2;
+--color-rose-600: #fc007a;
+--color-rose-700: #df0060;
+--color-rose-800: #b8004f;
+--color-rose-900: #980345;
+--color-rose-950: #5f0025;
+--color-danger: #E74C3C;
+--color-placeholder: #898989;
+--app-white: #FFFDFD;
+--font-main: “inter”, sans-serif;
+--font-title: “kanit”, sans-serif;
+}
+
 body {
-  height: 100dvh;
-  width: 100dvw;
-  margin: 0;
-  padding: 0;
+  @apply font-main;
 }
