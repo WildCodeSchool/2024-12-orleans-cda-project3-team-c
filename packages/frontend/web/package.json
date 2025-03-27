@@ -25,5 +25,9 @@
     "globals": "^15.15.0",
     "typescript": "~5.7.2",
     "vite": "^6.2.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.37.0",
+    "@tailwindcss/oxide-win32-x64-msvc": "^4.0.17"
   }
 }
