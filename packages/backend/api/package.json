@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "tsx --watch ./src/index.ts"
+    "dev": "tsx --watch ./src/index.ts",
+    "build": "exit 0"
   },
   "author": "",
   "license": "ISC",
