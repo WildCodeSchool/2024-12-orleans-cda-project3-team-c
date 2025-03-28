@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
 import NotFound from './pages/notfound';
+import Parameters from './pages/parameters';
 // import Search from './search';
 // import Add from './add';
 // import Chat from './chat';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   //   path: '/notifications',
   //   element: <Notifications />,
   // },
+  {
+    path: '/parameters',
+    element: <Parameters />,
+  },
   {
     path: '/profile',
     element: <Profile />,

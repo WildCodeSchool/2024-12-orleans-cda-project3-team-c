@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+
+import menu from '../assets/icons/menu-square-white.svg';
 import user from '../assets/pictures/users/user.png';
 
 export default function ProfileOwn() {
@@ -32,6 +35,10 @@ export default function ProfileOwn() {
             }
           </p>
         </div>
+
+        <Link className='ml-auto' to='/'>
+          <img className='size-[32px]' src={menu} alt='Menu' />
+        </Link>
       </div>
 
       <section className='mt-[8px] flex flex-wrap justify-center'>
