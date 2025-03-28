@@ -13,7 +13,6 @@ const router = createBrowserRouter([
     path: '/feed',
     element: <Feed />,
     loader: () => {
-      console.log(posts);
       return posts;
     },
   },

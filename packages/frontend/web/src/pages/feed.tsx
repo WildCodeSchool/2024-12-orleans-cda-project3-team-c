@@ -4,11 +4,11 @@ import { Link, useLoaderData } from 'react-router-dom';
 import EphemeralStatusSlider from '@/components/ephemeral-status-slider';
 import Post from '@/components/post';
 
-import bell from '../assets/icons/bell-white.svg';
-import type PostType from '../posts-mock';
+import bellIcon from '../assets/icons/bell-white.svg';
+import type { PostType } from '../posts-mock';
 
 export default function Feed() {
-  const loaderData = useLoaderData<typeof PostType>();
+  const loaderData = useLoaderData<PostType[]>();
   const [posts, setPosts] = useState(loaderData);
 
   return (
@@ -19,7 +19,7 @@ export default function Feed() {
       >
         <h1 className='font-title text-[32px] font-black'>{'Mingo'}</h1>
         <Link to={'/notifications'}>
-          <img src={bell} alt='' className='w-8' />
+          <img src={bellIcon} alt='' className='w-8' />
         </Link>
       </header>
 
