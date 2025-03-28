@@ -43,4 +43,6 @@
 
 body {
   @apply font-main;
+  @apply bg-purple-950;
+  @apply text-white;
 }
