@@ -4,9 +4,9 @@ import NavBarLeftWeb from './components/navbar-left-web';
 
 export default function App() {
   return (
-    <div className='flex h-dvh w-full'>
+    <div className='flex h-full w-full'>
       <NavBarLeftWeb />
-      <main className='flex-grow p-4'>
+      <main className='w-dvh flex-grow p-4'>
         <Outlet />
       </main>
     </div>
