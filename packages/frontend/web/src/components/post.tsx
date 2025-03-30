@@ -7,7 +7,13 @@ import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
 
-export default function Post({ post }: { readonly post: PostType }) {
+export default function Post({
+  post,
+  likePost,
+}: {
+  readonly post: PostType;
+  readonly likePost: (postId: number) => void;
+}) {
   const timeAgo = getTimeAgo(post.created_at);
   const descriptionElements = getDescriptionElements(post.description);
 
@@ -15,7 +21,11 @@ export default function Post({ post }: { readonly post: PostType }) {
   return (
     <article className='mb-8'>
       <header className='flex items-center justify-between p-2'>
-        <Link to={'#'} className='flex items-center gap-4'>
+        <Link
+          to={`/profile/${post.author.username}`}
+          className='flex items-center gap-4'
+          title={`See ${post.author.username}'s profile`}
+        >
           <div className='w-8 overflow-hidden rounded'>
             <img
               src={`/pictures/users/${post.author.profile_picture}`}
@@ -29,6 +39,7 @@ export default function Post({ post }: { readonly post: PostType }) {
         </Link>
         {!!post.author.isFollowed && (
           <button
+            title={`Follow ${post.author.username}`}
             type='button'
             className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-[2px] text-[12px]'
           >
@@ -47,10 +58,13 @@ export default function Post({ post }: { readonly post: PostType }) {
         <div className='post-action-container flex items-center gap-2'>
           <div className='flex items-center gap-1'>
             <button
+              type='button'
               aria-label={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
               title={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
-              type='button'
               className='like-btn'
+              onClick={() => {
+                likePost(post.id);
+              }}
             >
               <img
                 src={post.isLiked ? likedIcon : likeIcon}

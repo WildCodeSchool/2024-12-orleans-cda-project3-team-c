@@ -61,6 +61,7 @@ export function getDescriptionElements(
           className='font-title text-turquoise-blue-100 hover:text-turquoise-blue-400'
           to={`/search/tags/${element.slice(1)}`}
           key={`${index}` + element[-1]}
+          title={`See posts related to '${element.slice(1)}'`}
         >
           {element}
         </Link>
@@ -71,6 +72,7 @@ export function getDescriptionElements(
           className='font-title text-turquoise-blue-100 hover:text-turquoise-blue-400'
           to={`/profile/${element.slice(1)}`}
           key={`${index}` + element[-1]}
+          title={`See ${element.slice(1)}'s profile`}
         >
           {element}
         </Link>
