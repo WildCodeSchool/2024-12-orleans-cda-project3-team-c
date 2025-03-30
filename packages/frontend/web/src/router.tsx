@@ -3,14 +3,14 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './app';
 import ProfileOwn from './components/profile-own';
 import AccountSettings from './pages/account-settings';
-import LogOut from './pages/log-out';
-// import Search from './search';
 // import Add from './add';
 // import Chat from './chat';
 // import Notifications from './notifications';
 import NotFound from './pages/notfound';
 import Parameters from './pages/parameters';
 import ProfileInformations from './pages/profile-informations';
+// import LogOut from './pages/log-out';
+import Search from './pages/search';
 
 // import Home from './pages/home';
 
@@ -19,10 +19,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      // {
-      //   path: '/search',
-      //   element: <Search />,
-      // },
+      {
+        path: '/search',
+        element: <Search />,
+      },
       // {
       //   path: '/add',
       //   element: <Add />,
