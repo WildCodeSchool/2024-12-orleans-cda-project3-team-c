@@ -29,7 +29,7 @@ export default function Parameters() {
               src={userIcon}
               alt='profile informations icon'
             />
-            {'Profil Informations'}
+            {'Profile Informations'}
           </Link>
         </li>
         <li className='h-[3rem] max-w-[fit-content]'>
