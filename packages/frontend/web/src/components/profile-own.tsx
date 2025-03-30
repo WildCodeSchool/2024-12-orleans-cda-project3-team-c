@@ -8,16 +8,22 @@ export default function ProfileOwn() {
     <section className='mt-[4rem] mr-[4rem] mb-[0.5rem] ml-[4rem] flex-col'>
       <div className='flex justify-start border-b-[0.125rem] border-purple-900'>
         <img
-          className='mb-[2rem] size-[9.375rem] rounded-[1.5rem]'
+          className='mb-[2rem] size-[9.375rem] rounded-[4px]'
           src={user}
           alt='user'
         />
-        <div className='flex-column mb-[0.5rem] ml-[1rem] max-h-[100%]'>
-          <div className='flex items-center'>
-            <p className='font-title text-[1.5rem]'>{'@Aang_2006'}</p>
-            <p className='font-title ml-[0.5rem] text-[1rem] text-blue-400'>
-              {'000'}
-            </p>
+        <div className='flex-column mb-[0.5rem] ml-[1rem] max-h-[100%] w-full'>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <p className='font-title text-[1.5rem]'>{'@Aang_2006'}</p>
+              <p className='font-title ml-[0.5rem] text-[1rem] text-blue-400'>
+                {'000'}
+              </p>
+            </div>
+
+            <Link className='relative z-50 h-8 w-8' to='/parameters'>
+              <img className='relative z-50 h-8 w-8' src={menu} alt='Menu' />
+            </Link>
           </div>
           <div className='mb-[0.5rem] flex text-[1rem]'>
             <p className='mr-[0.125rem] text-blue-400'>{'2'}</p>
@@ -35,10 +41,6 @@ export default function ProfileOwn() {
             }
           </p>
         </div>
-
-        <Link className='ml-auto' to='/parameters'>
-          <img className='size-[2rem]' src={menu} alt='Menu' />
-        </Link>
       </div>
 
       <section className='mt-[0.5rem] flex flex-wrap justify-center'>

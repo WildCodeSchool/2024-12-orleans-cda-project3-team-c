@@ -2,8 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
 import ProfileOwn from './components/profile-own';
-import LogOut from './log-out';
 import AccountSettings from './pages/account-settings';
+import LogOut from './pages/log-out';
 // import Search from './search';
 // import Add from './add';
 // import Chat from './chat';
@@ -47,10 +47,10 @@ const router = createBrowserRouter([
         path: '/account-settings',
         element: <AccountSettings />,
       },
-      {
-        path: '/logout',
-        element: <LogOut />,
-      },
+      // {
+      //   path: '/logout',
+      //   element: <LogOut />,
+      // },
       {
         path: 'parameters',
         element: <Parameters />,

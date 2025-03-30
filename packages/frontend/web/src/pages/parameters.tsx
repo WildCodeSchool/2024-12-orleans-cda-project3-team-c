@@ -1,13 +1,9 @@
 import { Link } from 'react-router-dom';
 
-import LogOut from '@/log-out';
-
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 import gearIcon from '../assets/icons/gear-white.svg';
 import logoutIcon from '../assets/icons/logout-white.svg';
 import userIcon from '../assets/icons/user-white.svg';
-import AccountSettings from './account-settings';
-import ProfileInformations from './profile-informations';
 
 export default function Parameters() {
   return (
@@ -29,7 +25,7 @@ export default function Parameters() {
             to='/profile-informations'
           >
             <img
-              className='mr-[1rem] size-[2rem] items-center'
+              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
               src={userIcon}
               alt='profile informations icon'
             />
@@ -37,9 +33,12 @@ export default function Parameters() {
           </Link>
         </li>
         <li className='h-[3rem] max-w-[fit-content]'>
-          <Link className='flex flex-row items-center' to='/account-settings'>
+          <Link
+            className='flex flex-row items-center text-center'
+            to='/account-settings'
+          >
             <img
-              className='mt-[0.5rem] mr-[1rem] size-[2rem]'
+              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
               src={gearIcon}
               alt='account settings icon'
             />
@@ -47,7 +46,7 @@ export default function Parameters() {
           </Link>
         </li>
         <li className='h-[3rem] max-w-[fit-content]'>
-          <Link className='flex flex-row items-center' to='/logout'>
+          <Link className='flex flex-row items-center text-center' to='/logout'>
             <img
               className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
               src={logoutIcon}
@@ -57,7 +56,6 @@ export default function Parameters() {
           </Link>
         </li>
       </ul>
-      <section className='flex flex-col' />
     </section>
   );
 }
