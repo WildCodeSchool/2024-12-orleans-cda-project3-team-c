@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import type { SomeInterface } from '@app/shared';
 
-import Logo from '@/components/logo';
-import NavBar from '@/components/navbar';
+// import Logo from '@/components/logo';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

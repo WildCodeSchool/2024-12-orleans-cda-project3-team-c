@@ -1,5 +1,5 @@
-import NavBar from './components/navbar';
+import NavBarLeftWeb from './components/navbar-left-web';
 
 export default function App() {
-  return <NavBar />;
+  return <NavBarLeftWeb />;
 }

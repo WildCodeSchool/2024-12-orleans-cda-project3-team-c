@@ -6,39 +6,41 @@ import App from './app';
 // import Chat from './chat';
 // import Notifications from './notifications';
 // import Profile from './profile';
-// import NotFound from './pages/notfound';
+import NotFound from './pages/notfound';
 
-import Home from './pages/home';
+// import Home from './pages/home';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    children: [
+      // {
+      //   path: '/search',
+      //   element: <Search />,
+      // },
+      // {
+      //   path: '/add',
+      //   element: <Add />,
+      // },
+      // {
+      //   path: '/chat',
+      //   element: <Chat />,
+      // },
+      // {
+      //   path: '/notifications',
+      //   element: <Notifications />,
+      // },
+      // {
+      //   path: '/profile',
+      //   element: <Profile />,
+      // },
+      {
+        path: '**',
+        element: <NotFound />,
+      },
+    ],
   },
-  // {
-  //   path: '/search',
-  //   element: <Search />,
-  // },
-  // {
-  //   path: '/add',
-  //   element: <Add />,
-  // },
-  // {
-  //   path: '/chat',
-  //   element: <Chat />,
-  // },
-  // {
-  //   path: '/notifications',
-  //   element: <Notifications />,
-  // },
-  // {
-  //   path: '/profile',
-  //   element: <Profile />,
-  // },
-  // {
-  //   path: '**',
-  //   element: <NotFound />,
-  // },
 ]);
 
 export default router;
