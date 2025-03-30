@@ -7,7 +7,7 @@ import user from '../assets/pictures/users/user.png';
 
 export default function ProfileOwn() {
   return (
-    <div className='mt-[64px] mr-[64px] mb-[8px] ml-[64px] flex-col'>
+    <section className='mt-[64px] mr-[64px] mb-[8px] ml-[64px] flex-col'>
       <div className='flex justify-start border-b-[2px] border-purple-900'>
         <img
           className='mb-[32px] size-[150px] rounded-[4px]'
@@ -105,6 +105,6 @@ export default function ProfileOwn() {
           alt=''
         />
       </section>
-    </div>
+    </section>
   );
 }

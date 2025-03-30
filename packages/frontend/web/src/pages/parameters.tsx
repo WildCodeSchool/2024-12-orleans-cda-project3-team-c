@@ -1,10 +1,5 @@
-import NavBar from '@/components/navbar';
+// import NavBar from '@/components/navbar-left-web';
 
 export default function Parameters() {
-  return (
-    <>
-      <NavBar />
-      <p>{'s'}</p>
-    </>
-  );
+  return <>{'salut'}</>;
 }

@@ -42,9 +42,5 @@
 }
 
 body {
-  @apply font-main;
-  @apply bg-purple-950;
-  @apply text-white;
-  @apply flex;
-  @apply flex-row;
+  @apply font-main flex flex-row bg-purple-950 text-white;
 }
