@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+import Parameters from '@/pages/parameters';
+
 import menu from '../assets/icons/menu-square-white.svg';
 import user from '../assets/pictures/users/user.png';
 
@@ -36,7 +38,7 @@ export default function ProfileOwn() {
           </p>
         </div>
 
-        <Link className='ml-auto' to='/'>
+        <Link className='ml-auto' to='/parameters'>
           <img className='size-[32px]' src={menu} alt='Menu' />
         </Link>
       </div>
