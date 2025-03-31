@@ -1,15 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 
-import EphemeralStatusSlider from '@/components/ephemeral-status-slider';
 import Post from '@/components/post';
 
 import bellIcon from '../assets/icons/bell-white.svg';
+import newPostsMock from '../new-posts-mock';
 import type { PostType } from '../posts-mock';
 
 export default function Feed() {
   const loaderData = useLoaderData<PostType[]>();
   const [posts, setPosts] = useState(loaderData);
+  const infiniteScrollTrigger = useRef(null);
+
+  useEffect(() => {
+    if (infiniteScrollTrigger.current) {
+      new IntersectionObserver(observeInfiniteScroll).observe(
+        infiniteScrollTrigger.current,
+      );
+    }
+  }, [infiniteScrollTrigger]);
+
+  function fetchNewPosts() {
+    // fetching posts goes here
+    setPosts((currentPosts: PostType[]): PostType[] => {
+      const newPosts = [...currentPosts, ...newPostsMock];
+      return newPosts;
+    });
+  }
+
+  function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
+    if (observers[0].isIntersecting) {
+      fetchNewPosts();
+    }
+  }
 
   return (
     <section id='feed-section' className='max-w-[460px]'>
@@ -23,11 +46,10 @@ export default function Feed() {
         </Link>
       </header>
 
-      <EphemeralStatusSlider />
-
       {posts.map((post) => {
         return <Post originPost={post} key={post.id} />;
       })}
+      <div className='h-1 bg-amber-400' ref={infiniteScrollTrigger} />
     </section>
   );
 }

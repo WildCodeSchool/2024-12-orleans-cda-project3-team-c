@@ -18,12 +18,12 @@ export default function Post({
   const descriptionElements = getDescriptionElements(post.description);
 
   const likePost = () => {
-    // doing some backend things
-    // if backend things go good:
+    // fetching goes here
     setPost((currentPostValue): PostType => {
-      currentPostValue.isLiked = !currentPostValue.isLiked;
-      currentPostValue.likes += currentPostValue.isLiked ? 1 : -1;
-      return { ...currentPostValue };
+      const newPost = { ...currentPostValue };
+      newPost.isLiked = !newPost.isLiked;
+      newPost.likes += newPost.isLiked ? 1 : -1;
+      return newPost;
     });
   };
 
