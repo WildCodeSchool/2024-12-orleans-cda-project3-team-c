@@ -9,8 +9,8 @@ import userIcon from '../assets/icons/user-white.svg';
 export default function NavBarMobile() {
   return (
     <section className='h-dvh w-dvw sm:hidden'>
-      <nav className=''>
-        <ul className='fixed bottom-0 mb-[8px] flex w-dvw justify-around border-t pt-[8px]'>
+      <nav className='fixed bottom-0 mb-[8px] flex h-[50px] w-dvw flex-row border-t pt-[8px]'>
+        <ul className='flex w-dvw justify-around'>
           <li>
             <Link to='/'>
               <img className='size-[32px]' src={homeIcon} alt='Home' />
