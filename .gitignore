@@ -53,5 +53,5 @@ web-build/
 
 *.env*
 !*.env*.sample
-
+*-mock.*
 deployment/db/
