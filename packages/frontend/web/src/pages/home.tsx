@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 
-import type { SomeInterface } from '@app/shared';
+// import type { SomeInterface } from '@app/shared';
 
-// import Logo from '@/components/logo';
+// // import Logo from '@/components/logo';
 
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
 
-export default function Home() {
-  const [someData, setSomeData] = useState<SomeInterface>({
-    someProperty: 'someValue',
-  });
+// export default function Home() {
+//   const [someData, setSomeData] = useState<SomeInterface>({
+//     someProperty: 'someValue',
+//   });
 
-  useEffect(() => {
-    const abortController = new AbortController();
+//   useEffect(() => {
+//     const abortController = new AbortController();
 
-    (async () => {
-      const response = await fetch(`${API_URL}/api/demo`, {
-        signal: abortController.signal,
-      });
-      const data = await response.json();
-      setSomeData(data);
-    })();
+//     (async () => {
+//       const response = await fetch(`${API_URL}/api/demo`, {
+//         signal: abortController.signal,
+//       });
+//       const data = await response.json();
+//       setSomeData(data);
+//     })();
 
-    return () => {
-      abortController.abort();
-    };
-  }, []);
+//     return () => {
+//       abortController.abort();
+//     };
+//   }, []);
 
-  return <></>;
-}
+//   return <></>;
+// }
