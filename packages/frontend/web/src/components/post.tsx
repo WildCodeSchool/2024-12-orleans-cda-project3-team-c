@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { PostType } from '@/posts-mock';
@@ -8,14 +9,23 @@ import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
 
 export default function Post({
-  post,
-  likePost,
+  originPost,
 }: {
-  readonly post: PostType;
-  readonly likePost: (postId: number) => void;
+  readonly originPost: PostType;
 }) {
+  const [post, setPost] = useState(originPost);
   const timeAgo = getTimeAgo(post.created_at);
   const descriptionElements = getDescriptionElements(post.description);
+
+  const likePost = () => {
+    // doing some backend things
+    // if backend things go good:
+    setPost((currentPostValue): PostType => {
+      currentPostValue.isLiked = !currentPostValue.isLiked;
+      currentPostValue.likes += currentPostValue.isLiked ? 1 : -1;
+      return { ...currentPostValue };
+    });
+  };
 
   // jsx
   return (
@@ -62,9 +72,7 @@ export default function Post({
               aria-label={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
               title={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
               className='like-btn'
-              onClick={() => {
-                likePost(post.id);
-              }}
+              onClick={likePost}
             >
               <img
                 src={post.isLiked ? likedIcon : likeIcon}

@@ -11,18 +11,6 @@ export default function Feed() {
   const loaderData = useLoaderData<PostType[]>();
   const [posts, setPosts] = useState(loaderData);
 
-  const likePost = (postId: number): void => {
-    // *gérer la partie backend*
-    setPosts((currentPosts): PostType[] => {
-      const postToUpdate = currentPosts.find((post) => (post.id = postId));
-      if (postToUpdate) {
-        postToUpdate.isLiked = !postToUpdate.isLiked;
-        postToUpdate.likes += postToUpdate.isLiked ? 1 : -1;
-      }
-      return [...currentPosts];
-    });
-  };
-
   return (
     <section id='feed-section' className='max-w-[460px]'>
       <header
@@ -38,7 +26,7 @@ export default function Feed() {
       <EphemeralStatusSlider />
 
       {posts.map((post) => {
-        return <Post post={post} key={post.id} likePost={likePost} />;
+        return <Post originPost={post} key={post.id} />;
       })}
     </section>
   );
