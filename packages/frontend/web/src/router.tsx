@@ -6,7 +6,7 @@ import App from './app';
 // import Chat from './chat';
 // import Notifications from './notifications';
 // import Profile from './profile';
-import NotFound from './pages/notfound';
+import NotFound from './pages/not-found';
 
 // import Home from './pages/home';
 
