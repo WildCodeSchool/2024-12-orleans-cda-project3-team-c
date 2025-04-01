@@ -13,7 +13,7 @@ export default function NavBarLeftWeb() {
       <h1 className='font-title mt-8 mb-8 ml-8 text-[64px] font-bold'>
         {'Mingo'}
       </h1>
-      <nav className='border-r-0.5 mb-2 ml-8 h-dvh border-purple-900'>
+      <nav className='mb-2 ml-8 h-[70dvh] border-r-[2px] border-purple-900'>
         <ul className='text-none h-full list-none flex-col justify-center self-end'>
           <li className='h-12 max-w-[fit-content]'>
             <Link className='flex flex-row items-center text-center' to='/'>
