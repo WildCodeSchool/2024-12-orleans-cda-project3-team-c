@@ -8,6 +8,7 @@ import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
 
+const cdnUrl = import.meta.env.VITE_CDN_URL;
 export default function Post({
   originPost,
 }: {
@@ -60,7 +61,7 @@ export default function Post({
 
       <div className='slideshow-container mb-1'>
         <div className='slide'>
-          <img src={`/pictures/posts/${post.picture}`} alt='' />
+          <img src={`${cdnUrl}/pictures/posts/${post.picture}`} alt='' />
         </div>
       </div>
 
