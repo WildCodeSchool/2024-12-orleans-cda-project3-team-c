@@ -6,7 +6,7 @@ import ProfileOwn from './components/profile-own';
 // import Add from './add';
 // import Chat from './chat';
 // import Notifications from './notifications';
-import NotFound from './pages/notfound';
+import NotFound from './pages/not-found';
 import Parameters from './pages/parameters';
 
 // import Home from './pages/home';
