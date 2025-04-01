@@ -7,76 +7,62 @@ import homeIcon from '../assets/icons/home-white.svg';
 import searchIcon from '../assets/icons/search-white.svg';
 import userIcon from '../assets/icons/user-white.svg';
 
-export default function NavBarLeftWeb() {
+type NavItemProps = {
+  readonly to: string;
+  readonly icon: string;
+  readonly label: string;
+};
+
+const navItems: NavItemProps[] = [
+  { to: '/', icon: homeIcon, label: 'Home' },
+  { to: '/search', icon: searchIcon, label: 'Search' },
+  { to: '/add', icon: addIcon, label: 'Add a post' },
+  { to: '/chat', icon: chatIcon, label: 'Chat' },
+  { to: '/notifications', icon: bellIcon, label: 'Notifications' },
+  { to: '/profile', icon: userIcon, label: 'Profile' },
+];
+
+function NavItem({ to, icon, label }: NavItemProps) {
   return (
-    <section className='h-full w-[14.875rem] max-[34rem]:hidden'>
-      <h1 className='font-title mt-[2rem] mb-[2rem] ml-[2rem] text-[4rem] font-bold'>
-        {'Mingo'}
-      </h1>
-      <nav className='mb-[0.5rem] ml-[2rem] h-dvh border-r-[0.125rem] border-purple-900'>
-        <ul className='text-none h-full list-none flex-col justify-center self-end'>
-          <li className='h-[3rem] max-w-[fit-content]'>
-            <Link className='flex flex-row items-center text-center' to='/'>
-              <img
-                className='mr-[1rem] size-[2rem] items-center'
-                src={homeIcon}
-                alt='Home'
-              />
-              {'Home'}
-            </Link>
-          </li>
-          <li className='h-[3rem] max-w-[fit-content]'>
-            <Link className='flex flex-row items-center' to='/search'>
-              <img
-                className='mt-[0.5rem] mr-[1rem] size-[2rem]'
-                src={searchIcon}
-                alt='Search'
-              />
-              {'Search'}
-            </Link>
-          </li>
-          <li className='h-[3rem] max-w-[fit-content]'>
-            <Link className='flex flex-row items-center' to='/add'>
-              <img
-                className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
-                src={addIcon}
-                alt='Add a post'
-              />
-              {'Add a post'}
-            </Link>
-          </li>
-          <li className='h-[3rem] max-w-[fit-content]'>
-            <Link className='flex flex-row items-center' to='/chat'>
-              <img
-                className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem]'
-                src={chatIcon}
-                alt='Chat'
-              />
-              {'Chat'}
-            </Link>
-          </li>
-          <li className='h-[3rem] max-w-[fit-content]'>
-            <Link className='flex flex-row items-center' to='/notifications'>
-              <img
-                className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem]'
-                src={bellIcon}
-                alt='Notifications'
-              />
-              {'Notifications'}
-            </Link>
-          </li>
-          <li className='h-[3rem] max-w-[fit-content]'>
-            <Link className='flex flex-row items-center' to='/profile'>
-              <img
-                className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem]'
-                src={userIcon}
-                alt='Profile'
-              />
-              {'Profile'}
-            </Link>
-          </li>
+    <li className='h-12 max-w-fit'>
+      <Link className='flex flex-row items-center' to={to} aria-label={label}>
+        <img className='mr-4 size-8' src={icon} alt='' aria-hidden='true' />
+        <span className='hidden sm:inline'>{label}</span>
+      </Link>
+    </li>
+  );
+}
+
+export default function NavBar() {
+  return (
+    <>
+      <nav className='mb-2 ml-8 hidden h-dvh w-[238px] sm:block'>
+        <h1 className='font-title mb-8 text-[64px] font-bold'>{'Mingo'}</h1>
+        <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-[2px] border-purple-900'>
+          {navItems.map((item) => (
+            <NavItem key={item.to} {...item} />
+          ))}
         </ul>
       </nav>
-    </section>
+
+      <nav className='fixed bottom-0 h-[65px] w-dvw sm:hidden'>
+        <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:left-[10%] after:w-[80%] after:border-t'>
+          {navItems
+            .filter((item) => item.label !== 'Notifications')
+            .map((item) => (
+              <li key={item.to}>
+                <Link to={item.to} aria-label={item.label}>
+                  <img
+                    className='size-8'
+                    src={item.icon}
+                    alt=''
+                    aria-hidden='true'
+                  />
+                </Link>
+              </li>
+            ))}
+        </ul>
+      </nav>
+    </>
   );
 }

@@ -8,7 +8,7 @@ import searchIcon from '../assets/icons/search-white.svg';
 export default function SearchResults() {
   return (
     <>
-      <section className='mt-[9.5rem] mb-[2rem] flex flex-col items-center'>
+      {/* <section className='mt-[9.5rem] mb-[2rem] flex flex-col items-center'>
         <h2 className='font-title mb-[2rem] text-[1.5rem]'>
           {'Search for user or subject'}
         </h2>
@@ -26,7 +26,7 @@ export default function SearchResults() {
             />
           </Link>
         </div>
-      </section>
+      </section> */}
       <div className='ml-[4rem]'>
         <SearchUsers />
         <SearchPosts />
