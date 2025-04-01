@@ -57,7 +57,7 @@ export default function SignupComp() {
 
           <Button title={'Sign up'} />
 
-          <p className='text-xs text-[#000000]'>
+          <p className='text-xs'>
             {'Already have an account ? '}
             <Link to={'/connexion'} className='text-rose-600'>
               {' Log in.'}
