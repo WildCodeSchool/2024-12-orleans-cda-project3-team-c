@@ -34,7 +34,7 @@ export default function LoginComp() {
             />
 
             <div
-              className='absolute top-1/2 right-5 flex h-5 w-5 -translate-y-1/2 cursor-pointer'
+              className='absolute top-1/2 right-3 flex h-5 w-5 -translate-y-1/2 cursor-pointer'
               onClick={toggleVisible}
             >
               {isVisible ? (
