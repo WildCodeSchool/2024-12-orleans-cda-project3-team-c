@@ -21,7 +21,9 @@ app.use('/api', router);
 
 app.use(
   '/cdn',
-  express.static(path.join(fileURLToPath(import.meta.url), '..', 'public')),
+  express.static(
+    path.join(fileURLToPath(import.meta.url), '..', '..', 'public'),
+  ),
 );
 
 app.listen(PORT, () => {

@@ -39,7 +39,7 @@ export default function Post({
         >
           <div className='w-8 overflow-hidden rounded'>
             <img
-              src={`/pictures/users/${post.author.profile_picture}`}
+              src={`${cdnUrl}/pictures/users/${post.author.profile_picture}`}
               alt={`${post.author.username} profile picture`}
             />
           </div>

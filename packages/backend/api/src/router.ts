@@ -1,9 +1,12 @@
 import express from 'express';
 
-import demoRouter from './demo';
+import postsRouter from './post';
 
 const router = express.Router();
 
-router.use('/demo', demoRouter);
+router.use('/post', postRouter);
+router.get('*', function (req, res) {
+  res.status(404).send(`ressource ${req.path} not found`);
+});
 
 export default router;
