@@ -10,7 +10,9 @@ import userIcon from '../assets/icons/user-white.svg';
 export default function NavBarLeftWeb() {
   return (
     <section className='h-dvh w-[238px] max-[544px]:hidden'>
-      <h1 className='font-title text-16 mt-8 mb-8 ml-8 font-bold'>{'Mingo'}</h1>
+      <h1 className='font-title mt-8 mb-8 ml-8 text-[64px] font-bold'>
+        {'Mingo'}
+      </h1>
       <nav className='border-r-0.5 mb-2 ml-8 h-dvh border-purple-900'>
         <ul className='text-none h-full list-none flex-col justify-center self-end'>
           <li className='h-12 max-w-[fit-content]'>
