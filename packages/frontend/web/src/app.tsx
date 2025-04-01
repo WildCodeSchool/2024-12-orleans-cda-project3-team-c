@@ -8,7 +8,7 @@ export default function App() {
     <div className='flex h-dvh w-full'>
       <NavBarLeftWeb />
       <NavBarMobile />
-      <main className='flex-grow p-4'>
+      <main>
         <Outlet />
       </main>
     </div>
