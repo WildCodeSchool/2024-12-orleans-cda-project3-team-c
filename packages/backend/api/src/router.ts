@@ -1,10 +1,10 @@
 import express from 'express';
 
-import postsRouter from './post';
+import postsRouter from './posts';
 
 const router = express.Router();
 
-router.use('/post', postRouter);
+router.use('/posts', postsRouter);
 router.get('*', function (req, res) {
   res.status(404).send(`ressource ${req.path} not found`);
 });
