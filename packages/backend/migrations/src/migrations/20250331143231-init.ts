@@ -89,6 +89,7 @@ export async function up(db: Kysely<DB>): Promise<void> {
         id INT PRIMARY KEY AUTO_INCREMENT,
         user_id INT NOT NULL,
         post_id INT NOT NULL,
+        text TEXT NOT NULL,
         responds_to INT NULL,
         created_at DATETIME NOT NULL DEFAULT NOW(),
         CONSTRAINT fk_comment_user_id FOREIGN KEY (user_id) REFERENCES user(id),
@@ -247,29 +248,27 @@ export async function up(db: Kysely<DB>): Promise<void> {
 export async function down(db: Kysely<DB>): Promise<void> {
   // Migration code that reverts the database to the previous state.
   await db.transaction().execute(async (trx) => {
-    await sql`
-      DROP TABLE notification IF EXISTS;
-      DROP TABLE notificationj_type IF EXISTS;
-      DROP TABLE report IF EXISTS;
-      DROP TABLE report_status IF EXISTS;
-      DROP TABLE tag_subscription IF EXISTS;
-      DROP TABLE post_tag IF EXISTS;
-      DROP TABLE tag IF EXISTS;
-      DROP TABLE message_like IF EXISTS;
-      DROP TABLE message IF EXISTS;
-      DROP TABLE discussion_participant IF EXISTS;
-      DROP TABLE discussion IF EXISTS;
-      DROP TABLE reaction IF EXISTS;
-      DROP TABLE comment_like IF EXISTS;
-      DROP TABLE post_like IF EXISTS;
-      DROP TABLE comment IF EXISTS;
-      DROP TABLE post IF EXISTS;
-      DROP TABLE status IF EXISTS;
-      DROP TABLE block IF EXISTS;
-      DROP TABLE follow_up IF EXISTS;
-      DROP TABLE user IF EXISTS;
-      DROP TABLE account_status IF EXISTS;
-      DROP TABLE role IF EXISTS;
-    `.execute(trx);
+    await sql`DROP TABLE notification IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE notificationj_type IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE report IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE report_status IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE tag_subscription IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE post_tag IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE tag IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE message_like IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE message IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE discussion_participant IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE discussion IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE reaction IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE comment_like IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE post_like IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE comment IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE post IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE status IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE block IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE follow_up IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE user IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE account_status IF EXISTS;`.execute(trx);
+    await sql`DROP TABLE role IF EXISTS;`.execute(trx);
   });
 }
