@@ -37,8 +37,8 @@
   --color-danger: #e74c3c;
   --color-placeholder: #898989;
   --app-white: #fffdfd;
-  --font-main: “inter”, sans-serif;
-  --font-title: “kanit”, sans-serif;
+  --font-main: 'Inter', sans-serif;
+  --font-title: 'Kanit', sans-serif;
 }
 
 body {
