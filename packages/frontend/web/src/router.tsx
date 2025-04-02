@@ -12,8 +12,8 @@ const router = createBrowserRouter([
   {
     path: '/feed',
     element: <Feed />,
-    loader: async () => {
-      return await loaders.postLoaders.getFeedPage();
+    loader: () => {
+      return loaders.postLoaders.getFeedPage();
     },
   },
 ]);

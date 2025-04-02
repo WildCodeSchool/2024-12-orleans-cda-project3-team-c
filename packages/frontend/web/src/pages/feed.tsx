@@ -38,7 +38,8 @@ export default function Feed() {
   }
 
   return (
-    <section id='feed-section' className='mx-auto max-w-[460px]'>
+    // feed section
+    <section className='mx-auto max-w-[460px]'>
       <header
         id='feed-header'
         className='flex items-center justify-between p-4'

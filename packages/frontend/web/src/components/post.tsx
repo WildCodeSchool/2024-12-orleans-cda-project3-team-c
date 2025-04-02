@@ -12,7 +12,7 @@ const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
-  const descriptionElements = post.description
+  const descriptionElements = !!post.description
     ? getDescriptionElements(post.description)
     : [];
 
@@ -31,7 +31,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
               alt={`${post.author?.username} profile picture`}
             />
           </div>
-          <h2 className='text-[14px} font-title'>
+          <h2 className='font-title text-[14px]'>
             {'@'}
             {post.author?.username}
           </h2>
@@ -47,20 +47,22 @@ export default function Post({ post }: { readonly post: FeedPost }) {
         )}
       </header>
 
-      <div className='slideshow-container mb-1'>
+      {/* slideshow container */}
+      <div className='mb-1'>
         <div className='slide'>
           <img src={`${cdnUrl}/pictures/posts/${post.picture}`} alt='' />
         </div>
       </div>
 
-      <div className='post-content p-2'>
+      {/* post content */}
+      <div className='p-2'>
         <div className='post-action-container flex items-center gap-2'>
           <div className='flex items-center gap-1'>
+            {/* like btn */}
             <button
               type='button'
               aria-label={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
               title={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
-              className='like-btn'
             >
               <img
                 src={post.isLiked ? likedIcon : likeIcon}
@@ -73,9 +75,11 @@ export default function Post({ post }: { readonly post: FeedPost }) {
               {!!post.likeCount ? post.likeCount : ''}
             </p>
           </div>
+
+          {/* comment btn */}
           <button
             type='button'
-            className='comment-btn flex items-center gap-1'
+            className='flex items-center gap-1'
             aria-label='Comments'
             title='Comments'
           >
@@ -84,14 +88,16 @@ export default function Post({ post }: { readonly post: FeedPost }) {
           </button>
         </div>
 
-        <p className='post-description mb-1 text-[14px] whitespace-pre-wrap'>
+        {/* post description */}
+        <p className='mb-1 text-sm whitespace-pre-wrap'>
           <span className='font-title'>
             {'@'}
             {post.author?.username}
           </span>{' '}
           {...descriptionElements}
         </p>
-        <p className='post-date text-placeholder text-[10px]'>{timeAgo}</p>
+        {/* post date */}
+        <p className='text-placeholder text-[10px]'>{timeAgo}</p>
       </div>
     </article>
   );
