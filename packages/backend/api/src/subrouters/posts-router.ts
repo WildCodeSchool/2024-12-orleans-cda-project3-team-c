@@ -5,7 +5,7 @@ import postModel from '@/models/post-model';
 const postsRouter = express.Router();
 
 // GET **************************************************
-postsRouter.get('/:id', function (req, res) {
+postsRouter.get('/:id', function () {
   // Getting a specified post
 });
 
@@ -21,11 +21,11 @@ postsRouter.get('/page/:number', async function (req, res) {
   res.json(data);
 });
 
-postsRouter.get('/user/:id', function (req, res) {
+postsRouter.get('/user/:id', function () {
   // Getting posts from a specified user
 });
 
-postsRouter.get('/tag/:tag', function (req, res) {
+postsRouter.get('/tag/:tag', function () {
   // Getting posts from a specified tag
 });
 

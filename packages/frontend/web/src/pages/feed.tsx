@@ -10,7 +10,6 @@ import bellIcon from '../assets/icons/bell-white.svg';
 
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
-  console.log('Fetching new posts !');
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
   let page = 1;
