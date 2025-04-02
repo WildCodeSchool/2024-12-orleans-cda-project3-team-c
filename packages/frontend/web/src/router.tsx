@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import loaders from './loaders';
 import Feed from './pages/feed';
 import Home from './pages/home';
-import posts from './posts-mock';
 
 const router = createBrowserRouter([
   {
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
   {
     path: '/feed',
     element: <Feed />,
-    loader: () => {
-      return posts;
+    loader: async () => {
+      return await loaders.postLoaders.getFeedPage();
     },
   },
 ]);

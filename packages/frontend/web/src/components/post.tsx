@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { PostType } from '@/posts-mock';
+import type { FeedPost } from '@app/api';
+
 import { getDescriptionElements, getTimeAgo } from '@/utils/text-formating';
 
 import commentIcon from '../assets/icons/comment-white.svg';
@@ -9,48 +9,36 @@ import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
-export default function Post({
-  originPost,
-}: {
-  readonly originPost: PostType;
-}) {
-  const [post, setPost] = useState(originPost);
+
+export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
-  const descriptionElements = getDescriptionElements(post.description);
+  const descriptionElements = post.description
+    ? getDescriptionElements(post.description)
+    : [];
 
-  const likePost = () => {
-    // fetching goes here
-    setPost((currentPostValue): PostType => {
-      const newPost = { ...currentPostValue };
-      newPost.isLiked = !newPost.isLiked;
-      newPost.likes += newPost.isLiked ? 1 : -1;
-      return newPost;
-    });
-  };
-
-  // jsx
+  // tsx **************************************************
   return (
     <article className='mb-8'>
       <header className='flex items-center justify-between p-2'>
         <Link
-          to={`/profile/${post.author.username}`}
+          to={`/profile/${post.author?.username}`}
           className='flex items-center gap-4'
-          title={`See ${post.author.username}'s profile`}
+          title={`See ${post.author?.username}'s profile`}
         >
           <div className='w-8 overflow-hidden rounded'>
             <img
-              src={`${cdnUrl}/pictures/users/${post.author.profile_picture}`}
-              alt={`${post.author.username} profile picture`}
+              src={`${cdnUrl}/pictures/users/${post.author?.profile_picture}`}
+              alt={`${post.author?.username} profile picture`}
             />
           </div>
           <h2 className='text-[14px} font-title'>
             {'@'}
-            {post.author.username}
+            {post.author?.username}
           </h2>
         </Link>
-        {!!post.author.isFollowed && (
+        {!post.author?.isFollowing && (
           <button
-            title={`Follow ${post.author.username}`}
+            title={`Follow ${post.author?.username}`}
             type='button'
             className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-[2px] text-[12px]'
           >
@@ -73,7 +61,6 @@ export default function Post({
               aria-label={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
               title={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
               className='like-btn'
-              onClick={likePost}
             >
               <img
                 src={post.isLiked ? likedIcon : likeIcon}
@@ -82,8 +69,8 @@ export default function Post({
                 aria-hidden='true'
               />
             </button>
-            <p className='text-title text-[12px]'>
-              {post.likes ? post.likes : null}
+            <p className='text-t itle text-[12px]'>
+              {!!post.likeCount ? post.likeCount : ''}
             </p>
           </div>
           <button
@@ -93,16 +80,14 @@ export default function Post({
             title='Comments'
           >
             <img src={commentIcon} alt='' className='w-8' aria-hidden='true' />
-            <span className='text-title text-[12px]'>
-              {post.comments.length}
-            </span>
+            <span className='text-title text-[12px]'>{post.commentCount}</span>
           </button>
         </div>
 
         <p className='post-description mb-1 text-[14px] whitespace-pre-wrap'>
           <span className='font-title'>
             {'@'}
-            {post.author.username}
+            {post.author?.username}
           </span>{' '}
           {...descriptionElements}
         </p>

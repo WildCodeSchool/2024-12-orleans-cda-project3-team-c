@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 
+import type { FeedPost } from '@app/api';
+
+import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
 
 import bellIcon from '../assets/icons/bell-white.svg';
-import newPostsMock from '../new-posts-mock';
-import type { PostType } from '../posts-mock';
 
 export default function Feed() {
-  const loaderData = useLoaderData<PostType[]>();
+  const loaderData = useLoaderData<FeedPost[]>();
+  console.log('Fetching new posts !');
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
+  let page = 1;
 
   useEffect(() => {
     if (infiniteScrollTrigger.current) {
@@ -20,35 +23,38 @@ export default function Feed() {
     }
   }, [infiniteScrollTrigger]);
 
-  function fetchNewPosts() {
-    // fetching posts goes here
-    setPosts((currentPosts: PostType[]): PostType[] => {
-      const newPosts = [...currentPosts, ...newPostsMock];
-      return newPosts;
+  async function fetchNewPosts() {
+    page++;
+    const newPosts = await postApiConnection.getPage(page);
+
+    setPosts((currentPosts) => {
+      return [...currentPosts, ...newPosts];
     });
   }
 
-  function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
+  async function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
     if (observers[0].isIntersecting) {
-      fetchNewPosts();
+      await fetchNewPosts();
     }
   }
 
   return (
-    <section id='feed-section' className='max-w-[460px]'>
+    <section id='feed-section' className='mx-auto max-w-[460px]'>
       <header
         id='feed-header'
         className='flex items-center justify-between p-4'
       >
-        <h1 className='font-title text-[32px] font-black'>{'Mingo'}</h1>
+        <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
         <Link to={'/notifications'}>
           <img src={bellIcon} alt='' className='w-8' />
         </Link>
       </header>
 
-      {posts.map((post) => {
-        return <Post originPost={post} key={post.id} />;
+      {posts.map((post: FeedPost) => {
+        return <Post post={post} key={post.id} />;
       })}
+      {/* enlever la hauteur et la couleur, rajouter un offset */}
+      {/* à garder comme ça le temps de terminer toutes les fonctionnalités liées à ça */}
       <div className='h-1 bg-amber-400' ref={infiniteScrollTrigger} />
     </section>
   );

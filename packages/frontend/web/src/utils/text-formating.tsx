@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-export function getTimeAgo(datetime: string): string {
-  const timing = Date.now() - Date.parse(datetime);
+export function getTimeAgo(datetime: Date): string {
+  const timing = Date.now() - Date.parse(datetime.toString());
 
   if (timing >= 31536000000) {
     const years = Math.floor(timing / 31536000000);
