@@ -40,7 +40,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
           <button
             title={`Follow ${post.author?.username}`}
             type='button'
-            className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-[2px] text-[12px]'
+            className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
           >
             {'Follow'}
           </button>
@@ -69,7 +69,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                 aria-hidden='true'
               />
             </button>
-            <p className='text-t itle text-[12px]'>
+            <p className='text-title text-xs'>
               {!!post.likeCount ? post.likeCount : ''}
             </p>
           </div>
@@ -80,7 +80,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
             title='Comments'
           >
             <img src={commentIcon} alt='' className='w-8' aria-hidden='true' />
-            <span className='text-title text-[12px]'>{post.commentCount}</span>
+            <span className='text-title text-xs'>{post.commentCount}</span>
           </button>
         </div>
 
