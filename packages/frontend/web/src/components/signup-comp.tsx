@@ -18,7 +18,7 @@ export default function SignupComp() {
           action=''
           className='flex w-full flex-col gap-y-4 rounded-sm border md:w-8/12 md:text-center'
         >
-          <h1 className='text-dark font-title text-center text-2xl font-semibold text-indigo-950'>
+          <h1 className='font-title text-center text-2xl font-semibold text-indigo-950'>
             {'Sign up'}
           </h1>
           <input

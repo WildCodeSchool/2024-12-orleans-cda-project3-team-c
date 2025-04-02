@@ -39,6 +39,9 @@
   --app-white: #fffdfd;
   --font-main: 'Inter', sans-serif;
   --font-title: 'Kanit', sans-serif;
+
+  --text-3xl: 32px;
+  --text-6xl: 64px;
 }
 
 body {

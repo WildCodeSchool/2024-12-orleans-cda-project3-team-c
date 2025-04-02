@@ -18,7 +18,7 @@ export default function LoginComp() {
           action=''
           className='flex w-full flex-col gap-y-4 rounded-sm border md:w-8/12 md:text-center'
         >
-          <h1 className='text-dark font-title text-center text-2xl font-semibold text-indigo-950'>
+          <h1 className='font-title text-center text-2xl font-semibold text-indigo-950'>
             {'Log in'}
           </h1>
           <input
@@ -51,7 +51,7 @@ export default function LoginComp() {
 
           <Button title={'Log in'} />
 
-          <p className='text-xs text-[#000000]'>
+          <p className='text-xs text-black'>
             {"Don't have an account? "}
             <Link to={'/inscription'} className='text-rose-600'>
               {'Sign up.'}

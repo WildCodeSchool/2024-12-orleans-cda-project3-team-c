@@ -12,10 +12,10 @@ export default function Forgottencomp() {
           action=''
           className='flex w-full flex-col gap-y-4 rounded-sm border md:w-8/12 md:text-center'
         >
-          <h1 className='text-dark font-title text-center text-2xl font-semibold text-indigo-950'>
+          <h1 className='font-title text-center text-2xl font-semibold text-indigo-950'>
             {'Forgotten password?'}
           </h1>
-          <p className='text-center text-sm text-[#000000]'>
+          <p className='text-center text-sm text-black'>
             {'Enter the mail address used for your account'}
           </p>
           <input
@@ -26,7 +26,7 @@ export default function Forgottencomp() {
 
           <Button title={'Send'} />
 
-          <p className='text-xs text-[#000000]'>
+          <p className='text-xs text-black'>
             {'Go to log in . '}
             <Link to={'/connexion'} className='text-rose-600'>
               {' Log in.'}

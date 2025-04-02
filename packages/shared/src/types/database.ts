@@ -148,8 +148,8 @@ export interface User {
   account_status_id: Generated<number>;
   biography: string | null;
   created_at: Generated<Date>;
+  email: string;
   id: Generated<number>;
-  mail: string;
   notoriety: Generated<number>;
   password: string;
   private: Generated<number>;
