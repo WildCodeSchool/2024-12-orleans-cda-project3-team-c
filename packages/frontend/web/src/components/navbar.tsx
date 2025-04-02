@@ -45,7 +45,7 @@ export default function NavBar() {
         </ul>
       </nav>
 
-      <nav className='fixed bottom-0 h-16 w-dvw sm:hidden'>
+      <nav className='fixed bottom-0 h-16 sm:hidden'>
         <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:left-[10%] after:w-[80%] after:border-t'>
           {navItems
             .filter((item) => item.label !== 'Notifications')

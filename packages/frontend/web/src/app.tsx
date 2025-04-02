@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import NavBarLeftWeb from './components/navbar-left-web';
+import NavBarLeftWeb from './components/navbar';
 
 export default function App() {
   return (
