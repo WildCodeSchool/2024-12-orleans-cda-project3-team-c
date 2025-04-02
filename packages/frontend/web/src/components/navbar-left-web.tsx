@@ -38,7 +38,7 @@ export default function NavBar() {
     <>
       <nav className='hidden h-dvh w-56 pt-8 pl-8 sm:block'>
         <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
-        <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-[2px] border-purple-900'>
+        <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
             <NavItem key={item.to} {...item} />
           ))}
