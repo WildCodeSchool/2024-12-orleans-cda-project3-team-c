@@ -7,7 +7,7 @@ import user from '../assets/pictures/users/user.png';
 
 export default function ProfileOwn() {
   return (
-    <section className='mt-[64px] mr-[64px] mb-[8px] ml-[64px] flex-col'>
+    <section className='mr-[64px] mb-[8px] ml-[64px] flex-col pt-[64px]'>
       <div className='flex justify-start border-b-[2px] border-purple-900'>
         <img
           className='mb-[32px] size-[150px] rounded-[4px]'
@@ -43,64 +43,64 @@ export default function ProfileOwn() {
         </Link>
       </div>
 
-      <section className='mt-[8px] flex flex-wrap justify-center'>
+      <section className='flex flex-wrap justify-center pt-[8px]'>
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/583/324/324.jpg?hmac=_8OgYWeM7dT5ELi44b6og4QWKmQBh7rDbV8E_sT8Jcg'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/964/324/324.jpg?hmac=zY-ykQoZZW6RLhi9FQPhd2xuHAFiLayAUH3pCKdK5ZE'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/459/324/324.jpg?hmac=k4dERX6Xdre7ZzjU3Yw8NM4qXPYAuoxwRLVNjeEYM30'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/292/324/324.jpg?hmac=nCGCba3kqkRJWGbWKBv-k_iUbZ3DBq6fbBhijvNDiN0'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/583/324/324.jpg?hmac=_8OgYWeM7dT5ELi44b6og4QWKmQBh7rDbV8E_sT8Jcg'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/964/324/324.jpg?hmac=zY-ykQoZZW6RLhi9FQPhd2xuHAFiLayAUH3pCKdK5ZE'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/459/324/324.jpg?hmac=k4dERX6Xdre7ZzjU3Yw8NM4qXPYAuoxwRLVNjeEYM30'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/292/324/324.jpg?hmac=nCGCba3kqkRJWGbWKBv-k_iUbZ3DBq6fbBhijvNDiN0'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/583/324/324.jpg?hmac=_8OgYWeM7dT5ELi44b6og4QWKmQBh7rDbV8E_sT8Jcg'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/964/324/324.jpg?hmac=zY-ykQoZZW6RLhi9FQPhd2xuHAFiLayAUH3pCKdK5ZE'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/459/324/324.jpg?hmac=k4dERX6Xdre7ZzjU3Yw8NM4qXPYAuoxwRLVNjeEYM30'
           alt=''
         />
         <img
-          className='mt-[8px] mr-[8px]'
+          className='mr-[8px] pt-[8px]'
           src='https://fastly.picsum.photos/id/292/324/324.jpg?hmac=nCGCba3kqkRJWGbWKBv-k_iUbZ3DBq6fbBhijvNDiN0'
           alt=''
         />
