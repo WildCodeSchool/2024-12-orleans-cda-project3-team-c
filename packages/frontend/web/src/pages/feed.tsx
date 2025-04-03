@@ -15,11 +15,17 @@ export default function Feed() {
   let page = 1;
 
   useEffect(() => {
+    let infiniteScrollObserver: IntersectionObserver;
     if (infiniteScrollTrigger.current) {
-      new IntersectionObserver(observeInfiniteScroll).observe(
-        infiniteScrollTrigger.current,
-      );
+      infiniteScrollObserver = new IntersectionObserver(observeInfiniteScroll);
+      infiniteScrollObserver.observe(infiniteScrollTrigger.current);
     }
+
+    return () => {
+      if (infiniteScrollTrigger.current) {
+        infiniteScrollObserver.unobserve(infiniteScrollTrigger.current);
+      }
+    };
   }, [infiniteScrollTrigger]);
 
   async function fetchNewPosts() {
