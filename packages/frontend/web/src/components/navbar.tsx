@@ -36,16 +36,16 @@ function NavItem({ to, icon, label }: NavItemProps) {
 export default function NavBar() {
   return (
     <>
-      <nav className='mb-2 ml-8 hidden h-dvh w-[238px] sm:block'>
-        <h1 className='font-title mb-8 text-[64px] font-bold'>{'Mingo'}</h1>
-        <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-[2px] border-purple-900'>
+      <nav className='hidden h-dvh w-56 pt-8 pl-8 sm:block'>
+        <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
+        <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
             <NavItem key={item.to} {...item} />
           ))}
         </ul>
       </nav>
 
-      <nav className='fixed bottom-0 h-[65px] w-dvw sm:hidden'>
+      <nav className='fixed bottom-0 h-16 sm:hidden'>
         <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:left-[10%] after:w-[80%] after:border-t'>
           {navItems
             .filter((item) => item.label !== 'Notifications')
