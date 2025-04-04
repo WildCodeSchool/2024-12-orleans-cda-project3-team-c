@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './app';
 import ProfileOwn from './components/profile-own';
 import AccountSettings from './pages/account-settings';
+import DeleteAccount from './pages/delete-account';
 import EditBio from './pages/edit-bio';
 import EditMail from './pages/edit-mail';
 import EditPassword from './pages/edit-password';
@@ -21,22 +22,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      // {
-      //   path: '/search',
-      //   element: <Search />,
-      // },
-      // {
-      //   path: '/add',
-      //   element: <Add />,
-      // },
-      // {
-      //   path: '/chat',
-      //   element: <Chat />,
-      // },
-      // {
-      //   path: '/notifications',
-      //   element: <Notifications />,
-      // },
       {
         path: '/profile',
         element: <ProfileOwn />,
@@ -74,7 +59,26 @@ const router = createBrowserRouter([
         path: '/edit-password',
         element: <EditPassword />,
       },
-
+      {
+        path: '/delete-account',
+        element: <DeleteAccount />,
+      },
+      // {
+      //   path: '/search',
+      //   element: <Search />,
+      // },
+      // {
+      //   path: '/add',
+      //   element: <Add />,
+      // },
+      // {
+      //   path: '/chat',
+      //   element: <Chat />,
+      // },
+      // {
+      //   path: '/notifications',
+      //   element: <Notifications />,
+      // },
       // {
       //   path: '/logout',
       //   element: <LogOut />,

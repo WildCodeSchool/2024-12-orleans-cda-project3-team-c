@@ -41,7 +41,7 @@ export default function EditPassword() {
                 <img className='size-4' src={showIcon} alt='arrow left icon' />
               </button>
             </div>
-            <div className='mt-1 flex justify-end'>
+            <div className='mt-1 flex justify-end placeholder-gray-500'>
               <a className='text-turquoise-blue-400 text-xs underline' href='#'>
                 {'forgot my password'}
               </a>
