@@ -1,36 +1,59 @@
 import { Link } from 'react-router-dom';
 
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
+import showIcon from '../assets/icons/show-white.svg';
 
 export default function EditPassword() {
   return (
     <>
       <section className='mt-[9.5rem] flex flex-col items-center'>
         <div className='flex'>
-          <Link to='/profile-informations'>
+          <Link to='/account-settings'>
             <img
               className='size-[2rem]'
               src={arrowLeftIcon}
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-[4rem] text-[1.5rem]'>{'Biography'}</h2>
+          <h2 className='font-title ml-[4rem] text-[1.5rem]'>{'Password'}</h2>
         </div>
       </section>
 
-      <section className='flex flex-col items-center'>
-        <div className='mt-6 flex w-[18rem] justify-end p-0'>
-          <p className='text-placeholder text-xs'>{'10/30'}</p>
-        </div>
-        <div className='mt-1 flex h-6 w-[18rem] items-center rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1'>
-          <input
-            className='flex-1 bg-purple-900 px-2 py-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'
-            type='text'
-            placeholder='@Aang_2006'
-          />
+      <section className='flex h-auto flex-col items-center'>
+        <div className='mt-12 flex h-auto w-[18rem]'>
+          <form action='POST'>
+            <div className='mb-4 flex w-[18rem] flex-1 justify-between rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'>
+              <input type='text' placeholder='New password' />
+              <button>
+                <img className='size-4' src={showIcon} alt='arrow left icon' />
+              </button>
+            </div>
+
+            <input
+              className='w-[18rem] flex-1 rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'
+              type='text'
+              placeholder='Confirm new password'
+            />
+
+            <div className='mt-4 flex w-[18rem] flex-1 justify-between rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'>
+              <input type='text' placeholder='Actual password' />
+              <button>
+                <img className='size-4' src={showIcon} alt='arrow left icon' />
+              </button>
+            </div>
+            <div className='mt-1 flex justify-end'>
+              <a className='text-turquoise-blue-400 text-xs underline' href='#'>
+                {'forgot my password'}
+              </a>
+            </div>
+            <label className='mt-2 flex items-center gap-2 text-sm text-white'>
+              <input type='checkbox' />
+              {'Log me out of all devices'}
+            </label>
+          </form>
         </div>
       </section>
-      <div className='m-6 flex h-6 justify-center'>
+      <div className='mt-8 flex h-6 justify-center'>
         <p className='text-turquoise-blue-400 flex w-10 items-center justify-center rounded-[0.25rem] border-[1px] border-[turquoise-blue-400] text-[0.75rem]'>
           {'Save'}
         </p>

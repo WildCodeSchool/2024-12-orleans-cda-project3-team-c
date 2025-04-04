@@ -67,11 +67,11 @@ const router = createBrowserRouter([
         element: <AccountSettings />,
       },
       {
-        path: '/edit-pasword',
+        path: '/edit-mail',
         element: <EditMail />,
       },
       {
-        path: '/edit-mail',
+        path: '/edit-password',
         element: <EditPassword />,
       },
 
