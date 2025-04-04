@@ -24,7 +24,6 @@ export default function ProfileInformations() {
         alt='user'
       />
 
-      {/* faire route */}
       <Link
         className='text-turquoise-blue-400 rounded-[0.25rem] border-[1px] border-[turquoise-blue-400] p-[0.125rem] pr-[0.5rem] pl-[0.5rem] text-[0.75rem]'
         to='/edit-profile'
@@ -32,15 +31,36 @@ export default function ProfileInformations() {
         <p>{'Edit profile picture'}</p>
       </Link>
       {/* <button className='decoration-turquoise-blue-400 text-[16px] border-turquoise-blue-400'></button> */}
-      <div className='mt-[1rem] w-[18rem] rounded-[0.25rem] border-[1px] border-purple-900 p-[0.5rem] pr-[0.5rem] pl-[0.5rem]'>
-        <p className='text-[0.75rem]'>{'Username'}</p>
-        <p className='font-title text-[0.875rem]'>{'@Aang_2006'}</p>
+      <div className='mt-[1rem] flex w-[18rem] items-center justify-between rounded-[0.25rem] border-[1px] border-purple-900 p-[0.5rem] pr-[0.5rem] pl-[0.5rem]'>
+        <div className='flex flex-col'>
+          <p className='text-[0.75rem]'>{'Username'}</p>
+          <p className='font-title text-[0.875rem]'>{'@Aang_2006'}</p>
+        </div>
+        <div className='flex h-6'>
+          <Link
+            className='text-turquoise-blue-400 flex w-10 items-center justify-center rounded-[0.25rem] border-[1px] border-[turquoise-blue-400] text-[0.75rem]'
+            to='/edit-username'
+          >
+            <p>{'Edit'}</p>
+          </Link>
+        </div>
       </div>
-      <div className='mt-[1rem] w-[18rem] rounded-[0.25rem] border-[1px] border-purple-900 p-[0.5rem] pr-[0.5rem] pl-[0.5rem]'>
-        <p className='text-[0.75rem]'>{'Username'}</p>
-        <p className='text-[0.875rem]'>
-          {'Lorem ipsum dolor sit amet consectetur...'}
-        </p>
+
+      <div className='mt-[1rem] flex w-[18rem] items-center justify-between rounded-[0.25rem] border-[1px] border-purple-900 p-[0.5rem] pr-[0.5rem] pl-[0.5rem]'>
+        <div className='flex flex-col'>
+          <p className='text-[0.75rem]'>{'Bio'}</p>
+          <p className='text-[0.875rem]'>
+            {'Lorem ipsum dolor sit amet consectetur...'}
+          </p>
+        </div>
+        <div className='flex h-6'>
+          <Link
+            className='text-turquoise-blue-400 flex w-10 items-center justify-center rounded-[0.25rem] border-[1px] border-[turquoise-blue-400] text-[0.75rem]'
+            to='/edit-bio'
+          >
+            <p>{'Edit'}</p>
+          </Link>
+        </div>
       </div>
     </section>
   );
