@@ -1,11 +1,40 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import Home from './pages/home';
+import App from './app';
+
+// import Search from './search';
+// import Add from './add';
+// import Chat from './chat';
+// import Notifications from './notifications';
+// import Profile from './profile';
+// import Home from './pages/home';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <App />,
+    children: [
+      // {
+      //   path: '/search',
+      //   element: <Search />,
+      // },
+      // {
+      //   path: '/add',
+      //   element: <Add />,
+      // },
+      // {
+      //   path: '/chat',
+      //   element: <Chat />,
+      // },
+      // {
+      //   path: '/notifications',
+      //   element: <Notifications />,
+      // },
+      // {
+      //   path: '/profile',
+      //   element: <Profile />,
+      // },
+    ],
   },
 ]);
 
