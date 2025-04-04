@@ -4,7 +4,9 @@ import App from './app';
 import ProfileOwn from './components/profile-own';
 import AccountSettings from './pages/account-settings';
 import EditBio from './pages/edit-bio';
-import EditProfile from './pages/edit-profile';
+import EditMail from './pages/edit-mail';
+import EditPassword from './pages/edit-password';
+import EditUsername from './pages/edit-username';
 // import Search from './search';
 // import Add from './add';
 // import Chat from './chat';
@@ -53,17 +55,26 @@ const router = createBrowserRouter([
         element: <ProfileInformations />,
       },
       {
-        path: '/account-settings',
-        element: <AccountSettings />,
-      },
-      {
-        path: '/edit-profile',
-        element: <EditProfile />,
+        path: '/edit-username',
+        element: <EditUsername />,
       },
       {
         path: '/edit-bio',
         element: <EditBio />,
       },
+      {
+        path: '/account-settings',
+        element: <AccountSettings />,
+      },
+      {
+        path: '/edit-pasword',
+        element: <EditMail />,
+      },
+      {
+        path: '/edit-mail',
+        element: <EditPassword />,
+      },
+
       // {
       //   path: '/logout',
       //   element: <LogOut />,

@@ -24,7 +24,7 @@ export default function AccountSettings() {
         <li className='h-[3rem] max-w-[fit-content]'>
           <Link
             className='flex flex-row items-center text-center'
-            to='/change-mail'
+            to='/edit-mail'
             // faire route
           >
             <img
@@ -38,7 +38,7 @@ export default function AccountSettings() {
         <li className='h-[3rem] max-w-[fit-content]'>
           <Link
             className='flex flex-row items-center text-center'
-            to='/change-password'
+            to='/edit-password'
           >
             {/* faire route */}
 
