@@ -6,42 +6,58 @@ import showIcon from '../assets/icons/show-white.svg';
 export default function EditPassword() {
   return (
     <>
-      <section className='mt-[9.5rem] flex flex-col items-center'>
-        <div className='flex'>
+      <section className='mt-40 flex flex-col items-center'>
+        <div className='flex items-center'>
           <Link to='/account-settings'>
             <img
-              className='size-[2rem]'
+              className='h-8 w-8'
               src={arrowLeftIcon}
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-[4rem] text-[1.5rem]'>{'Password'}</h2>
+          <h2 className='font-title ml-16 text-xl'>{'Password'}</h2>
         </div>
       </section>
 
-      <section className='flex h-auto flex-col items-center'>
-        <div className='mt-12 flex h-auto w-[18rem]'>
+      <section className='flex flex-col items-center'>
+        <div className='mt-12 flex w-72'>
           <form action='POST'>
-            <div className='mb-4 flex w-[18rem] flex-1 justify-between rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'>
-              <input type='text' placeholder='New password' />
-              <button>
-                <img className='size-4' src={showIcon} alt='arrow left icon' />
+            <div className='mb-4 flex w-72 justify-between rounded-md border border-gray-300 bg-purple-900 p-2'>
+              <input
+                type='text'
+                placeholder='New password'
+                className='w-full bg-transparent text-xs text-white placeholder-gray-400 focus:outline-none'
+              />
+              <button type='button'>
+                <img
+                  className='h-4 w-4'
+                  src={showIcon}
+                  alt='show password icon'
+                />
               </button>
             </div>
 
             <input
-              className='w-[18rem] flex-1 rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'
+              className='w-72 rounded-md border border-gray-300 bg-purple-900 p-2 text-xs text-white placeholder-gray-400 focus:outline-none'
               type='text'
               placeholder='Confirm new password'
             />
 
-            <div className='mt-4 flex w-[18rem] flex-1 justify-between rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'>
-              <input type='text' placeholder='Actual password' />
-              <button>
-                <img className='size-4' src={showIcon} alt='arrow left icon' />
+            <div className='mt-4 flex w-72 justify-between rounded-md border border-gray-300 bg-purple-900 p-2'>
+              <input
+                type='text'
+                placeholder='Actual password'
+                className='w-full bg-transparent text-xs text-white placeholder-gray-400 focus:outline-none'
+              />
+              <button type='button'>
+                <img
+                  className='h-4 w-4'
+                  src={showIcon}
+                  alt='show password icon'
+                />
               </button>
             </div>
-            <div className='mt-1 flex justify-end placeholder-gray-500'>
+            <div className='mt-1 flex justify-end'>
               <a className='text-turquoise-blue-400 text-xs underline' href='#'>
                 {'forgot my password'}
               </a>
@@ -53,8 +69,9 @@ export default function EditPassword() {
           </form>
         </div>
       </section>
+
       <div className='mt-8 flex h-6 justify-center'>
-        <p className='text-turquoise-blue-400 flex w-10 items-center justify-center rounded-[0.25rem] border-[1px] border-[turquoise-blue-400] text-[0.75rem]'>
+        <p className='text-turquoise-blue-400 border-turquoise-blue-400 flex w-10 items-center justify-center rounded-md border text-xs'>
           {'Save'}
         </p>
       </div>

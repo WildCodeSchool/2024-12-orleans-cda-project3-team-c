@@ -7,58 +7,44 @@ import mailIcon from '../assets/icons/mail-white.svg';
 
 export default function AccountSettings() {
   return (
-    <section className='mt-[9.5rem] flex flex-col items-center'>
-      <div className='flex'>
+    <section className='mt-40 flex flex-col items-center'>
+      <div className='flex items-center'>
         <Link to='/parameters'>
-          <img
-            className='size-[2rem]'
-            src={arrowLeftIcon}
-            alt='arrow left icon'
-          />
+          <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
-        <h2 className='font-title ml-[4rem] text-[1.5rem]'>
-          {'Account Settings'}
-        </h2>
+        <h2 className='font-title ml-16 text-xl'>{'Account Settings'}</h2>
       </div>
-      <ul className='text-none mt-[1rem] h-full list-none flex-col'>
-        <li className='h-[3rem] max-w-[fit-content]'>
-          <Link
-            className='flex flex-row items-center text-center'
-            to='/edit-mail'
-            // faire route
-          >
+
+      <ul className='mt-8 flex flex-col gap-4'>
+        <li>
+          <Link to='/edit-mail' className='flex w-72 items-center text-sm'>
             <img
-              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
+              className='mr-4 h-8 w-8'
               src={mailIcon}
               alt='change mail icon'
             />
             {'Change mail address'}
           </Link>
         </li>
-        <li className='h-[3rem] max-w-[fit-content]'>
-          <Link
-            className='flex flex-row items-center text-center'
-            to='/edit-password'
-          >
-            {/* faire route */}
 
+        <li>
+          <Link to='/edit-password' className='flex w-72 items-center text-sm'>
             <img
-              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
+              className='mr-4 h-8 w-8'
               src={lockIcon}
               alt='change password icon'
             />
             {'Change password'}
           </Link>
         </li>
-        <li className='color-danger h-[3rem] max-w-[fit-content]'>
-          <Link
-            className='flex flex-row items-center text-center'
-            to='/delete-account'
-          >
-            {/* faire route */}
 
+        <li>
+          <Link
+            to='/delete-account'
+            className='flex w-72 items-center text-sm text-red-600'
+          >
             <img
-              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
+              className='mr-4 h-8 w-8'
               src={binIcon}
               alt='delete account icon'
             />

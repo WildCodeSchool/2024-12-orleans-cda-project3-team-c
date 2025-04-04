@@ -7,52 +7,48 @@ import warningIcon from '../assets/icons/warning-red.svg';
 export default function DeleteAccount() {
   return (
     <>
-      <section className='mt-[9.5rem] flex flex-col items-center'>
-        <div className='flex'>
+      <section className='mt-40 flex flex-col items-center'>
+        <div className='flex items-center'>
           <Link to='/account-settings'>
             <img
-              className='size-[2rem]'
+              className='h-8 w-8'
               src={arrowLeftIcon}
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-[4rem] text-[1.5rem]'>
-            {'Delete my account'}
-          </h2>
+          <h2 className='font-title ml-16 text-xl'>{'Delete my account'}</h2>
         </div>
       </section>
 
-      <section className='flex h-auto flex-col items-center'>
-        <img
-          className='mt-12 mb-4 size-16'
-          src={warningIcon}
-          aria-label='warning image'
-        />
-        <p className='w-[18rem] text-justify'>
+      <section className='mt-8 flex flex-col items-center'>
+        <img className='mb-4 h-16 w-16' src={warningIcon} alt='warning icon' />
+        <p className='w-72 text-justify text-sm leading-5'>
           {
-            'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus interdum'
+            'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus interdum nulla. Ut platea egestas viverra fringilla. Placerat pharetra vitae sodales ac odio cras. Neque nisi enim ut faucibus.'
           }
-          {
-            'nulla. Ut platea egestas viverra fringilla. Placerat pharetra vitae'
-          }
-          {'sodales ac odio cras. Neque nisi enim ut faucibus.'}
         </p>
-        <div className='mt-8 flex h-auto w-[18rem]'>
-          <form action='POST'>
-            <div className='mb-4 flex w-[18rem] flex-1 justify-between rounded-[0.25rem] border border-gray-300 bg-purple-900 p-1 text-2xl text-[0.75rem] leading-tight placeholder-gray-500 focus:border-blue-500 focus:outline-none'>
-              <input type='text' placeholder='Password' />
-              <button>
-                <img className='size-4' src={showIcon} alt='arrow left icon' />
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-      <div className='flex h-6 justify-center'>
-        <p className='text-danger flex w-32 items-center justify-center rounded-[0.25rem] border-[1px] border-[turquoise-blue-400] text-[0.75rem]'>
+
+        <form action='POST' className='mt-8 w-72'>
+          <div className='flex items-center justify-between rounded-md border border-gray-300 bg-purple-900 px-2 py-1'>
+            <input
+              type='password'
+              placeholder='Password'
+              className='w-full bg-transparent text-xs text-white placeholder-gray-400 focus:outline-none'
+            />
+            <button type='button'>
+              <img
+                className='ml-2 h-4 w-4'
+                src={showIcon}
+                alt='show password icon'
+              />
+            </button>
+          </div>
+        </form>
+
+        <button className='mt-8 w-34 rounded-md border border-red-600 py-2 text-sm text-red-600'>
           {'Delete my account'}
-        </p>
-      </div>
+        </button>
+      </section>
     </>
   );
 }

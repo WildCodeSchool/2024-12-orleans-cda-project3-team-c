@@ -7,48 +7,44 @@ import userIcon from '../assets/icons/user-white.svg';
 
 export default function Parameters() {
   return (
-    <section className='mt-[9.5rem] flex flex-col items-center'>
-      <div className='flex'>
+    <section className='mt-40 flex flex-col items-center'>
+      <div className='flex items-center'>
         <Link to='/profile'>
-          <img
-            className='size-[2rem]'
-            src={arrowLeftIcon}
-            alt='arrow left icon'
-          />
+          <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
-        <h2 className='font-title ml-[4rem] text-[1.5rem]'>{'Parameters'}</h2>
+        <h2 className='font-title ml-16 text-xl'>{'Parameters'}</h2>
       </div>
-      <ul className='text-none mt-[1rem] h-full list-none flex-col'>
-        <li className='h-[3rem] max-w-[fit-content]'>
+      <ul className='mt-4 flex h-full flex-col'>
+        <li className='h-12 max-w-fit'>
           <Link
             className='flex flex-row items-center text-center'
             to='/profile-informations'
           >
             <img
-              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
+              className='mt-2 mr-4 mb-2 h-8 w-8'
               src={userIcon}
               alt='profile informations icon'
             />
             {'Profile Informations'}
           </Link>
         </li>
-        <li className='h-[3rem] max-w-[fit-content]'>
+        <li className='h-12 max-w-fit'>
           <Link
             className='flex flex-row items-center text-center'
             to='/account-settings'
           >
             <img
-              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
+              className='mt-2 mr-4 mb-2 h-8 w-8'
               src={gearIcon}
               alt='account settings icon'
             />
             {'Account Settings'}
           </Link>
         </li>
-        <li className='h-[3rem] max-w-[fit-content]'>
+        <li className='h-12 max-w-fit'>
           <Link className='flex flex-row items-center text-center' to='/logout'>
             <img
-              className='mt-[0.5rem] mr-[1rem] mb-[0.5rem] size-[2rem] text-center'
+              className='mt-2 mr-4 mb-2 h-8 w-8'
               src={logoutIcon}
               alt='logout icon'
             />
