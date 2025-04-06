@@ -7,7 +7,7 @@ export default function EditBio() {
   return (
     <>
       <section className='mt-40 flex flex-col items-center'>
-        <div className='flex items-center'>
+        <div className='flex w-72 items-center'>
           <Link to='/profile-informations'>
             <img
               className='h-8 w-8'

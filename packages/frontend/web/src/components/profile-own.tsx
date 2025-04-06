@@ -19,14 +19,16 @@ export default function ProfileOwn() {
 
   return (
     <section className='mx-16 mb-2 flex flex-col pt-16'>
-      <div className='flex items-start border-0 pb-4 md:border-b-2 md:border-purple-900 md:pb-8'>
+      <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
         <img className='size-16 rounded md:size-40' src={user} alt='User' />
         <div className='ml-4 w-full'>
           <div className='flex flex-col'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
                 <p className='font-title text-2xl'>{'@Aang_2006'}</p>
-                <p className='font-title text-base text-blue-400'>{'000'}</p>
+                <p className='font-title text-turquoise-blue-400 text-base'>
+                  {'000'}
+                </p>
               </div>
               <Link to='/parameters'>
                 <img className='size-8' src={menu} alt='Menu' />
@@ -36,7 +38,7 @@ export default function ProfileOwn() {
             <ul className='mb-2 flex gap-4 text-sm'>
               {stats.map(({ label, count }) => (
                 <li key={label} className='flex items-center gap-1'>
-                  <span className='text-blue-400'>{count}</span>
+                  <span className='text-turquoise-blue-400'>{count}</span>
                   <span>{label}</span>
                 </li>
               ))}
@@ -52,7 +54,7 @@ export default function ProfileOwn() {
           </div>
         </div>
       </div>
-      <p className='max-w-lg border-b-2 border-purple-900 pb-4 md:hidden'>
+      <p className='border-turquoise-blue-400 max-w-lg border-b-2 pb-4 md:hidden'>
         {'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus'}
         {
           'interdum nulla. Ut platea egestas viverra fringilla. Placerat pharetra'
