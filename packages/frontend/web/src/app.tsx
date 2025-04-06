@@ -4,9 +4,9 @@ import NavBar from './components/navbar';
 
 export default function App() {
   return (
-    <div className='flex h-dvh w-full'>
+    <div className='flex h-full w-full'>
       <NavBar />
-      <main className='w-full'>
+      <main className='h-full w-full'>
         <Outlet />
       </main>
     </div>
