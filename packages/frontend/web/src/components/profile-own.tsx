@@ -18,24 +18,24 @@ export default function ProfileOwn() {
   ];
 
   return (
-    <section className='mx-16 mb-2 flex flex-col pt-16'>
+    <section className='mx-4 flex flex-col pt-4 sm:mx-16 sm:pt-16'>
       <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
         <img className='size-16 rounded md:size-40' src={user} alt='User' />
         <div className='ml-4 w-full'>
           <div className='flex flex-col'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
-                <p className='font-title text-2xl'>{'@Aang_2006'}</p>
-                <p className='font-title text-turquoise-blue-400 text-base'>
+                <p className='font-title text-sm sm:text-2xl'>{'@Aang_2006'}</p>
+                <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
                   {'000'}
                 </p>
               </div>
               <Link to='/parameters'>
-                <img className='size-8' src={menu} alt='Menu' />
+                <img className='size-6 md:size-8' src={menu} alt='Menu' />
               </Link>
             </div>
 
-            <ul className='mb-2 flex gap-4 text-sm'>
+            <ul className='mb-2 flex gap-4 text-xs sm:text-base'>
               {stats.map(({ label, count }) => (
                 <li key={label} className='flex items-center gap-1'>
                   <span className='text-turquoise-blue-400'>{count}</span>
@@ -44,7 +44,7 @@ export default function ProfileOwn() {
               ))}
             </ul>
 
-            <p className='hidden max-w-lg md:block'>
+            <p className='hidden max-w-lg text-base md:block'>
               {'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus'}
               {'interdum nulla. Ut platea egestas viverra fringilla. Placerat'}
               {
@@ -54,7 +54,7 @@ export default function ProfileOwn() {
           </div>
         </div>
       </div>
-      <p className='border-turquoise-blue-400 max-w-lg border-b-2 pb-4 md:hidden'>
+      <p className='border-turquoise-blue-400 max-w-lg border-b-2 pb-4 text-sm md:hidden'>
         {'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus'}
         {
           'interdum nulla. Ut platea egestas viverra fringilla. Placerat pharetra'
