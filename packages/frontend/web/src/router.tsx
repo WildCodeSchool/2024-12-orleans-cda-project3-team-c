@@ -12,6 +12,7 @@ const router = createBrowserRouter([
       {
         path: '/feed',
         element: <Feed />,
+        loader: loaders.postLoaders,
       },
     ],
   },

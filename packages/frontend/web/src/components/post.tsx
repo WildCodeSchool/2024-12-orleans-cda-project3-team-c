@@ -1,12 +1,16 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { FeedPost } from '@app/api';
+import type { FeedPost, PostLike } from '@app/api';
 
+import postLikeApiConnection from '@/api-connection/post-like-api-connection';
 import { getDescriptionElements, getTimeAgo } from '@/utils/text-formating';
 
 import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
+
+// import { commentIcon, likeIcon, likedIcon } from '../utils/app-icons';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
@@ -15,6 +19,26 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const descriptionElements = !!post.description
     ? getDescriptionElements(post.description)
     : [];
+  const [postLike, setPostLike] = useState({
+    isLiked: !!post.isLiked,
+    likeCount: post.likeCount,
+  });
+
+  const togglePostLike = async () => {
+    // Vérifier l'atat de postIsLiked
+    let newState: PostLike;
+    if (postLike.isLiked) {
+      newState = await postLikeApiConnection.unlikePost(post.id);
+    } else {
+      newState = await postLikeApiConnection.likePost(post.id);
+    }
+    if (newState) {
+      setPostLike({
+        isLiked: newState.isLiked,
+        likeCount: newState.likeCount ?? 0,
+      });
+    }
+  };
 
   // tsx **************************************************
   return (
@@ -61,18 +85,19 @@ export default function Post({ post }: { readonly post: FeedPost }) {
             {/* like btn */}
             <button
               type='button'
-              aria-label={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
-              title={`${post.isLiked ? 'Like' : 'Unlike'} this post`}
+              aria-label={`${postLike.isLiked ? 'Like' : 'Unlike'} this post`}
+              title={`${postLike.isLiked ? 'Like' : 'Unlike'} this post`}
+              onClick={togglePostLike}
             >
               <img
-                src={post.isLiked ? likedIcon : likeIcon}
+                src={postLike.isLiked ? likedIcon : likeIcon}
                 alt=''
                 className='w-8'
                 aria-hidden='true'
               />
             </button>
             <p className='text-title text-xs'>
-              {!!post.likeCount ? post.likeCount : ''}
+              {!!postLike.likeCount ? postLike.likeCount : ''}
             </p>
           </div>
 
