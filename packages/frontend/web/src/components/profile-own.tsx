@@ -20,14 +20,17 @@ export default function ProfileOwn() {
   return (
     <section className='mx-4 flex flex-col pt-4 sm:mx-16 sm:pt-16'>
       <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
+        {/* selectionner l'image de l'utilisateur actuel */}
         <img className='size-16 rounded md:size-40' src={user} alt='User' />
         <div className='ml-4 w-full'>
           <div className='flex flex-col'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
+                {/* selectionner le nom de l'utilisateur actuel */}
                 <p className='font-title text-sm sm:text-2xl'>{'@Aang_2006'}</p>
+                {/* le 121 je sais pas ce que c'est */}
                 <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
-                  {'000'}
+                  {'121'}
                 </p>
               </div>
               <Link to='/parameters'>
