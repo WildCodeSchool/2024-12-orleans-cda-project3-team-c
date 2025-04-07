@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
-import searchIcon from '../assets/icons/search-white.svg';
 
 export default function EditBio() {
   return (
     <>
-      <section className='mt-40 flex flex-col items-center'>
+      <section className='item-start mt-4 flex flex-col pl-4 sm:mt-40 sm:items-center sm:pl-0'>
         <div className='flex w-72 items-center'>
           <Link to='/profile-informations'>
             <img
@@ -19,7 +18,7 @@ export default function EditBio() {
         </div>
       </section>
 
-      <section className='flex flex-col items-center'>
+      <section className='flex flex-col items-start pl-4 sm:items-center sm:pl-0'>
         <div className='mt-6 flex w-72 justify-end'>
           <p className='text-placeholder text-xs'>{'138/150'}</p>
         </div>
@@ -32,7 +31,7 @@ export default function EditBio() {
         </div>
       </section>
 
-      <div className='m-6 flex h-6 justify-center'>
+      <div className='mt-8 flex h-6 w-72 justify-center pl-4 sm:w-full sm:pl-0'>
         <p className='border-turquoise-blue-400 text-turquoise-blue-400 flex w-10 items-center justify-center rounded-md border text-xs'>
           {'Save'}
         </p>

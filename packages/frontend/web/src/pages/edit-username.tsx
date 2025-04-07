@@ -5,7 +5,7 @@ import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 export default function EditUsername() {
   return (
     <>
-      <section className='mt-40 flex flex-col items-center'>
+      <section className='item-start mt-4 flex flex-col pl-4 sm:mt-40 sm:items-center sm:pl-0'>
         <div className='flex w-72 items-center'>
           <Link to='/profile-informations'>
             <img
@@ -18,7 +18,7 @@ export default function EditUsername() {
         </div>
       </section>
 
-      <section className='flex flex-col items-center'>
+      <section className='flex flex-col items-start pl-4 sm:items-center sm:pl-0'>
         <div className='mt-6 flex w-72 justify-end p-0'>
           <p className='text-placeholder text-xs'>{'10/30'}</p>
         </div>
@@ -31,7 +31,7 @@ export default function EditUsername() {
         </div>
       </section>
 
-      <div className='m-6 flex h-6 justify-center'>
+      <div className='mt-8 flex h-6 w-72 justify-center pl-4 sm:w-full sm:pl-0'>
         <p className='text-turquoise-blue-400 border-turquoise-blue-400 flex w-10 items-center justify-center rounded-md border text-xs'>
           {'Save'}
         </p>

@@ -12,6 +12,7 @@ export default function App() {
     '/edit-mail',
     '/edit-username',
     '/edit-password',
+    '/delete-account',
     '/profile-informations',
   ];
 

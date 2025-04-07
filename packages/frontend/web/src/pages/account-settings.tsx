@@ -7,7 +7,7 @@ import mailIcon from '../assets/icons/mail-white.svg';
 
 export default function AccountSettings() {
   return (
-    <section className='mt-40 flex flex-col items-center'>
+    <section className='item-start mt-4 flex h-full flex-col pl-4 sm:mt-40 sm:items-center sm:pl-0'>
       <div className='flex w-72 items-center'>
         <Link to='/parameters'>
           <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />

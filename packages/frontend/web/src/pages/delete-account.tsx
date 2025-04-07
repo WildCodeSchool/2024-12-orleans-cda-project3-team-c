@@ -7,7 +7,7 @@ import warningIcon from '../assets/icons/warning-red.svg';
 export default function DeleteAccount() {
   return (
     <>
-      <section className='mt-40 flex flex-col items-center'>
+      <section className='item-start mt-4 flex flex-col pl-4 sm:mt-40 sm:items-center sm:pl-0'>
         <div className='flex w-72 items-center'>
           <Link to='/account-settings'>
             <img

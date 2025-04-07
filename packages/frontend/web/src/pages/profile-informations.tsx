@@ -5,8 +5,8 @@ import user from '../assets/pictures/users/user.png';
 
 export default function ProfileInformations() {
   return (
-    <section className='mt-40 flex flex-col items-center'>
-      <div className='flex'>
+    <section className='mt-4 flex w-full flex-col items-center sm:mt-40'>
+      <div className='item-start flex w-full justify-start sm:items-center sm:justify-center'>
         <Link to='/parameters'>
           <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
