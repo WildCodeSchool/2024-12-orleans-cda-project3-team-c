@@ -44,14 +44,14 @@ export default function Parameters() {
           </li>
         </div>
 
-        <div>
-          <li className='h-12 max-w-fit'>
+        <div className='mb-8 flex h-full items-end'>
+          <li>
             <Link
               className='flex flex-row items-center text-center'
               to='/logout'
             >
               <img
-                className='mt-2 mr-4 mb-2 h-8 w-8'
+                className='mr-4 h-8 w-8'
                 src={logoutIcon}
                 alt='logout icon'
               />
