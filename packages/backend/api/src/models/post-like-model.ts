@@ -48,9 +48,6 @@ export default {
       return { isLiked: true, likeCount: postLikesCount?.like_count };
     } catch (error) {
       if ((error as QueryError).errno === 1062) {
-        console.log('there');
-        console.log(error);
-
         const postLikesCount = await this.getPostsLikesCountByPost(postId);
         return { isLiked: true, likeCount: postLikesCount?.like_count };
       }
@@ -69,7 +66,7 @@ export default {
       const postLikesCount = await this.getPostsLikesCountByPost(postId);
       return { isLiked: false, likeCount: postLikesCount?.like_count };
     } catch (error) {
-      console.error('Something went wrong while unliking the post');
+      console.error('Something went wrong while unliking the post', error);
     }
   },
 };
