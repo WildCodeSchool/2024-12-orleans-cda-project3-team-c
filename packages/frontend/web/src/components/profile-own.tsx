@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import menu from '../assets/icons/menu-square-white.svg';
-import user from '../assets/pictures/users/user.png';
+import user from '../assets/icons/user-white.svg';
 
 export default function ProfileOwn() {
   const stats = [

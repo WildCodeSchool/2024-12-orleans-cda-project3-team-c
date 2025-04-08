@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
-import user from '../assets/pictures/users/user.png';
+import user from '../assets/icons/user-white.svg';
 
 export default function ProfileInformations() {
   return (
