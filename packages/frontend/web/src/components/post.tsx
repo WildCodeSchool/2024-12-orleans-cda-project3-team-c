@@ -10,8 +10,6 @@ import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
 
-// import { commentIcon, likeIcon, likedIcon } from '../utils/app-icons';
-
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function Post({ post }: { readonly post: FeedPost }) {

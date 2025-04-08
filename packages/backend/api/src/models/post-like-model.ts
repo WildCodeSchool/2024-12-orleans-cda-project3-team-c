@@ -1,5 +1,6 @@
 import { jsonObjectFrom } from 'kysely/helpers/mysql';
 
+import type { QueryError } from '@app/backend-shared';
 import { db } from '@app/backend-shared';
 
 export default {
@@ -46,13 +47,14 @@ export default {
 
       return { isLiked: true, likeCount: postLikesCount?.like_count };
     } catch (error) {
-      if (error.errno === 1062) {
+      if ((error as QueryError).errno === 1062) {
         console.log('there');
         console.log(error);
 
         const postLikesCount = await this.getPostsLikesCountByPost(postId);
         return { isLiked: true, likeCount: postLikesCount?.like_count };
       }
+
       console.error('Something went wrong while liking the post');
     }
   },

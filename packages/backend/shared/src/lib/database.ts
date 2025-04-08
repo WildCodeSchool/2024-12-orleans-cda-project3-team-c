@@ -3,6 +3,8 @@ import { createPool } from 'mysql2';
 
 import { type DB, env } from '@app/shared';
 
+export type { QueryError } from 'mysql2';
+
 env();
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = process.env;
