@@ -15,7 +15,7 @@ export default function EditMail() {
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-16 text-xl'>{'Mail address'}</h2>
+          <h2 className='font-title ml-16 text-2xl'>{'Mail address'}</h2>
         </div>
       </section>
 

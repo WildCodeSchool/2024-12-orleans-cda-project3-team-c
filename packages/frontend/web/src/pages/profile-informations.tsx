@@ -10,7 +10,7 @@ export default function ProfileInformations() {
         <Link to='/parameters'>
           <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
-        <h2 className='font-title ml-16 text-xl'>{'Profile Informations'}</h2>
+        <h2 className='font-title ml-16 text-2xl'>{'Profile Informations'}</h2>
       </div>
       {/* selectionner la photo de l'utilisateur actuel */}
       <img className='mt-8 mb-8 h-16 w-16 rounded-md' src={user} alt='user' />

@@ -18,7 +18,7 @@ export default function EditUsername() {
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-16 text-xl'>{'Username'}</h2>
+          <h2 className='font-title ml-16 text-2xl'>{'Username'}</h2>
         </div>
       </section>
 

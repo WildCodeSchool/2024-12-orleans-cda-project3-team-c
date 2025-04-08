@@ -15,7 +15,7 @@ export default function EditPassword() {
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-16 text-xl'>{'Password'}</h2>
+          <h2 className='font-title ml-16 text-2xl'>{'Password'}</h2>
         </div>
       </section>
 

@@ -12,7 +12,7 @@ export default function AccountSettings() {
         <Link to='/parameters'>
           <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
-        <h2 className='font-title ml-16 text-xl'>{'Account Settings'}</h2>
+        <h2 className='font-title ml-16 text-2xl'>{'Account Settings'}</h2>
       </div>
 
       <ul className='mt-8 flex flex-col gap-4'>

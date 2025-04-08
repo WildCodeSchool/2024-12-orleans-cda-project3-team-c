@@ -18,7 +18,7 @@ export default function EditBio() {
               alt='arrow left icon'
             />
           </Link>
-          <h2 className='font-title ml-16 text-xl'>{'Biography'}</h2>
+          <h2 className='font-title ml-16 text-2xl'>{'Biography'}</h2>
         </div>
       </section>
 

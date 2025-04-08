@@ -12,7 +12,7 @@ export default function Parameters() {
         <Link to='/profile'>
           <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
-        <h2 className='font-title ml-16 text-xl'>{'Parameters'}</h2>
+        <h2 className='font-title ml-16 text-2xl'>{'Parameters'}</h2>
       </div>
       <ul className='mt-4 flex h-full flex-col justify-between pl-4 sm:pl-0'>
         <div>
