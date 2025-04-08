@@ -7,8 +7,8 @@ import usersRouter from './subrouters/users-router';
 const router = express.Router();
 
 router.use('/posts', postsRouter);
-router.use('/users', usersRouter);
 router.use('/tags', tagsRouter);
+router.use('/users', usersRouter);
 
 router.get('*', function (req, res) {
   res.status(404).send(`ressource ${req.path} not found`);

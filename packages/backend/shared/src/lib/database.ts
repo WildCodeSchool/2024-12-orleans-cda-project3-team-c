@@ -3,6 +3,8 @@ import { createPool } from 'mysql2';
 
 import { type DB, env } from '@app/shared';
 
+export type { QueryError } from 'mysql2';
+
 env();
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = process.env;
@@ -30,16 +32,14 @@ export const db = new Kysely<DB>({
 
 try {
   await sql`SELECT 1;`.execute(db);
-  // eslint-disable-next-line no-console
+
   console.log('Connected to db!');
 } catch (error) {
   if (error instanceof Error) {
-    // eslint-disable-next-line no-console
     console.error(
       `Failed to connect to database using "${DB_HOST}:${DB_PORT}" (${error.message})`,
     );
   } else {
-    // eslint-disable-next-line no-console
     console.error('Failed to connect to database', error);
   }
 }
