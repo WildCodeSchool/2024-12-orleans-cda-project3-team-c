@@ -46,7 +46,7 @@ export default function ProfileOwn() {
                 </li>
               ))}
             </ul>
-
+            {/* selectionner la bio de l'utilisateur actuel */}
             <p className='hidden max-w-lg text-base md:block'>
               {'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus'}
               {'interdum nulla. Ut platea egestas viverra fringilla. Placerat'}
@@ -57,6 +57,7 @@ export default function ProfileOwn() {
           </div>
         </div>
       </div>
+      {/* selectionner la bio de l'utilisateur actuel */}
       <p className='border-turquoise-blue-400 max-w-lg border-b-2 pb-4 text-sm md:hidden'>
         {'Lorem ipsum dolor sit amet consectetur. Sem convallis lectus'}
         {
@@ -64,7 +65,7 @@ export default function ProfileOwn() {
         }
         {'vitae sodales ac odio cras. Neque nisi enim ut faucibus.'}
       </p>
-
+      {/* selectionner les posts de l'utilisateur actuel */}
       <section className='flex flex-wrap justify-center gap-2 pt-2'>
         {[...images, ...images].map((source, index) => (
           <img

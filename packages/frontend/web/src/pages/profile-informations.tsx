@@ -12,18 +12,21 @@ export default function ProfileInformations() {
         </Link>
         <h2 className='font-title ml-16 text-xl'>{'Profile Informations'}</h2>
       </div>
+      {/* selectionner la photo de l'utilisateur actuel */}
       <img className='mt-8 mb-8 h-16 w-16 rounded-md' src={user} alt='user' />
 
       <Link
         className='text-turquoise-blue-400 border-turquoise-blue-400 rounded-md border px-2 py-1 text-sm'
         to='/edit-profile'
       >
+        {/* update la photo de l'utilisateur actuel */}
         <p>{'Edit profile picture'}</p>
       </Link>
 
       <div className='mt-4 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col'>
           <p className='text-sm'>{'Username'}</p>
+          {/* selectionner le nom de l'utilisateur actuel */}
           <p className='font-title text-base'>{'@Aang_2006'}</p>
         </div>
         <div className='flex h-6'>
@@ -39,6 +42,7 @@ export default function ProfileInformations() {
       <div className='mt-4 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col'>
           <p className='text-sm'>{'Bio'}</p>
+          {/* selectionner la bio de l'utilisateur actuel */}
           <p className='text-base'>
             {'Lorem ipsum dolor sit amet consectetur...'}
           </p>
