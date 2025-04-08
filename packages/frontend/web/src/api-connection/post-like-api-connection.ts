@@ -3,13 +3,13 @@ import type { PostLike } from '@app/api';
 import ApiConnection from './api-connection';
 
 class PostLikeApiConnection extends ApiConnection {
-  constructor(ressource = 'postlikes') {
+  constructor(ressource = 'posts') {
     super(ressource);
   }
 
   async likePost(postId: number) {
     try {
-      const response = await fetch(`${this.ressourceUrl}/${postId}`, {
+      const response = await fetch(`${this.ressourceUrl}/${postId}/like`, {
         method: 'POST',
       });
 
@@ -23,7 +23,7 @@ class PostLikeApiConnection extends ApiConnection {
 
   async unlikePost(postId: number) {
     try {
-      const response = await fetch(`${this.ressourceUrl}/${postId}`, {
+      const response = await fetch(`${this.ressourceUrl}/${postId}/like`, {
         method: 'DELETE',
       });
 

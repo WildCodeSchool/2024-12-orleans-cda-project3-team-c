@@ -1,5 +1,3 @@
-import { jsonObjectFrom } from 'kysely/helpers/mysql';
-
 import type { QueryError } from '@app/backend-shared';
 import { db } from '@app/backend-shared';
 
@@ -25,9 +23,7 @@ export default {
     return db
       .selectFrom('post_like')
       .select(({ fn }) => [fn.count<number>('post_id').as('like_count')])
-      .innerJoin('post', (join) =>
-        join.onRef('post.id', '=', 'post_like.post_id'),
-      )
+      .innerJoin('post', 'post.id', 'post_like.post_id')
       .where('post.user_id', '=', userId)
       .executeTakeFirst();
   },
