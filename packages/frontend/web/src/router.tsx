@@ -1,11 +1,22 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import Home from './pages/home';
+import App from './app';
+import loaders from './loaders';
+import Feed from './pages/feed';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <App />,
+    children: [
+      {
+        path: '/feed',
+        element: <Feed />,
+        loader: () => {
+          return loaders.postLoaders.getFeedPage();
+        },
+      },
+    ],
   },
 ]);
 
