@@ -1,3 +1,5 @@
+import { brotliDecompressSync } from 'node:zlib';
+
 import type { FeedPost } from '@app/api';
 
 import ApiConnection from './api-connection';
@@ -20,6 +22,21 @@ class PostApiConnection extends ApiConnection {
       console.error(error);
     }
     return [];
+  }
+
+  async create(body: FormData) {
+    try {
+      const response = await fetch(this.ressourceUrl, {
+        method: 'POST',
+        body: body,
+      });
+
+      if (response.ok) {
+        return true;
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
