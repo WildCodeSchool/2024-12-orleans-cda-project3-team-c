@@ -28,7 +28,7 @@ export default function Forgottencomp() {
 
           <p className='text-xs text-black'>
             {'Go to log in . '}
-            <Link to={'/connexion'} className='text-rose-600'>
+            <Link to={'/login'} className='text-rose-600'>
               {' Log in.'}
             </Link>
           </p>

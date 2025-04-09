@@ -1,26 +1,37 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import ForgottenPassword from './pages/forgotten-password';
-import Home from './pages/home';
+import App from './app';
+import Forgottencomp from './components/forgotten-comp';
+import SignupComp from './components/signup-comp';
+import loaders from './loaders';
+import Feed from './pages/feed';
 import Login from './pages/login';
-import Signup from './pages/signup';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <App />,
+    children: [
+      {
+        path: '/feed',
+        element: <Feed />,
+        loader: () => {
+          return loaders.postLoaders.getFeedPage();
+        },
+      },
+    ],
   },
   {
-    path: '/connexion',
+    path: '/login',
     element: <Login />,
   },
   {
-    path: '/inscription',
-    element: <Signup />,
+    path: '/register',
+    element: <SignupComp />,
   },
   {
-    path: '/forgotten',
-    element: <ForgottenPassword />,
+    path: '/reset',
+    element: <Forgottencomp />,
   },
 ]);
 
