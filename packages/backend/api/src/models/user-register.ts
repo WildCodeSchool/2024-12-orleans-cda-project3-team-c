@@ -19,7 +19,6 @@ export async function userRegister(
     .executeTakeFirst()
     .then(() => ({ message: 'User created successfully' }))
     .catch((error: unknown) => {
-      // eslint-disable-next-line no-console
       console.error('Error creating user:', error);
       throw new Error('Failed to create user');
     });
