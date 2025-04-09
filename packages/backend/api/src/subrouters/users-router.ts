@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import express from 'express';
 
 import { userRegister } from '@/models/user-register';
@@ -25,7 +24,6 @@ usersRouter.post('/', async function (req, res) {
     const { email, username, password } = req.body;
 
     const result = await userRegister(email, username, password);
-    console.log(result);
 
     res.json(result);
   } catch (error) {
