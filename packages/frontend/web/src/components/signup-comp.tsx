@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable unicorn/prevent-abbreviations */
 import { useState } from 'react';

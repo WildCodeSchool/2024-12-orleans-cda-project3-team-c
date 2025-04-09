@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import express from 'express';
 
 import postModel from '@/models/post-model';
