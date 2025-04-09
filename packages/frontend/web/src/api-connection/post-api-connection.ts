@@ -1,5 +1,3 @@
-import { brotliDecompressSync } from 'node:zlib';
-
 import type { FeedPost } from '@app/api';
 
 import ApiConnection from './api-connection';
