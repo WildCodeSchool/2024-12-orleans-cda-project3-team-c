@@ -71,8 +71,6 @@ export default function CreatePostPage() {
         onSubmit={async (event) => {
           await handleSubmitForm(event);
         }}
-        method='POST'
-        action='http://192.168.0.143:3333/api/upload'
       >
         <input
           type='file'
