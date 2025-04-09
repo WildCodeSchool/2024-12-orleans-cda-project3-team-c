@@ -36,9 +36,9 @@ export default function SignupComp() {
         }),
       });
       if (res.status === 200) {
-        const data = await res.json();
-        console.log(data);
-        // await navigate('/login');
+        await res.json();
+
+        await navigate('/login');
       } else {
         console.log(res.json());
       }

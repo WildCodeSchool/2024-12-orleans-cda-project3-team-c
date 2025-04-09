@@ -22,7 +22,6 @@ export async function userLogin(email: string, password: string) {
 
     return { message: 'Login successful' };
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error logging in:', error);
     throw new Error('Internal server error');
   }
