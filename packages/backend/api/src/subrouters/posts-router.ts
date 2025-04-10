@@ -67,7 +67,7 @@ postsRouter.post('', async function (req, res) {
       const tags = textParsers.getTags(description);
       if (tags.length) {
         for (const tag of tags) {
-          const tagData = await tagModel.create(tag);
+          const tagData = await tagModel.create(tag.substring(1));
           if (tagData) {
             const tagId = Number(tagData.id);
             await postTagModel.create(tagId, postId);
