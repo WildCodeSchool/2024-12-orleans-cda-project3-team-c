@@ -16,7 +16,7 @@ type NavItemProps = {
 const navItems: NavItemProps[] = [
   { to: '/', icon: homeIcon, label: 'Home' },
   { to: '/search', icon: searchIcon, label: 'Search' },
-  { to: '/add', icon: addIcon, label: 'Add a post' },
+  { to: '/create', icon: addIcon, label: 'Create a post' },
   { to: '/chat', icon: chatIcon, label: 'Chat' },
   { to: '/notifications', icon: bellIcon, label: 'Notifications' },
   { to: '/profile', icon: userIcon, label: 'Profile' },

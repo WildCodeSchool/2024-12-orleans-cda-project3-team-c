@@ -3,6 +3,13 @@ import { jsonObjectFrom } from 'kysely/helpers/mysql';
 import { db } from '@app/backend-shared';
 
 export default {
+  create(picture: string, description: string, author: number) {
+    return db
+      .insertInto('post')
+      .values({ picture, description, user_id: author })
+      .executeTakeFirst();
+  },
+
   getFeedPage(page: number, userId: number) {
     return (
       db
