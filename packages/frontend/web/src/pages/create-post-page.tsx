@@ -37,8 +37,8 @@ export default function CreatePostPage() {
     const postData = new FormData(event.target as HTMLFormElement);
 
     try {
-      const posted = await postApiConnection.create(postData);
-      if (posted) {
+      const isPosted = await postApiConnection.create(postData);
+      if (isPosted) {
         await navigate('/feed');
       } else {
         throw new Error('Error while posting -- front end -- create post page');
