@@ -6,6 +6,24 @@ import { fileURLToPath } from 'url';
 
 export default {
   imageFormat: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
+  tempFolderPath: path.join(
+    fileURLToPath(import.meta.url),
+    '..',
+    '..',
+    '..',
+    'public',
+    'pictures',
+    'temp',
+  ),
+  postsPictureFolderPath: path.join(
+    fileURLToPath(import.meta.url),
+    '..',
+    '..',
+    '..',
+    'public',
+    'pictures',
+    'posts',
+  ),
 
   checkFormat(format: string) {
     if (this.imageFormat.includes(format.split('/')[1])) {
@@ -19,56 +37,25 @@ export default {
   },
 
   async saveTemporary(file: UploadedFile) {
-    await file.mv(
-      path.join(
-        fileURLToPath(import.meta.url),
-        '..',
-        '..',
-        '..',
-        'public',
-        'pictures',
-        'temp',
-        file.name,
-      ),
-    );
+    await file.mv(path.join(this.tempFolderPath, file.name));
   },
 
   async checkNeedsResizing(fileName: string, size: number) {
     const metadata = await sharp(
-      path.join(
-        fileURLToPath(import.meta.url),
-        '..',
-        '..',
-        '..',
-        'public',
-        'pictures',
-        'temp',
-        fileName,
-      ),
+      path.join(this.tempFolderPath, fileName),
     ).metadata();
 
     if (metadata.width && metadata.width > size) {
       return true;
     }
     return false;
-
-    console.log(metadata);
   },
 
   async checkNeedsConverting(fileName: string, format: string) {
     const metadata = await sharp(
-      path.join(
-        fileURLToPath(import.meta.url),
-        '..',
-        '..',
-        '..',
-        'public',
-        'pictures',
-        'temp',
-        fileName,
-      ),
+      path.join(this.tempFolderPath, fileName),
     ).metadata();
-    console.log(metadata);
+
     if (metadata.format !== format) {
       return true;
     }
@@ -77,99 +64,25 @@ export default {
 
   async resizePicture(fileName: string, width: number) {
     if (await this.checkNeedsResizing(fileName, 1080)) {
-      await sharp(
-        path.join(
-          fileURLToPath(import.meta.url),
-          '..',
-          '..',
-          '..',
-          'public',
-          'pictures',
-          'temp',
-          fileName,
-        ),
-      )
+      await sharp(path.join(this.tempFolderPath, fileName))
         .resize(1080)
-        .toFile(
-          path.join(
-            fileURLToPath(import.meta.url),
-            '..',
-            '..',
-            '..',
-            'public',
-            'pictures',
-            'temp',
-            fileName,
-          ),
-        );
+        .toFile(path.join(this.tempFolderPath, fileName));
     }
   },
 
   async convertPicture(fileName: string, format: string) {
     if (await this.checkNeedsConverting(fileName, format)) {
       const newFileName = fileName.split('.')[0] + '.webp';
-      console.log('here');
 
-      await sharp(
-        path.join(
-          fileURLToPath(import.meta.url),
-          '..',
-          '..',
-          '..',
-          'public',
-          'pictures',
-          'temp',
-          fileName,
-        ),
-      )
+      await sharp(path.join(this.tempFolderPath, fileName))
         .webp()
-        .toFile(
-          path.join(
-            fileURLToPath(import.meta.url),
-            '..',
-            '..',
-            '..',
-            'public',
-            'pictures',
-            'temp',
-            newFileName,
-          ),
-        );
+        .toFile(path.join(this.tempFolderPath, newFileName));
 
-      await fs.unlink(
-        path.join(
-          fileURLToPath(import.meta.url),
-          '..',
-          '..',
-          '..',
-          'public',
-          'pictures',
-          'temp',
-          fileName,
-        ),
-      );
+      await fs.unlink(path.join(this.tempFolderPath, fileName));
 
       await fs.rename(
-        path.join(
-          fileURLToPath(import.meta.url),
-          '..',
-          '..',
-          '..',
-          'public',
-          'pictures',
-          'temp',
-          newFileName,
-        ),
-        path.join(
-          fileURLToPath(import.meta.url),
-          '..',
-          '..',
-          '..',
-          'public',
-          'pictures',
-          'posts',
-          newFileName,
-        ),
+        path.join(this.tempFolderPath, newFileName),
+        path.join(this.postsPictureFolderPath, newFileName),
       );
 
       return newFileName;
