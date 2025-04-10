@@ -6,7 +6,7 @@ export async function userLogin(email: string, password: string) {
   try {
     const user = await db
       .selectFrom('user')
-      .selectAll()
+      .select(['user.email', 'user.password'])
       .where('user.email', '=', email || 'user.username')
       .executeTakeFirst();
 
