@@ -1,8 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
+import Forgottencomp from './components/forgotten-comp';
+import SignupComp from './components/signup-comp';
 import loaders from './loaders';
 import Feed from './pages/feed';
+import Login from './pages/login';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +20,18 @@ const router = createBrowserRouter([
         },
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <SignupComp />,
+  },
+  {
+    path: '/reset',
+    element: <Forgottencomp />,
   },
 ]);
 

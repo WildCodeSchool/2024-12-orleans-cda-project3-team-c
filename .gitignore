@@ -57,3 +57,4 @@ web-build/
 deployment/db/
 *-mock.*
 test.js
+**/*.tsbuildinfo
