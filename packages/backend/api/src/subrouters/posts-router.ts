@@ -41,7 +41,7 @@ postsRouter.post('', async function (req, res) {
   const picture = req.files?.picture as PictureUploadedFile;
   const description = req.body.description;
 
-  if (picture === null) {
+  if (picture === undefined) {
     res.sendStatus(400);
   } else if (!fileUploadManager.checkFormat(picture.mimetype)) {
     res
