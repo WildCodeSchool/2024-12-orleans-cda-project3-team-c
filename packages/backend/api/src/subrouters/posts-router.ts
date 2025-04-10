@@ -22,7 +22,7 @@ postsRouter.get('/:id', function () {
 
 postsRouter.get('', async function (req, res) {
   let page = 1;
-  if (req.query.page) {
+  if (req.query.page !== '' && req.query.page !== undefined) {
     page = +req.query.page;
     if (!page) {
       res
@@ -41,7 +41,7 @@ postsRouter.post('', async function (req, res) {
   const picture = req.files?.picture as PictureUploadedFile;
   const description = req.body.description;
 
-  if (!picture) {
+  if (picture === null) {
     res.sendStatus(400);
   } else if (!fileUploadManager.checkFormat(picture.mimetype)) {
     res
@@ -53,7 +53,7 @@ postsRouter.post('', async function (req, res) {
   picture.name = fileUploadManager.renameFile(picture.mimetype);
   await fileUploadManager.saveTemporary(picture);
   const pictureName = await fileUploadManager.savePostPicture(picture.name);
-  if (pictureName) {
+  if (pictureName !== undefined) {
     const testConnectedUser = 1;
     const data = await postModel.create(
       pictureName,
@@ -62,8 +62,7 @@ postsRouter.post('', async function (req, res) {
     );
     const postId = Number(data.insertId);
 
-    if (description) {
-      // DB tags insert
+    if (description !== '') {
       const tags = textParsers.getTags(description);
       if (tags.length) {
         for (const tag of tags) {

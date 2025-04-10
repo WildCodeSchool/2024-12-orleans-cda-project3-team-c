@@ -1,7 +1,5 @@
 import express from 'express';
 
-import postModel from '@/models/post-model';
-
 const usersRouter = express.Router();
 
 // GET **************************************************

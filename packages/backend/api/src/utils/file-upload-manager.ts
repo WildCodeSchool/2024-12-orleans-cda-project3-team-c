@@ -45,7 +45,7 @@ export default {
       path.join(this.tempFolderPath, fileName),
     ).metadata();
 
-    if (metadata.width && metadata.width > size) {
+    if (metadata.width !== undefined && metadata.width > size) {
       return true;
     }
     return false;
@@ -65,14 +65,14 @@ export default {
   async resizePicture(fileName: string, width: number) {
     if (await this.checkNeedsResizing(fileName, 1080)) {
       await sharp(path.join(this.tempFolderPath, fileName))
-        .resize(1080)
+        .resize(width)
         .toFile(path.join(this.tempFolderPath, fileName));
     }
   },
 
   async convertPicture(fileName: string, format: string) {
     if (await this.checkNeedsConverting(fileName, format)) {
-      const newFileName = fileName.split('.')[0] + '.webp';
+      const newFileName = fileName.split('.')[0] + '.' + format;
 
       await sharp(path.join(this.tempFolderPath, fileName))
         .webp()

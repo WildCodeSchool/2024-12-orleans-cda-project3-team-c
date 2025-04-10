@@ -1,6 +1,5 @@
 import express from 'express';
 
-import postModel from '@/models/post-model';
 import tagModel from '@/models/tag-model';
 
 const tagsRouter = express.Router();
