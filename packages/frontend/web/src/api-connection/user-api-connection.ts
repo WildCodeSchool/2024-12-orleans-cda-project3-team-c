@@ -1,4 +1,5 @@
 // src/api-connection/user-api-connection.ts
+import ApiConnection from './api-connection';
 
 export type UserPost = {
   id: number;
@@ -12,26 +13,23 @@ export type UserPost = {
 export type UserProfile = {
   username: string;
   profile_picture: string;
-  bio: string;
+  biography: string;
   posts: UserPost[];
 };
 
-const userApiConnection = {
+class UserApiConnection extends ApiConnection {
+  constructor(ressource = 'users') {
+    super(ressource);
+  }
+
   async getOwnProfile(): Promise<UserProfile> {
-    const res = await fetch('/api/users/me'); // Appel vers le nouvel endpoint /me
+    const res = await fetch(`${this.ressourceUrl}/profile`);
 
     if (!res.ok) throw new Error('Failed to load profile');
 
     const data = await res.json();
     return data as UserProfile;
-  },
-};
+  }
+}
 
-// async getOwnProfile(): Promise<UserProfile> {
-//   const res = await fetch('/api/users/me');
-//   if (!res.ok) throw new Error('Failed to load profile');
-
-//   const data = (await res.json()) as UserProfile;
-//   return data;
-
-export default userApiConnection;
+export default new UserApiConnection();

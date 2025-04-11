@@ -1,36 +1,29 @@
-import { sql } from 'kysely';
-
 import { db } from '@app/backend-shared';
 
 export default {
-  // Récupérer un utilisateur par ID
   async getUserById(userId: number) {
     return await db
       .selectFrom('user')
-      .select([
-        'id',
-        'username',
-        'profile_picture',
-        'email',
-        sql<string>`biography`.as('bio'), // alias avec `sql`
-      ])
+      .select(['id', 'username', 'profile_picture', 'email', 'biography'])
       .where('id', '=', userId)
       .executeTakeFirst();
   },
 
-  // Récupérer un utilisateur par ID ou username
+  async getUserByPicture(userId: number, userPicture: string) {
+    return await db
+      .selectFrom('user')
+      .select(['id', 'profile_picture'])
+      .where('id', '=', userId)
+      .where('profile_picture', '=', userPicture)
+      .executeTakeFirst();
+  },
+
   async getUserByUsernameOrId(parameter: string) {
     const isNumericId = /^\d+$/.test(parameter);
 
     return await db
       .selectFrom('user')
-      .select([
-        'id',
-        'username',
-        'profile_picture',
-        'email',
-        sql<string>`biography`.as('bio'),
-      ])
+      .select(['id', 'username', 'profile_picture', 'email', 'biography'])
       .where((eb) =>
         isNumericId
           ? eb('id', '=', Number(parameter))
