@@ -11,9 +11,11 @@ export type UserPost = {
 };
 
 export type UserProfile = {
+  id: number;
   username: string;
   profile_picture: string;
   biography: string;
+  notoriety: number;
   posts: UserPost[];
 };
 

@@ -4,7 +4,14 @@ export default {
   async getUserById(userId: number) {
     return await db
       .selectFrom('user')
-      .select(['id', 'username', 'profile_picture', 'email', 'biography'])
+      .select([
+        'id',
+        'username',
+        'profile_picture',
+        'email',
+        'biography',
+        'notoriety',
+      ])
       .where('id', '=', userId)
       .executeTakeFirst();
   },
@@ -23,7 +30,14 @@ export default {
 
     return await db
       .selectFrom('user')
-      .select(['id', 'username', 'profile_picture', 'email', 'biography'])
+      .select([
+        'id',
+        'username',
+        'profile_picture',
+        'email',
+        'biography',
+        'notoriety',
+      ])
       .where((eb) =>
         isNumericId
           ? eb('id', '=', Number(parameter))

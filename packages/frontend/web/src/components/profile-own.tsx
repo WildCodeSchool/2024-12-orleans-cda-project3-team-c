@@ -1,30 +1,49 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import postApiConnection from '../api-connection/post-api-connection';
 import userApiConnection, {
   type UserPost,
   type UserProfile,
 } from '../api-connection/user-api-connection';
 import menu from '../assets/icons/menu-square-white.svg';
 
+const cdnUrl = import.meta.env.VITE_CDN_URL;
+
 export default function ProfileOwn() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [posts, setPosts] = useState<UserPost[]>([]);
+  const [followersCount, setFollowersCount] = useState<number>(0);
+  const [followingCount, setFollowingCount] = useState<number>(0);
 
   useEffect(() => {
-    userApiConnection
-      .getOwnProfile()
-      .then((profile) => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const profile = await userApiConnection.getOwnProfile();
+        if (!profile) return;
+
         setUserProfile(profile);
         setPosts(profile.posts);
-      })
-      .catch((error: unknown) => {
-        console.error('Erreur de récupération du profil :', error);
-      });
+
+        const [followers, following] = await Promise.all([
+          postApiConnection.getFollowersCount(profile.id),
+          postApiConnection.getFollowingCount(profile.id),
+        ]);
+
+        setFollowersCount(followers);
+        setFollowingCount(following);
+      } catch (error) {
+        console.error('Erreur de récupération des données :', error);
+      }
+    };
+
+    void fetchData();
   }, []);
 
   if (!userProfile) {
-    return <div>{'Loading profile...'}</div>;
+    return (
+      <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
+    );
   }
 
   return (
@@ -45,7 +64,7 @@ export default function ProfileOwn() {
                   {userProfile.username}
                 </p>
                 <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
-                  {'121'}
+                  {userProfile.notoriety}
                 </p>
               </div>
               <Link to='/parameters'>
@@ -54,18 +73,24 @@ export default function ProfileOwn() {
             </div>
 
             <ul className='mb-2 flex gap-4 text-xs sm:text-base'>
-              {[
-                { label: 'posts', count: 2 },
-                { label: 'followers', count: 5 },
-                { label: 'following', count: 18 },
-              ].map(({ label, count }) => (
-                <li key={label} className='flex items-center gap-1'>
-                  <span className='text-turquoise-blue-400'>{count}</span>
-                  <span>{label}</span>
-                </li>
-              ))}
+              <li className='flex items-center gap-1'>
+                <span className='text-turquoise-blue-400'>{posts.length}</span>
+                <span>{'posts'}</span>
+              </li>
+              <li className='flex items-center gap-1'>
+                <span className='text-turquoise-blue-400'>
+                  {followersCount}
+                </span>
+                <span>{'followers'}</span>
+              </li>
+              <li className='flex items-center gap-1'>
+                <span className='text-turquoise-blue-400'>
+                  {followingCount}
+                </span>
+                <span>{'following'}</span>
+              </li>
             </ul>
-            {/* Selectionner la bio de l'utilisateur actuel */}
+
             <p className='hidden max-w-lg text-base md:block'>
               {userProfile.biography}
             </p>
@@ -73,7 +98,6 @@ export default function ProfileOwn() {
         </div>
       </div>
 
-      {/* Selectionner la bio de l'utilisateur actuel pour mobile */}
       <p className='border-turquoise-blue-400 max-w-lg border-b-2 pb-4 text-sm md:hidden'>
         {userProfile.biography}
       </p>
@@ -83,10 +107,13 @@ export default function ProfileOwn() {
           <div key={post.id} className='post'>
             <img
               className='size-40 sm:size-56 md:size-81'
-              src={post.picture}
+              src={
+                post.picture
+                  ? `${cdnUrl}/pictures/posts/${post.picture}`
+                  : '/fallback.jpg'
+              }
               alt={`Post ${index + 1}`}
             />
-            <p>{post.description}</p>
           </div>
         ))}
       </section>

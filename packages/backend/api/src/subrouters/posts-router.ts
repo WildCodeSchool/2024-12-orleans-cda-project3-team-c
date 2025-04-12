@@ -1,29 +1,42 @@
 import express from 'express';
 
+// import postModel from '@/models/post-model';
+import followModel from '@/models/follow-model';
 import postLikeModel from '@/models/post-like-model';
-import postModel from '@/models/post-model';
+
+// Assurez-vous que votre modèle de suivi est importé
 
 const postsRouter = express.Router();
 
 // GET **************************************************
-postsRouter.get('/:id', function () {
-  // Getting a specified post
+postsRouter.get('/:id', function (req, res) {
+  // Vous pouvez créer une route pour obtenir les posts ou les followers/following
+  // Exemple : obtenir le profil d'un utilisateur avec ses posts
+  // Une autre route devrait être dédiée aux followers et following
 });
 
-postsRouter.get('', async function (req, res) {
-  let page = 1;
-  if (req.query.page) {
-    page = +req.query.page;
-    if (!page) {
-      res
-        .status(400)
-        .send('Bad request, you should provide a valid page number');
-    }
+// Route pour obtenir les followers d'un utilisateur
+postsRouter.get('/:id/followers', async (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+  if (isNaN(userId)) {
+    res.status(400).send('Invalid user ID');
+    return;
   }
 
-  const testConnectedUser = 1;
-  const data = await postModel.getFeedPage(page, testConnectedUser);
-  res.json(data);
+  const followersCount = await followModel.getFollowersCount(userId);
+  res.json({ count: followersCount });
+});
+
+// Route pour obtenir les following d'un utilisateur
+postsRouter.get('/:id/following', async (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+  if (isNaN(userId)) {
+    res.status(400).send('Invalid user ID');
+    return;
+  }
+
+  const followingCount = await followModel.getFollowingCount(userId);
+  res.json({ count: followingCount });
 });
 
 // POST **************************************************
@@ -46,7 +59,7 @@ postsRouter.post('/:postId/like', async function (req, res) {
 
 // UPDATE **************************************************
 
-// DELETE **************************************************7
+// DELETE **************************************************
 postsRouter.delete('/:postId/like', async function (req, res) {
   const testConnectedUser = 1;
 
