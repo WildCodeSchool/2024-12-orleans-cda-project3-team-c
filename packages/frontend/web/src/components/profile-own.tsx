@@ -20,8 +20,6 @@ export default function ProfileOwn() {
     const fetchData = async (): Promise<void> => {
       try {
         const profile = await userApiConnection.getOwnProfile();
-        if (!profile) return;
-
         setUserProfile(profile);
         setPosts(profile.posts);
 

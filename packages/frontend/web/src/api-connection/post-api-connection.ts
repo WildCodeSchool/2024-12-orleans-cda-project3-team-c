@@ -21,7 +21,7 @@ class PostApiConnection extends ApiConnection {
       }
     } catch (error) {
       console.error(error);
-      return []; // Retourne un tableau vide en cas d'erreur
+      return [];
     }
   }
 
@@ -41,15 +41,31 @@ class PostApiConnection extends ApiConnection {
   }
 
   async getFollowersCount(userId: number): Promise<number> {
-    const response = await fetch(`/follows/${userId}/followers`);
-    const data: { count: number } = await response.json();
-    return data.count ?? 0;
+    try {
+      const response = await fetch(
+        `${this.ressourceUrl.replace('posts', 'follows')}/${userId}/followers`,
+      );
+      if (!response.ok) throw new Error('Error fetching followers');
+      const data: { count: number } = await response.json();
+      return data.count ?? 0;
+    } catch (error) {
+      console.error(error);
+      return 0;
+    }
   }
 
   async getFollowingCount(userId: number): Promise<number> {
-    const response = await fetch(`/follows/${userId}/following`);
-    const data: { count: number } = await response.json();
-    return data.count ?? 0;
+    try {
+      const response = await fetch(
+        `${this.ressourceUrl.replace('posts', 'follows')}/${userId}/following`,
+      );
+      if (!response.ok) throw new Error('Error fetching following');
+      const data: { count: number } = await response.json();
+      return data.count ?? 0;
+    } catch (error) {
+      console.error(error);
+      return 0;
+    }
   }
 }
 
