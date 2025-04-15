@@ -8,10 +8,9 @@ const postsRouter = express.Router();
 
 // GET **************************************************
 postsRouter.get('/:id', function (req, res) {
-  //
+  // Getting a specified post
 });
 
-// Route pour obtenir les followers d'un utilisateur
 postsRouter.get('/:id/followers', async (req, res) => {
   const userId = parseInt(req.params.id, 10);
   if (isNaN(userId)) {
