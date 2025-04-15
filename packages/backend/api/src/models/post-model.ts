@@ -46,4 +46,12 @@ export default {
         .execute()
     );
   },
+
+  getOwnCountPost(userId: number) {
+    return db
+      .selectFrom('post')
+      .select(({ fn }) => fn.countAll().as('count'))
+      .where('post.user_id', '=', userId)
+      .executeTakeFirst();
+  },
 };
