@@ -3,12 +3,11 @@ import express from 'express';
 import followModel from '@/models/follow-model';
 
 const followsRouter = express.Router();
+// temporaire
+const userId = 1;
 
 // GET /follows/:id/followers
 followsRouter.get('/:id/followers', async (req, res) => {
-  // temporaire : userId forcé à 1
-  const userId = 1;
-
   try {
     const count = await followModel.getFollowersCount(userId);
     res.json({ count });
@@ -20,9 +19,6 @@ followsRouter.get('/:id/followers', async (req, res) => {
 
 // GET /follows/:id/following
 followsRouter.get('/:id/following', async (req, res) => {
-  // temporaire : userId forcé à 1
-  const userId = 1;
-
   try {
     const count = await followModel.getFollowingCount(userId);
     res.json({ count });
