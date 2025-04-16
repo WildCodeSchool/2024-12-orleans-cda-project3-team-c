@@ -45,4 +45,12 @@ export default {
       )
       .executeTakeFirst();
   },
+
+  async updateProfilePicture(userId: number, newPicture: string) {
+    await db
+      .updateTable('user')
+      .set({ profile_picture: newPicture })
+      .where('id', '=', userId)
+      .executeTakeFirst();
+  },
 };

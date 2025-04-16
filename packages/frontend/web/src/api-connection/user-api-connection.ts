@@ -1,4 +1,3 @@
-// src/api-connection/user-api-connection.ts
 import ApiConnection from './api-connection';
 
 export type UserPost = {
@@ -31,6 +30,18 @@ class UserApiConnection extends ApiConnection {
 
     const data = await res.json();
     return data as UserProfile;
+  }
+
+  async updateProfilePicture(file: File): Promise<void> {
+    const formData = new FormData();
+    formData.append('picture', file);
+
+    const res = await fetch(`${this.ressourceUrl}/profile-picture`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) throw new Error('Erreur lors de l’upload de la photo');
   }
 }
 

@@ -70,7 +70,6 @@ export default function EditUsername() {
             className='flex-1 bg-purple-900 text-xs text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
             type='text'
             placeholder={userProfile.username}
-            // value={`@${username}`}
             onChange={handleChange}
           />
         </div>

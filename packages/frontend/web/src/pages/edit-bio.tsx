@@ -6,18 +6,16 @@ import userApiConnection, {
 } from '../api-connection/user-api-connection';
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 
-{
-  /* METTRE UN FORM ET UN INPUT POUR LA BIO */
-}
-
 export default function EditBio() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [biography, setBiography] = useState<string>(''); // ← ajout
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const profile = await userApiConnection.getOwnProfile();
         setUserProfile(profile);
+        setBiography(profile.biography); // ← init bio
       } catch (error) {
         console.error('Erreur de récupération des données :', error);
       }
@@ -31,6 +29,15 @@ export default function EditBio() {
       <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
     );
   }
+
+  const handleBiographyChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const value = event.target.value;
+    if (value.length <= 350) {
+      setBiography(value);
+    }
+  };
 
   return (
     <>
@@ -49,20 +56,21 @@ export default function EditBio() {
 
       <section className='flex flex-col items-start pl-4 sm:items-center sm:pl-0'>
         <div className='mt-6 flex w-72 justify-end'>
-          {/* calculer le nombre de caracteres */}
-          <p className='text-placeholder text-xs'>{'138/400'}</p>
+          <p className='text-placeholder text-xs'>{`${biography.length}/350`}</p>
         </div>
 
         <div className='mt-1 flex w-72 items-center rounded-md border border-gray-300 bg-purple-900 p-1'>
           <textarea
             className='h-40 flex-1 bg-purple-900 px-2 py-1 text-xs leading-tight text-white placeholder-gray-500 focus:outline-none'
-            defaultValue={userProfile.biography}
+            value={biography}
+            onChange={handleBiographyChange}
+            placeholder='Write something about yourself...'
           />
         </div>
       </section>
 
       <div className='mt-8 flex h-6 w-72 justify-center pl-4 sm:w-full sm:pl-0'>
-        <p className='border-turquoise-blue-400 text-turquoise-blue-400 flex w-10 items-center justify-center rounded-md border text-xs'>
+        <p className='border-turquoise-blue-400 text-turquoise-blue-400 flex w-10 cursor-pointer items-center justify-center rounded-md border text-xs'>
           {'Save'}
         </p>
       </div>

@@ -22,6 +22,24 @@ export default function ProfileInformations() {
     void fetchData();
   }, []);
 
+  const handleProfilePictureChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      await userApiConnection.updateProfilePicture(file);
+      const updatedProfile = await userApiConnection.getOwnProfile();
+      setUserProfile(updatedProfile);
+    } catch (error) {
+      console.error(
+        'Erreur lors de la mise à jour de la photo de profil :',
+        error,
+      );
+    }
+  };
+
   if (!userProfile) {
     return (
       <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
@@ -36,21 +54,28 @@ export default function ProfileInformations() {
         </Link>
         <h2 className='font-title ml-16 text-2xl'>{'Profile Informations'}</h2>
       </div>
+
       <img
-        className='mt-8 mb-8 h-16 w-16 rounded-md'
+        className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
         src={
           userProfile.profile_picture || '../assets/icons/user-white.svg.jpg'
         }
         alt='user'
       />
 
-      <Link
-        className='text-turquoise-blue-400 border-turquoise-blue-400 rounded-md border px-2 py-1 text-sm'
-        to='/edit-profile'
+      <label
+        htmlFor='profilePicUpload'
+        className='text-turquoise-blue-400 border-turquoise-blue-400 cursor-pointer rounded-md border px-2 py-1 text-sm'
       >
-        {/* update la photo de l'utilisateur actuel */}
-        <p>{'Edit profile picture'}</p>
-      </Link>
+        {'Change profile picture'}
+        <input
+          id='profilePicUpload'
+          type='file'
+          accept='image/*'
+          className='hidden'
+          onChange={handleProfilePictureChange}
+        />
+      </label>
 
       <div className='mt-4 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col'>
