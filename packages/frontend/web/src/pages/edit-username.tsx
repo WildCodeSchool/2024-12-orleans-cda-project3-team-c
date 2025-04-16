@@ -9,26 +9,23 @@ import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 export default function EditUsername() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [username, setUsername] = useState<string>('');
+  const [saving, setSaving] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | undefined>();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const profile = await userApiConnection.getOwnProfile();
+      setUserProfile(profile);
+      setUsername(profile.username);
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const profile = await userApiConnection.getOwnProfile();
-        setUserProfile(profile);
-        setUsername(profile.username);
-      } catch (error) {
-        console.error('Erreur de récupération des données :', error);
-      }
-    };
-
     void fetchData();
   }, []);
-
-  if (!userProfile) {
-    return (
-      <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
-    );
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -36,6 +33,30 @@ export default function EditUsername() {
       setUsername(value);
     }
   };
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      setSuccessMessage(undefined);
+      setErrorMessage(undefined);
+
+      await userApiConnection.updateUsername(username);
+      setSuccessMessage('Username updated successfully');
+
+      await fetchData(); // refresh the displayed part
+    } catch (error) {
+      console.error('Error updating username:', error);
+      setErrorMessage('Error during saving');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!userProfile) {
+    return (
+      <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
+    );
+  }
 
   return (
     <>
@@ -70,15 +91,28 @@ export default function EditUsername() {
             className='flex-1 bg-purple-900 text-xs text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
             type='text'
             placeholder={userProfile.username}
+            value={username}
             onChange={handleChange}
           />
         </div>
       </section>
 
-      <div className='mt-8 flex h-6 w-72 justify-center pl-4 sm:w-full sm:pl-0'>
-        <p className='text-turquoise-blue-400 border-turquoise-blue-400 flex w-10 cursor-pointer items-center justify-center rounded-md border text-xs'>
-          {'Save'}
-        </p>
+      <div className='mt-8 flex flex-col items-center gap-2 pl-4 sm:w-full sm:pl-0'>
+        <button
+          type='button'
+          onClick={handleSave}
+          disabled={saving}
+          className='text-turquoise-blue-400 border-turquoise-blue-400 flex w-24 cursor-pointer items-center justify-center rounded-md border py-1 text-xs'
+        >
+          {saving ? 'Saving...' : 'Save'}
+        </button>
+
+        {!!successMessage && (
+          <p className='text-xs text-green-400'>{successMessage}</p>
+        )}
+        {!!errorMessage && (
+          <p className='text-xs text-red-400'>{errorMessage}</p>
+        )}
       </div>
     </>
   );

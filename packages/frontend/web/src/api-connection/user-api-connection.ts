@@ -41,7 +41,32 @@ class UserApiConnection extends ApiConnection {
       body: formData,
     });
 
-    if (!res.ok) throw new Error('Erreur lors de l’upload de la photo');
+    if (!res.ok) throw new Error('Failed to upload profile picture');
+  }
+
+  async updateUsername(username: string): Promise<void> {
+    const res = await fetch(`${this.ressourceUrl}/username`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username }),
+    });
+
+    if (!res.ok) throw new Error('Failed to update username');
+  }
+
+  // ✅ Méthode pour mettre à jour la biographie
+  async updateBiography(biography: string): Promise<void> {
+    const res = await fetch(`${this.ressourceUrl}/biography`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ biography }),
+    });
+
+    if (!res.ok) throw new Error('Failed to update biography');
   }
 }
 

@@ -53,4 +53,20 @@ export default {
       .where('id', '=', userId)
       .executeTakeFirst();
   },
+
+  async updateUsername(userId: number, username: string) {
+    await db
+      .updateTable('user')
+      .set({ username })
+      .where('id', '=', userId)
+      .execute();
+  },
+
+  async updateBiography(userId: number, biography: string) {
+    await db
+      .updateTable('user')
+      .set({ biography })
+      .where('id', '=', userId)
+      .execute();
+  },
 };

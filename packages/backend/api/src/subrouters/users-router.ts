@@ -10,6 +10,7 @@ const upload = multer({ dest: 'uploads/' });
 
 const usersRouter = express.Router();
 
+// ✅ GET profil utilisateur
 usersRouter.get('/profile', async (req, res) => {
   try {
     const userId = 1; // temporaire
@@ -47,7 +48,7 @@ usersRouter.get('/profile', async (req, res) => {
   }
 });
 
-// ✅ Route pour uploader la photo de profil
+// ✅ POST upload photo de profil
 usersRouter.post(
   '/profile-picture',
   upload.single('picture'),
@@ -74,7 +75,7 @@ usersRouter.post(
   },
 );
 
-// ✅ Route pour afficher la photo de profil
+// ✅ GET récupérer une photo de profil
 usersRouter.get('/pictures/:filename', (req, res) => {
   const filename = req.params.filename;
   const imagePath = path.join(process.cwd(), 'uploads', filename);
@@ -85,6 +86,46 @@ usersRouter.get('/pictures/:filename', (req, res) => {
   }
 
   res.sendFile(imagePath);
+});
+
+// ✅ PUT pour mettre à jour le username
+usersRouter.put('/username', async (req, res) => {
+  try {
+    const userId = 1; // temporaire
+    const { username } = req.body;
+
+    if (!username || typeof username !== 'string' || username.length > 30) {
+      res.status(400).json({ error: 'Nom d’utilisateur invalide' });
+      return;
+    }
+
+    await userModel.updateUsername(userId, username);
+
+    res.status(200).json({ message: 'Nom d’utilisateur mis à jour' });
+  } catch (err) {
+    console.error('Erreur /username :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// ✅ PUT pour mettre à jour la biographie
+usersRouter.put('/biography', async (req, res) => {
+  try {
+    const userId = 1; // temporaire
+    const { biography } = req.body;
+
+    if (!biography || typeof biography !== 'string' || biography.length > 350) {
+      res.status(400).json({ error: 'Biographie invalide' });
+      return;
+    }
+
+    await userModel.updateBiography(userId, biography);
+
+    res.status(200).json({ message: 'Biographie mise à jour' });
+  } catch (err) {
+    console.error('Erreur /biography :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
 });
 
 export default usersRouter;

@@ -8,27 +8,24 @@ import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 
 export default function EditBio() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [biography, setBiography] = useState<string>(''); // ← ajout
+  const [biography, setBiography] = useState<string>('');
+  const [saving, setSaving] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | undefined>();
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+
+  const fetchData = async (): Promise<void> => {
+    try {
+      const profile = await userApiConnection.getOwnProfile();
+      setUserProfile(profile);
+      setBiography(profile.biography);
+    } catch (error) {
+      console.error('Error fetching profile data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const profile = await userApiConnection.getOwnProfile();
-        setUserProfile(profile);
-        setBiography(profile.biography); // ← init bio
-      } catch (error) {
-        console.error('Erreur de récupération des données :', error);
-      }
-    };
-
     void fetchData();
   }, []);
-
-  if (!userProfile) {
-    return (
-      <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
-    );
-  }
 
   const handleBiographyChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -38,6 +35,30 @@ export default function EditBio() {
       setBiography(value);
     }
   };
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      setSuccessMessage(undefined);
+      setErrorMessage(undefined);
+
+      await userApiConnection.updateBiography(biography);
+      setSuccessMessage('Biography updated successfully');
+
+      await fetchData(); // refresh local data
+    } catch (error) {
+      console.error('Error updating biography:', error);
+      setErrorMessage('Error during saving');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (!userProfile) {
+    return (
+      <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
+    );
+  }
 
   return (
     <>
@@ -69,10 +90,22 @@ export default function EditBio() {
         </div>
       </section>
 
-      <div className='mt-8 flex h-6 w-72 justify-center pl-4 sm:w-full sm:pl-0'>
-        <p className='border-turquoise-blue-400 text-turquoise-blue-400 flex w-10 cursor-pointer items-center justify-center rounded-md border text-xs'>
-          {'Save'}
-        </p>
+      <div className='mt-8 flex flex-col items-center gap-2 pl-4 sm:w-full sm:pl-0'>
+        <button
+          type='button'
+          onClick={handleSave}
+          disabled={saving}
+          className='border-turquoise-blue-400 text-turquoise-blue-400 flex w-24 cursor-pointer items-center justify-center rounded-md border py-1 text-xs'
+        >
+          {saving ? 'Saving...' : 'Save'}
+        </button>
+
+        {!!successMessage && (
+          <p className='text-xs text-green-400'>{successMessage}</p>
+        )}
+        {!!errorMessage && (
+          <p className='text-xs text-red-400'>{errorMessage}</p>
+        )}
       </div>
     </>
   );
