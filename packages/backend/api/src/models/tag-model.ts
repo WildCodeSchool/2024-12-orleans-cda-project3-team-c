@@ -8,13 +8,13 @@ export default {
       return await this.getByName(name);
     } catch (error) {
       if ((error as QueryError).errno === 1062) {
-        return await this.getByName(name);
+        return this.getByName(name);
       }
     }
   },
 
   async getById(id: number) {
-    return await db
+    return db
       .selectFrom('tag')
       .selectAll()
       .where('tag.id', '=', id)
@@ -22,7 +22,7 @@ export default {
   },
 
   async getByName(name: string) {
-    return await db
+    return db
       .selectFrom('tag')
       .selectAll()
       .where('tag.name', '=', name)

@@ -1,6 +1,7 @@
 import express from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
+import type { PostTagInsertionList } from '@/models/model-types';
 import postLikeModel from '@/models/post-like-model';
 import postModel from '@/models/post-model';
 import postTagModel from '@/models/post-tag-model';
@@ -43,6 +44,7 @@ postsRouter.post('', async function (req, res) {
 
   if (picture === undefined) {
     res.sendStatus(400);
+    return;
   } else if (!fileUploadManager.checkFormat(picture.mimetype)) {
     res
       .status(400)
@@ -65,12 +67,19 @@ postsRouter.post('', async function (req, res) {
     if (description !== '') {
       const tags = textParsers.getTags(description);
       if (tags.length) {
+        const postTagInsertionList: PostTagInsertionList[] = [];
+
         for (const tag of tags) {
           const tagData = await tagModel.create(tag.substring(1));
           if (tagData) {
-            const tagId = Number(tagData.id);
-            await postTagModel.create(tagId, postId);
+            postTagInsertionList.push({
+              tag_id: Number(tagData.id),
+              post_id: postId,
+            });
           }
+        }
+        if (postTagInsertionList.length > 0) {
+          await postTagModel.createMany(postTagInsertionList);
         }
       }
     }

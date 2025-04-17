@@ -26,7 +26,7 @@ class PostApiConnection extends ApiConnection {
     try {
       const response = await fetch(this.ressourceUrl, {
         method: 'POST',
-        body: body,
+        body,
       });
 
       if (response.ok) {

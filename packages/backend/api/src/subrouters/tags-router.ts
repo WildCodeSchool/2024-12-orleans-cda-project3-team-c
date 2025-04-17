@@ -5,8 +5,8 @@ import tagModel from '@/models/tag-model';
 const tagsRouter = express.Router();
 
 // GET **************************************************
-tagsRouter.get('/:param', async function (req, res) {
-  const parameter = req.params.param;
+tagsRouter.get('/:tagIdOrTagName', async function (req, res) {
+  const parameter = req.params.tagIdOrTagName;
   let data;
 
   if (+parameter) {
@@ -14,7 +14,13 @@ tagsRouter.get('/:param', async function (req, res) {
   } else {
     data = await tagModel.getByName(parameter);
   }
-  res.json(data);
+  if (data !== undefined) {
+    res.json(data);
+    return;
+  } else {
+    res.sendStatus(404);
+    return;
+  }
 });
 
 tagsRouter.get('/tag/:tag/posts', function () {

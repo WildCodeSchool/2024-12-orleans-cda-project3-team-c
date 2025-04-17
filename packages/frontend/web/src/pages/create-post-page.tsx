@@ -66,12 +66,7 @@ export default function CreatePostPage() {
       </header>
 
       {/* form */}
-      <form
-        encType='multipart/form-data'
-        onSubmit={async (event) => {
-          await handleSubmitForm(event);
-        }}
-      >
+      <form encType='multipart/form-data' onSubmit={handleSubmitForm}>
         <input
           type='file'
           name='picture'
