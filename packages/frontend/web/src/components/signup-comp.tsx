@@ -38,7 +38,12 @@ export default function SignupComp() {
       if (res.status === 200) {
         await res.json();
 
-        await navigate('/login');
+        setEmail('');
+        setUsername('');
+        setPassword('');
+        setConfirmPassword('');
+
+        await navigate('/');
       } else {
         console.log(res.json());
       }
@@ -110,7 +115,7 @@ export default function SignupComp() {
 
           <Button title={'Sign up'} />
 
-          <p className='text-xs'>
+          <p className='text-left text-xs text-black'>
             {'Already have an account ? '}
             <Link to={'/login'} className='text-rose-600'>
               {' Log in.'}

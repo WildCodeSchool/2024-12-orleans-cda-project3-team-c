@@ -1,6 +1,7 @@
 import express from 'express';
 import * as jose from 'jose';
 
+import { db } from '@app/backend-shared';
 import { env } from '@app/shared';
 
 import { userLogin } from '@/models/user-login';
@@ -9,7 +10,7 @@ env();
 
 const userLoginRouter = express.Router();
 
-const cookkieRouterGet = express.Router();
+export const cookkieRouterGet = express.Router();
 
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?? '';
 
@@ -25,12 +26,15 @@ userLoginRouter.post('/', async function (req, res) {
 
     const userAccess = await userLogin(email, password);
 
-    const token = await new jose.SignJWT({ sub: email })
+    const token = await new jose.SignJWT({
+      sub: email,
+      userId: userAccess.userId,
+    })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setIssuer(FRONTEND_HOST)
       .setAudience(FRONTEND_HOST)
-      .setExpirationTime('2h')
+      .setExpirationTime('60s')
       .sign(secret);
 
     res.cookie('token', token, {
@@ -60,15 +64,34 @@ cookkieRouterGet.get('/', async function (req, res) {
   const token = req.signedCookies.token;
 
   try {
-    const { payload } = await jose.jwtVerify(token, secret, {
-      audience: FRONTEND_HOST,
-      issuer: FRONTEND_HOST,
-    });
+    const { payload } = await jose.jwtVerify<{ userId: number }>(
+      token,
+      secret,
+      {
+        audience: FRONTEND_HOST,
+        issuer: FRONTEND_HOST,
+      },
+    );
 
-    res.json(payload);
+    console.log('totoujuuus', payload);
+
+    const userId = payload.userId;
+
+    const user = await db
+      .selectFrom('user')
+      .selectAll()
+      .where('user.id', '=', userId)
+      .executeTakeFirst();
+    console.log('user', user);
+    if (!user) {
+      return res.json({ ok: 'false' });
+    }
+    res.json({ user, ok: 'true' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'wrong' });
+    res.json(
+      'not authorized, please login to get your token or check your cookies',
+    );
   }
 });
 

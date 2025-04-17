@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useLoginContext } from '@/contexts/login-context';
 import useShowPassword from '@/hooks/use-show-password';
 
 import hiden from '../assets/icons/hide-white.svg';
@@ -16,6 +17,8 @@ export default function LoginComp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const userLogged = useLoginContext();
 
   const navigate = useNavigate();
 
@@ -38,6 +41,7 @@ export default function LoginComp() {
       if (res.status === 401) {
         setError('Invalid email or password');
       } else if (loginData.message === 'Login successful') {
+        userLogged?.setIsUserLogged(true);
         await navigate('/feed');
       } else {
         setError('Invalid email or password');

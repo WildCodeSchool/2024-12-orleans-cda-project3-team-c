@@ -1,18 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, Navigate, useLoaderData } from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
+import { useLoginContext } from '@/contexts/login-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
+import logOut from '../assets/icons/logout-white.svg';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
   let page = 1;
+
+  const loginAuth = useLoginContext();
+
+  const isUserLogged = loginAuth?.isUserLogged;
+  const isLoading = loginAuth?.isLoading;
 
   useEffect(() => {
     let infiniteScrollObserver: IntersectionObserver;
@@ -43,6 +52,29 @@ export default function Feed() {
     }
   }
 
+  if (isLoading) {
+    return;
+  }
+
+  if (!isUserLogged) {
+    return <Navigate to={'/'} />;
+  }
+
+  // à mettre dans la navbar
+  const logout = async () => {
+    const response = await fetch(`${API_URL}/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    const data = (await response.json()) as {
+      ok: boolean;
+    };
+
+    if (data.ok) {
+      loginAuth.setIsUserLogged(false);
+    }
+  };
+
   return (
     // feed section
     <section className='mx-auto max-w-[460px]'>
@@ -54,6 +86,15 @@ export default function Feed() {
         <Link to={'/notifications'}>
           <img src={bellIcon} alt='' className='w-8' />
         </Link>
+
+        <button
+          type='button'
+          onClick={logout}
+          className='flex items-center gap-2'
+        >
+          <img src={logOut} alt='log out icon' className='h-6 w-6' />
+          {'logout'}
+        </button>
       </header>
 
       {posts.map((post: FeedPost) => {

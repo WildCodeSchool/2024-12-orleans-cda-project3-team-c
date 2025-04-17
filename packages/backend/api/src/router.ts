@@ -1,9 +1,7 @@
 import express from 'express';
 
-import {
-  default as cookkieRouterGet,
-  default as userLoginRouter,
-} from './subrouters/login-router';
+import userLoginRouter, { cookkieRouterGet } from './subrouters/login-router';
+import userLogout from './subrouters/logout-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
 import usersRouter from './subrouters/users-router';
@@ -15,7 +13,9 @@ router.use('/users', usersRouter);
 router.use('/tags', tagsRouter);
 
 router.use('/login', userLoginRouter);
+router.use('/logout', userLogout);
 router.use('/register', usersRouter);
+
 router.use('/cookie', cookkieRouterGet);
 
 router.get('*', function (req, res) {
