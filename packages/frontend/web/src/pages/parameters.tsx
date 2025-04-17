@@ -7,14 +7,14 @@ import userIcon from '../assets/icons/user-white.svg';
 
 export default function Parameters() {
   return (
-    <section className='item-start mt-4 flex h-full flex-col pl-4 sm:mt-40 sm:items-center sm:pl-0'>
+    <section className='item-start flex h-full flex-col pt-4 pl-4 sm:items-center sm:pt-40 sm:pl-0'>
       <div className='flex items-center'>
         <Link to='/profile'>
           <img className='h-8 w-8' src={arrowLeftIcon} alt='arrow left icon' />
         </Link>
         <h2 className='font-title ml-16 text-2xl'>{'Parameters'}</h2>
       </div>
-      <ul className='mt-4 flex h-full flex-col justify-between pl-4 sm:pl-0'>
+      <ul className='mt-4 flex h-full flex-col justify-between pl-4 sm:h-60 sm:pl-0'>
         <div>
           <li className='h-12 max-w-fit'>
             <Link
@@ -44,10 +44,10 @@ export default function Parameters() {
           </li>
         </div>
 
-        <div className='mb-8 flex h-full items-end'>
+        <div className='mb-8 flex h-full items-end sm:items-start'>
           <li>
             <Link
-              className='flex flex-row items-center text-center'
+              className='flex h-12 flex-row items-center text-center'
               to='/logout'
             >
               <img
