@@ -1,6 +1,5 @@
 import ApiConnection from './api-connection';
 
-// Types pour les publications et le profil utilisateur
 export type UserPost = {
   id: number;
   picture: string;
@@ -24,17 +23,13 @@ class UserApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  // Récupérer le profil de l'utilisateur
   async getProfile(): Promise<UserProfile> {
     const res = await fetch(`${this.ressourceUrl}/profile`);
 
-    // Gestion des erreurs de l'API
     if (!res.ok) throw new Error('Failed to load profile');
 
-    // Récupération des données au format JSON
     const data = await res.json();
 
-    // Retourne les données typées
     return data as UserProfile;
   }
 }
