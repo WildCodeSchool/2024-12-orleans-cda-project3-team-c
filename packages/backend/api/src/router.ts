@@ -13,7 +13,6 @@ router.use('/tags', tagsRouter);
 router.use('/users', usersRouter);
 router.use('/follows', followsRouter);
 
-// Route 404
 router.use('*', (req, res) => {
   res.status(404).send(`Resource ${req.path} not found`);
 });

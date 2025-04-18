@@ -7,7 +7,7 @@ const followsRouter = express.Router();
 // GET /follows/:id/followers
 followsRouter.get('/:id/followers', async (req, res) => {
   try {
-    const userId = req.params.id === '1' ? 1 : parseInt(req.params.id, 10); // Si ID est 1, l'utilisateur sera 1
+    const userId = req.params.id === '1' ? 1 : parseInt(req.params.id, 10);
     if (isNaN(userId)) {
       res.status(400).send('Invalid user ID');
       return;
@@ -24,7 +24,7 @@ followsRouter.get('/:id/followers', async (req, res) => {
 // GET /follows/:id/following
 followsRouter.get('/:id/following', async (req, res) => {
   try {
-    const userId = req.params.id === '1' ? 1 : parseInt(req.params.id, 10); // Si ID est 1, l'utilisateur sera 1
+    const userId = req.params.id === '1' ? 1 : parseInt(req.params.id, 10);
     if (isNaN(userId)) {
       res.status(400).send('Invalid user ID');
       return;
