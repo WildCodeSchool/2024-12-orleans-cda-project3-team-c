@@ -1,10 +1,9 @@
 import ApiConnection from './api-connection';
 
-// Définissez un type pour la réponse de l'API
 type UserResponse = {
   id: number;
   username: string;
-  profile_picture: string; // Assurez-vous que cette propriété est incluse
+  profile_picture: string;
 };
 
 class UserApiConnection extends ApiConnection {

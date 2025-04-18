@@ -22,7 +22,7 @@ userRouter.get('/:userId', async (req, res) => {
   try {
     const user = await userModel.getUserById(userIdNumber);
     if (user) {
-      res.json(user); // Cela inclura maintenant profile_picture
+      res.json(user);
     } else {
       res.status(404).json({ error: 'User not found' });
     }
