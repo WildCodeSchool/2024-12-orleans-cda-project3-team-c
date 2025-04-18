@@ -20,12 +20,15 @@ export default function Profile() {
     const fetchData = async (): Promise<void> => {
       try {
         const profile = await userApiConnection.getProfile();
+
         setUserProfile(profile);
         setPosts(profile.posts);
 
+        const userId = profile.id;
+
         const [followers, following] = await Promise.all([
-          postApiConnection.getFollowersCount(profile.id),
-          postApiConnection.getFollowingCount(profile.id),
+          postApiConnection.getFollowersCount(userId),
+          postApiConnection.getFollowingCount(userId),
         ]);
 
         setFollowersCount(followers);
@@ -47,14 +50,10 @@ export default function Profile() {
   return (
     <section className='mx-4 flex flex-col pt-4 sm:mx-16 sm:pt-16'>
       <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
+        {/* Image du profil */}
         <img
           className='size-16 rounded md:size-40'
-          src={
-            // userProfile.profile_picture || '../assets/icons/user-white.svg.jpg'
-            `${cdnUrl}/pictures/${userProfile.profile_picture}`
-            // profile_picture: `${req.protocol}://${req.get('host')}/api/users/pictures/${user.profile_picture}`,
-            // ? `${cdnUrl}/pictures/${user.profile_picture}`
-          }
+          src={`${cdnUrl}/pictures/users/${userProfile.profile_picture}`}
           alt='User'
         />
         <div className='ml-4 w-full'>
@@ -104,6 +103,7 @@ export default function Profile() {
       </p>
 
       <section className='flex flex-wrap justify-center gap-2 pt-2'>
+        {/* Affichage des images des posts */}
         {posts.map((post, index) => (
           <div key={post.id} className='post'>
             <img
@@ -111,7 +111,7 @@ export default function Profile() {
               src={
                 post.picture
                   ? `${cdnUrl}/pictures/posts/${post.picture}`
-                  : '/fallback.jpg'
+                  : '/user.png'
               }
               alt={`Post ${index + 1}`}
             />
