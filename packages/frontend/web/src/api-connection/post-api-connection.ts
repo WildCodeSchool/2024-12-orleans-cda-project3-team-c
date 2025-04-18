@@ -25,7 +25,7 @@ class PostApiConnection extends ApiConnection {
     }
   }
 
-  async getOwnCountPost(): Promise<number> {
+  async getOwnPostsCount(): Promise<number> {
     try {
       const response = await fetch(`${this.ressourceUrl}/count`);
       if (response.ok) {

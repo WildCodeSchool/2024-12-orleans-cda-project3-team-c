@@ -11,28 +11,6 @@ postsRouter.get('/:id', function (req, res) {
   // Getting a specified post
 });
 
-postsRouter.get('/:id/followers', async (req, res) => {
-  const userId = parseInt(req.params.id, 10);
-  if (isNaN(userId)) {
-    res.status(400).send('Invalid user ID');
-    return;
-  }
-
-  const followersCount = await followModel.getFollowersCount(userId);
-  res.json({ count: followersCount });
-});
-
-postsRouter.get('/:id/following', async (req, res) => {
-  const userId = parseInt(req.params.id, 10);
-  if (isNaN(userId)) {
-    res.status(400).send('Invalid user ID');
-    return;
-  }
-
-  const followingCount = await followModel.getFollowingCount(userId);
-  res.json({ count: followingCount });
-});
-
 // POST **************************************************
 postsRouter.post('/:postId/like', async function (req, res) {
   const testConnectedUser = 1;

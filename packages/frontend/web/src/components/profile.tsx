@@ -10,7 +10,7 @@ import menu from '../assets/icons/menu-square-white.svg';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
-export default function ProfileOwn() {
+export default function Profile() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [posts, setPosts] = useState<UserPost[]>([]);
   const [followersCount, setFollowersCount] = useState<number>(0);
@@ -19,7 +19,7 @@ export default function ProfileOwn() {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const profile = await userApiConnection.getOwnProfile();
+        const profile = await userApiConnection.getProfile();
         setUserProfile(profile);
         setPosts(profile.posts);
 
@@ -50,7 +50,10 @@ export default function ProfileOwn() {
         <img
           className='size-16 rounded md:size-40'
           src={
-            userProfile.profile_picture || '../assets/icons/user-white.svg.jpg'
+            // userProfile.profile_picture || '../assets/icons/user-white.svg.jpg'
+            `${cdnUrl}/pictures/${userProfile.profile_picture}`
+            // profile_picture: `${req.protocol}://${req.get('host')}/api/users/pictures/${user.profile_picture}`,
+            // ? `${cdnUrl}/pictures/${user.profile_picture}`
           }
           alt='User'
         />

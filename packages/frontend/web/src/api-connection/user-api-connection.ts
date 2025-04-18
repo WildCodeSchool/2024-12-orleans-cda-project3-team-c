@@ -24,7 +24,7 @@ class UserApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  async getOwnProfile(): Promise<UserProfile> {
+  async getProfile(): Promise<UserProfile> {
     const res = await fetch(`${this.ressourceUrl}/profile`);
 
     if (!res.ok) throw new Error('Failed to load profile');

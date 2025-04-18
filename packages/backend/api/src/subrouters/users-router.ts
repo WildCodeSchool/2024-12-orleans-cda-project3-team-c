@@ -20,7 +20,8 @@ usersRouter.get('/profile', async (req, res) => {
     const profile = {
       // id : user.id,
       username: user.username,
-      profile_picture: `${req.protocol}://${req.get('host')}/api/users/pictures/${user.profile_picture}`,
+      // profile_picture: `${req.protocol}://${req.get('host')}/api/users/pictures/${user.profile_picture}`,
+      profile_picture: user.profile_picture,
       biography: user.biography,
       notoriety: user.notoriety,
       posts: posts.map((post) => ({

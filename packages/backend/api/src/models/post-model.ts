@@ -47,7 +47,7 @@ export default {
     );
   },
 
-  getOwnCountPost(userId: number) {
+  getOwnPostsCount(userId: number) {
     return db
       .selectFrom('post')
       .select(({ fn }) => fn.countAll().as('count'))
