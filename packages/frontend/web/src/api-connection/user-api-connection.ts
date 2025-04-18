@@ -33,7 +33,6 @@ class UserApiConnection extends ApiConnection {
 
     // Récupération des données au format JSON
     const data = await res.json();
-    console.log('Données de profil reçues :', data); // Vérification des données reçues
 
     // Retourne les données typées
     return data as UserProfile;
