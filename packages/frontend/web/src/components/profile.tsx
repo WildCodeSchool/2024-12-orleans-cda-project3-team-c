@@ -111,7 +111,7 @@ export default function Profile() {
               src={
                 post.picture
                   ? `${cdnUrl}/pictures/posts/${post.picture}`
-                  : '/user.png'
+                  : '/user-mock.png'
               }
               alt={`Post ${index + 1}`}
             />
