@@ -16,6 +16,8 @@ export type UserProfile = {
   biography: string;
   notoriety: number;
   posts: UserPost[];
+  followersCount: number;
+  followingCount: number;
 };
 
 class UserApiConnection extends ApiConnection {
@@ -30,7 +32,11 @@ class UserApiConnection extends ApiConnection {
 
     const data = await res.json();
 
-    return data as UserProfile;
+    return {
+      ...data,
+      followersCount: data.followersCount ?? 0,
+      followingCount: data.followingCount ?? 0,
+    } as UserProfile;
   }
 }
 

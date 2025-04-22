@@ -1,5 +1,6 @@
 import express from 'express';
 
+import followModel from '@/models/follow-model';
 import postModel from '@/models/post-model';
 import userModel from '@/models/user-model';
 
@@ -16,6 +17,8 @@ usersRouter.get('/profile', async (req, res) => {
     }
 
     const posts = await postModel.getFeedPage(1, userId); // page 1 simulée
+    const followersCount = await followModel.getFollowersCount(userId);
+    const followingCount = await followModel.getFollowingCount(userId);
 
     const profile = {
       id: user.id,
@@ -26,11 +29,9 @@ usersRouter.get('/profile', async (req, res) => {
       posts: posts.map((post) => ({
         id: post.id,
         picture: post.picture,
-        description: post.description,
-        created_at: post.created_at,
-        likeCount: post.likeCount,
-        commentCount: post.commentCount,
       })),
+      followersCount,
+      followingCount,
     };
 
     res.json(profile);
