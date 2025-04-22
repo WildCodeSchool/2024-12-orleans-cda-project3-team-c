@@ -4,6 +4,7 @@ import App from './app';
 import Forgottencomp from './components/forgotten-comp';
 import SignupComp from './components/register-comp';
 import loaders from './loaders';
+import CreatePostPage from './pages/create-post-page';
 import Feed from './pages/feed';
 import Login from './pages/login';
 
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
         loader: () => {
           return loaders.postLoaders.getFeedPage();
         },
+      },
+      {
+        path: '/create',
+        element: <CreatePostPage />,
       },
     ],
   },

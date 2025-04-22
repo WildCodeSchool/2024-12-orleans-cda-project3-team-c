@@ -44,7 +44,7 @@
 }
 
 body {
-  @apply font-main flex flex-row bg-purple-950 text-white;
+  @apply font-main bg-purple-950 text-white;
 }
 
 button {

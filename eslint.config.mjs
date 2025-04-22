@@ -53,7 +53,7 @@ export default typescriptPlugin.config([
       },
     },
     rules: {
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['error'] }],
       'no-extra-boolean-cast': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/array-type': [

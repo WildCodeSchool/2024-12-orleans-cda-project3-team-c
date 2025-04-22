@@ -3,6 +3,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -28,6 +29,8 @@ app.use(
     credentials: true,
   }),
 );
+app.use(cors());
+app.use(fileUpload());
 app.use(
   '/cdn',
   express.static(

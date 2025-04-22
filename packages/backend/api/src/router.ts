@@ -21,8 +21,8 @@ router.use(loginMiddleware);
 //login guards il faudra mettre mettre toutes les routes qui necessitent d'etre authentifié
 router.use(loginGuards);
 router.use('/posts', postsRouter);
-router.use('/users', usersRouter);
 router.use('/tags', tagsRouter);
+router.use('/users', usersRouter);
 
 router.use('/cookie', cookkieRouterGet);
 

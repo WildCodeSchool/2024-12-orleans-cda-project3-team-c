@@ -12,7 +12,7 @@
     "packages/shared"
   ],
   "scripts": {
-    "dev": "npm run ip:detect && concurrently -c auto --hide 0 \"npm:watch:*\" \"npm:dev:*(!mobile)\"",
+    "dev": "npm run ip:detect && npm run env:copy && concurrently -c auto --hide 0 \"npm:watch:*\" \"npm:dev:*(!mobile)\"",
     "dev:backend:api": "npm -w packages/backend/api run dev",
     "dev:frontend:web": "npm -w packages/frontend/web run dev",
     "dev:frontend:mobile": "npm -w packages/frontend/mobile run dev",
