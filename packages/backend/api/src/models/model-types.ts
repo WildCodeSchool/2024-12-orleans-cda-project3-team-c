@@ -24,3 +24,8 @@ export type PostLike = Awaited<
     typeof postLikeModel.addPostLike | typeof postLikeModel.deletePostLike
   >
 >;
+
+export type PostTagInsertionList = {
+  tag_id: number;
+  post_id: number;
+};

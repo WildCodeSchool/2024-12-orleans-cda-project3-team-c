@@ -67,6 +67,21 @@ class PostApiConnection extends ApiConnection {
       return 0;
     }
   }
+
+  async create(body: FormData) {
+    try {
+      const response = await fetch(this.ressourceUrl, {
+        method: 'POST',
+        body,
+      });
+
+      if (response.ok) {
+        return true;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export default new PostApiConnection();
