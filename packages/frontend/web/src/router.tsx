@@ -22,11 +22,6 @@ const router = createBrowserRouter([
         path: '/create',
         element: <CreatePostPage />,
       },
-
-      {
-        path: '/f',
-        element: <UserSuggestion />,
-      },
     ],
   },
 ]);

@@ -14,9 +14,9 @@ function UserSuggestion() {
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [username, setUsername] = useState('');
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true); // État de chargement
-  const followerId = 9; // Remplacez par l'ID réel du follower
-  const followeeId = 4; // Remplacez par l'ID réel du followee
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const followerId = 1;
+  const followeeId = 2;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +67,7 @@ function UserSuggestion() {
     return;
   }
 
+  // @ts-expect-error: This comparison appears to be unintentional because the types '2' and '1' have no overlap.ts(2367)
   if (followerId === followeeId || isFollowing) {
     return null;
   }
