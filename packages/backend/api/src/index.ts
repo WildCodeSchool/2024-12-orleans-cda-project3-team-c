@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
+/* eslint-disable @typescript-eslint/no-namespace */
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
@@ -40,5 +42,14 @@ app.listen(PORT, () => {
   console.log(`Server is listening on http://${HOST}:${PORT}`);
 });
 
-export default app;
 export type * from './models/model-types';
+export default app;
+
+declare global {
+  namespace Express {
+    interface Request {
+      isAuthenticated?: boolean;
+      userId?: number;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, Navigate, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
@@ -18,10 +18,8 @@ export default function Feed() {
   const infiniteScrollTrigger = useRef(null);
   let page = 1;
 
+  //context à mettre dans la navbar
   const loginAuth = useLoginContext();
-
-  const isUserLogged = loginAuth?.isUserLogged;
-  const isLoading = loginAuth?.isLoading;
 
   useEffect(() => {
     let infiniteScrollObserver: IntersectionObserver;
@@ -52,14 +50,6 @@ export default function Feed() {
     }
   }
 
-  if (isLoading) {
-    return;
-  }
-
-  if (!isUserLogged) {
-    return <Navigate to={'/'} />;
-  }
-
   // à mettre dans la navbar
   const logout = async () => {
     const response = await fetch(`${API_URL}/logout`, {
@@ -71,6 +61,7 @@ export default function Feed() {
     };
 
     if (data.ok) {
+      console.log('logout ok');
       loginAuth.setIsUserLogged(false);
     }
   };

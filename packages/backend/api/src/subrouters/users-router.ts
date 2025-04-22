@@ -32,17 +32,6 @@ usersRouter.post('/', async function (req, res) {
   }
 });
 
-// // POST DU LOGOUT*********************************************
-// usersRouter.post('/logout', function (req, res) {
-//   try {
-//     const result = userLogout();
-//     res.json(result);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Internal logout server error' });
-//   }
-// });
-
 // UPDATE **************************************************
 
 // DELETE **************************************************

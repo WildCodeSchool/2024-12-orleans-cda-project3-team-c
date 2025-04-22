@@ -1,5 +1,7 @@
 import express from 'express';
 
+import loginGuards from './middlewares/login.guards';
+import loginMiddleware from './middlewares/login.middleware';
 import userLoginRouter, { cookkieRouterGet } from './subrouters/login-router';
 import userLogout from './subrouters/logout-router';
 import postsRouter from './subrouters/posts-router';
@@ -8,13 +10,19 @@ import usersRouter from './subrouters/users-router';
 
 const router = express.Router();
 
-router.use('/posts', postsRouter);
-router.use('/users', usersRouter);
-router.use('/tags', tagsRouter);
+router.use('/register', usersRouter);
 
 router.use('/login', userLoginRouter);
 router.use('/logout', userLogout);
-router.use('/register', usersRouter);
+
+// Middleware to check if the user is authenticated
+router.use(loginMiddleware);
+
+//login guards il faudra mettre mettre toutes les routes qui necessitent d'etre authentifié
+router.use(loginGuards);
+router.use('/posts', postsRouter);
+router.use('/users', usersRouter);
+router.use('/tags', tagsRouter);
 
 router.use('/cookie', cookkieRouterGet);
 

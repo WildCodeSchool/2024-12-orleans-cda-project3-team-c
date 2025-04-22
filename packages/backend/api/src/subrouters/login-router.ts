@@ -4,6 +4,7 @@ import * as jose from 'jose';
 import { db } from '@app/backend-shared';
 import { env } from '@app/shared';
 
+import loginGuards from '@/middlewares/login.guards';
 import { userLogin } from '@/models/user-login';
 
 env();
@@ -60,31 +61,24 @@ userLoginRouter.post('/', async function (req, res) {
 
 // GET COOKIES **************************************************
 
-cookkieRouterGet.get('/', async function (req, res) {
-  const token = req.signedCookies.token;
+cookkieRouterGet.get('/', loginGuards, async function (req, res) {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.json({ ok: 'false' });
+    return;
+  }
 
   try {
-    const { payload } = await jose.jwtVerify<{ userId: number }>(
-      token,
-      secret,
-      {
-        audience: FRONTEND_HOST,
-        issuer: FRONTEND_HOST,
-      },
-    );
-
-    console.log('totoujuuus', payload);
-
-    const userId = payload.userId;
-
     const user = await db
       .selectFrom('user')
       .selectAll()
       .where('user.id', '=', userId)
       .executeTakeFirst();
-    console.log('user', user);
+
     if (!user) {
-      return res.json({ ok: 'false' });
+      res.json({ ok: 'false' });
+      return;
     }
     res.json({ user, ok: 'true' });
   } catch (error) {
@@ -92,6 +86,7 @@ cookkieRouterGet.get('/', async function (req, res) {
     res.json(
       'not authorized, please login to get your token or check your cookies',
     );
+    return;
   }
 });
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import loginApiConnection from '@/api-connection/login-api-connection';
 import { useLoginContext } from '@/contexts/login-context';
 import useShowPassword from '@/hooks/use-show-password';
 
@@ -9,14 +10,11 @@ import show from '../assets/icons/show-white.svg';
 import Button from './button';
 import Logo from './logo';
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 export default function LoginComp() {
   const [isVisible, toggleVisible] = useShowPassword() as [boolean, () => void];
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const userLogged = useLoginContext();
 
@@ -24,31 +22,18 @@ export default function LoginComp() {
 
   const login = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError('');
+
     try {
-      const res = await fetch(`${API_URL}/login`, {
-        headers: { 'Content-type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        credentials: 'include',
-      });
+      const loginData = (await loginApiConnection.login(email, password)) as {
+        message: string;
+      };
 
-      const loginData = await res.json();
-
-      if (res.status === 401) {
-        setError('Invalid email or password');
-      } else if (loginData.message === 'Login successful') {
+      if (loginData.message === 'Login successful') {
         userLogged?.setIsUserLogged(true);
         await navigate('/feed');
-      } else {
-        setError('Invalid email or password');
       }
-    } catch (err) {
-      console.error(err);
-      setError('Failed to connect to the server');
+    } catch (error) {
+      console.error({ error, message: 'Failed to connect to the server' });
     }
   };
 
@@ -64,7 +49,6 @@ export default function LoginComp() {
           <h1 className='font-title text-center text-2xl font-semibold text-indigo-950'>
             {'Log in'}
           </h1>
-          {error ? <p className='text-sm text-red-500'>{error}</p> : null}{' '}
           <input
             type='email'
             value={email}

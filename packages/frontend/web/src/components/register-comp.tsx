@@ -4,14 +4,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import RegisterApiConnection from '@/api-connection/register-api-connection';
 import useShowPassword from '@/hooks/use-show-password';
 
 import hiden from '../assets/icons/hide-white.svg';
 import show from '../assets/icons/show-white.svg';
 import Button from './button';
 import Logo from './logo';
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function SignupComp() {
   const [isVisible, toggleVisible] = useShowPassword() as [boolean, () => void];
@@ -26,27 +25,14 @@ export default function SignupComp() {
   const userRegister = async function (event: React.FormEvent) {
     event.preventDefault();
     try {
-      const res = await fetch(`${API_URL}/register`, {
-        headers: { 'Content-type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          username,
-          password,
-        }),
-      });
-      if (res.status === 200) {
-        await res.json();
+      await RegisterApiConnection.register(email, username, password);
 
-        setEmail('');
-        setUsername('');
-        setPassword('');
-        setConfirmPassword('');
+      setEmail('');
+      setUsername('');
+      setPassword('');
+      setConfirmPassword('');
 
-        await navigate('/');
-      } else {
-        console.log(res.json());
-      }
+      await navigate('/');
     } catch (error) {
       console.error(error);
     }
@@ -117,7 +103,7 @@ export default function SignupComp() {
 
           <p className='text-left text-xs text-black'>
             {'Already have an account ? '}
-            <Link to={'/login'} className='text-rose-600'>
+            <Link to={'/'} className='text-rose-600'>
               {' Log in.'}
             </Link>
           </p>
