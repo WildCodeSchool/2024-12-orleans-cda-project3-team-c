@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable unicorn/prevent-abbreviations */
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -22,7 +19,7 @@ export default function SignupComp() {
 
   const navigate = useNavigate();
 
-  const userRegister = async function (event: React.FormEvent) {
+  const userRegister = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       await RegisterApiConnection.register(email, username, password);
@@ -52,8 +49,8 @@ export default function SignupComp() {
           <input
             type='text'
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
+            onChange={(event) => {
+              setEmail(event.target.value);
             }}
             placeholder='email'
             className='w-full rounded-sm border bg-indigo-900 p-2 text-white outline-indigo-950'
@@ -61,8 +58,8 @@ export default function SignupComp() {
           <input
             type='text'
             value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
+            onChange={(event) => {
+              setUsername(event.target.value);
             }}
             placeholder='username'
             className='w-full rounded-sm border bg-indigo-900 p-2 text-white outline-indigo-950'
@@ -71,8 +68,8 @@ export default function SignupComp() {
             <input
               type={isVisible ? 'text' : 'password'}
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
+              onChange={(event) => {
+                setPassword(event.target.value);
               }}
               placeholder='password'
               className='w-full rounded-sm border bg-indigo-900 p-2 text-white outline-indigo-950'
