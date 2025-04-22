@@ -16,7 +16,7 @@ function UserSuggestion() {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true); // État de chargement
   const followerId = 9; // Remplacez par l'ID réel du follower
-  const followeeId = 6; // Remplacez par l'ID réel du followee
+  const followeeId = 4; // Remplacez par l'ID réel du followee
 
   useEffect(() => {
     const fetchData = async () => {

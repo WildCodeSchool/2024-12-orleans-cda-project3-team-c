@@ -3,10 +3,10 @@ import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import followRouter from './subrouters/follow-router';
+import followsRouter from './subrouters/follows-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
-import usersRouter from './subrouters/user-router';
+import usersRouter from './subrouters/users-router';
 
 const filename = fileURLToPath(import.meta.url);
 
@@ -14,7 +14,7 @@ const directory = dirname(filename);
 
 const router = express.Router();
 
-router.use('/follow', followRouter);
+router.use('/follow', followsRouter);
 router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
 router.use('/users', usersRouter);

@@ -26,6 +26,11 @@ export type PostLike = Awaited<
   >
 >;
 
+export type PostTagInsertionList = {
+  tag_id: number;
+  post_id: number;
+};
+
 // Follow **************************************************
 export type FollowCheckStatus = Awaited<
   ReturnType<typeof followModel.checkFollowStatus>
