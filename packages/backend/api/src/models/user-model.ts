@@ -66,13 +66,13 @@ export default {
             .select((eb2) => [
               'post.id',
               'post.picture',
-              'post.description',
-              'post.created_at',
               eb2.fn.count<number>('post_like.user_id').as('likeCount'),
               eb2.fn.count<number>('comment.id').as('commentCount'),
             ])
             .where('post.user_id', '=', userId)
-            .groupBy('post.id'),
+            .groupBy('post.id')
+            .orderBy('post.created_at', 'desc')
+            .limit(8),
         ).as('posts'),
       ])
       .where('user.id', '=', userId)
