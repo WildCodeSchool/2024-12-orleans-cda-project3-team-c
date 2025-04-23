@@ -11,7 +11,7 @@ export default function CreatePostPage() {
   const [step, setStep] = useState(1);
   const [picturePath, setPicturePath] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState('');
-  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleSelectPicture = (event: React.ChangeEvent) => {
@@ -51,14 +51,15 @@ export default function CreatePostPage() {
 
   return (
     <section className='relative mx-auto w-full max-w-[460px] p-2'>
-      {modalIsVisible ? (
-        <GoBackModal setModalIsVisible={setModalIsVisible} />
+      {isModalVisible ? (
+        <GoBackModal setIsModalVisible={setIsModalVisible} />
       ) : null}
       <header className='mb-16 p-4'>
         <button
+          type='button'
           className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
           onClick={() => {
-            setModalIsVisible(true);
+            setIsModalVisible(true);
           }}
         >
           <img
@@ -175,9 +176,9 @@ export default function CreatePostPage() {
 }
 
 function GoBackModal({
-  setModalIsVisible,
+  setIsModalVisible,
 }: {
-  readonly setModalIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  readonly setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const navigate = useNavigate();
   return (
@@ -201,7 +202,7 @@ function GoBackModal({
           type='button'
           className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
           onClick={() => {
-            setModalIsVisible(false);
+            setIsModalVisible(false);
           }}
         >
           {'Cancel'}
