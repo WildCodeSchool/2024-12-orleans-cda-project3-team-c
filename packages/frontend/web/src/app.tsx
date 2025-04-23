@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
-import NavBarLeftWeb from './components/navbar';
+import NavBar from './components/navbar';
 
 export default function App() {
   return (
-    <div className='h-dvh w-full'>
-      {/* <NavBarLeftWeb /> */}
+    <div className='relative h-dvh w-full'>
+      <NavBar />
       <main>
         <Outlet />
       </main>

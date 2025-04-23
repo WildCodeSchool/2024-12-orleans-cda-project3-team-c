@@ -1,6 +1,6 @@
 import type { FormEvent } from 'react';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import postApiConnection from '@/api-connection/post-api-connection';
 
@@ -11,6 +11,7 @@ export default function CreatePostPage() {
   const [step, setStep] = useState(1);
   const [picturePath, setPicturePath] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState('');
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleSelectPicture = (event: React.ChangeEvent) => {
@@ -49,11 +50,16 @@ export default function CreatePostPage() {
   };
 
   return (
-    <section className='mx-auto w-full max-w-[460px] p-2'>
+    <section className='relative mx-auto w-full max-w-[460px] p-2'>
+      {modalIsVisible ? (
+        <GoBackModal setModalIsVisible={setModalIsVisible} />
+      ) : null}
       <header className='mb-16 p-4'>
-        <Link
-          className='font-title relative block h-8 w-full text-center text-base'
-          to={'a faire plus tard avec le state machin là fais moi confiance'}
+        <button
+          className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
+          onClick={() => {
+            setModalIsVisible(true);
+          }}
         >
           <img
             src={backIcon}
@@ -62,7 +68,7 @@ export default function CreatePostPage() {
             className='absolute top-0 left-0 w-8'
           />
           {'New post'}
-        </Link>
+        </button>
       </header>
 
       {/* form */}
@@ -123,49 +129,84 @@ export default function CreatePostPage() {
 
         {/* form page 3 - adding description */}
         {step === 3 && (
-          <>
+          <div className='md:flex md:gap-8'>
             <img
               src={picturePath}
               alt='Post picture preview'
               className='mx-auto mb-6 max-w-32'
             />
 
-            <textarea
-              name='description'
-              className='border-placeholder mb-8 h-16 w-full resize-none border-b'
-              id=''
-              placeholder='Add a description'
-              value={description}
-              onChange={(event) => {
-                setDescription(event.target.value);
-              }}
-            />
-
-            <div className='flex justify-around'>
-              <button
-                title='Next step'
-                type='button'
-                className='border-danger text-danger text-title rounded border px-2 py-0.5 text-xs'
-                onClick={() => {
-                  resetDescription();
+            <div className='md:flex-2'>
+              <textarea
+                name='description'
+                className='border-placeholder mb-8 h-16 w-full resize-none border-b'
+                id=''
+                placeholder='Add a description'
+                value={description}
+                onChange={(event) => {
+                  setDescription(event.target.value);
                 }}
-              >
-                {'Back'}
-              </button>
-              <button
-                title='Next step'
-                type='submit'
-                className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
-              >
-                {'Post'}
-              </button>
+              />
+              <div className='flex justify-around'>
+                <button
+                  title='Next step'
+                  type='button'
+                  className='border-danger text-danger text-title rounded border px-2 py-0.5 text-xs'
+                  onClick={() => {
+                    resetDescription();
+                  }}
+                >
+                  {'Back'}
+                </button>
+                <button
+                  title='Next step'
+                  type='submit'
+                  className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
+                >
+                  {'Post'}
+                </button>
+              </div>
             </div>
-          </>
+          </div>
         )}
-
-        {/* form page 4 - validation */}
-        {/* <button type='submit'>submit</button> */}
       </form>
     </section>
+  );
+}
+
+function GoBackModal({
+  setModalIsVisible,
+}: {
+  readonly setModalIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const navigate = useNavigate();
+  return (
+    <div className='border-danger absolute top-40 left-1/2 w-4/5 -translate-1/2 rounded border bg-purple-900 p-2 text-center shadow-lg'>
+      <p className='mb-4'>
+        {'Your modifications will be lost if you leave this page'}
+      </p>
+      <div className='flex justify-around'>
+        <button
+          title='Next step'
+          type='button'
+          className='border-danger text-danger text-title rounded border px-2 py-0.5 text-xs'
+          onClick={async () => {
+            await navigate(-1);
+          }}
+        >
+          {'Leave'}
+        </button>
+        <button
+          title='Next step'
+          type='button'
+          className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
+          onClick={() => {
+            setModalIsVisible(false);
+          }}
+        >
+          {'Cancel'}
+        </button>
+      </div>
+    </div>
   );
 }
