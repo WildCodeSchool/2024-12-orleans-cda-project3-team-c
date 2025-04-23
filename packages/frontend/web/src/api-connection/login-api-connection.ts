@@ -1,11 +1,18 @@
 import ApiConnection from './api-connection';
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface LoginApiConnectionInterface {
+  login(email: string, password: string): string;
+}
 class LoginApiConnection extends ApiConnection {
   constructor(resource = 'login') {
     super(resource);
   }
 
-  async login(email: string, password: string): Promise<unknown> {
+  async login(
+    email: string,
+    password: string,
+  ): Promise<LoginApiConnectionInterface> {
     try {
       const response = await fetch(this.ressourceUrl, {
         headers: { 'Content-type': 'application/json' },
@@ -21,7 +28,7 @@ class LoginApiConnection extends ApiConnection {
         throw new Error('Failed to log in');
       }
 
-      return await response.json();
+      return (await response.json()) as LoginApiConnectionInterface;
     } catch (error) {
       console.error('Error during login:', error);
       throw error;

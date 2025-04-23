@@ -9,7 +9,7 @@ type LoginProviderState = {
   setIsUserLogged: (value: boolean) => void;
 };
 
-const LoginProviderContext = createContext<LoginProviderState | undefined>(
+const loginProviderContext = createContext<LoginProviderState | undefined>(
   undefined,
 );
 
@@ -21,17 +21,17 @@ export default function LoginContext({
 }: LoginProviderContextProps) {
   const [isUserLogged, setIsUserLogged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  // stocker le user connecté
 
   useEffect(() => {
     async function getConnected() {
       const response = await fetch(`${API_URL}/cookie`, {
         credentials: 'include',
       });
+
       const data = (await response.json()) as {
         ok: boolean;
       };
-
-      console.log('cookie', data);
 
       if (data.ok) {
         setIsUserLogged(true);
@@ -52,14 +52,14 @@ export default function LoginContext({
   );
 
   return (
-    <LoginProviderContext.Provider {...props} value={value}>
+    <loginProviderContext.Provider {...props} value={value}>
       {children}
-    </LoginProviderContext.Provider>
+    </loginProviderContext.Provider>
   );
 }
 
 export function useLoginContext() {
-  const ctx = useContext(LoginProviderContext);
+  const ctx = useContext(loginProviderContext);
 
   return ctx;
 }

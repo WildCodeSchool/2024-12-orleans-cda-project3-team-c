@@ -8,11 +8,11 @@ export default function App() {
   const isUserLogged = loginAuth?.isUserLogged;
   const isLoading = loginAuth?.isLoading;
 
-  if (isLoading) {
+  if (isLoading === true) {
     return;
   }
 
-  if (!isUserLogged) {
+  if (isUserLogged === false) {
     return <Navigate to={'/login'} />;
   }
 

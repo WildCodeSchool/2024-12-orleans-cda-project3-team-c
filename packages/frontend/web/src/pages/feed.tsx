@@ -3,14 +3,13 @@ import { Link, useLoaderData } from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
+import logoutApiConnection from '@/api-connection/logout-api-connection';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
 import { useLoginContext } from '@/contexts/login-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
 import logOut from '../assets/icons/logout-white.svg';
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
@@ -52,17 +51,16 @@ export default function Feed() {
 
   // à mettre dans la navbar
   const logout = async () => {
-    const response = await fetch(`${API_URL}/logout`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-    const data = (await response.json()) as {
-      ok: boolean;
-    };
+    try {
+      const data = await logoutApiConnection.logout();
 
-    if (data.ok) {
-      console.log('logout ok');
-      loginAuth.setIsUserLogged(false);
+      if (data.ok) {
+        loginAuth.setIsUserLogged(false);
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout', error);
     }
   };
 

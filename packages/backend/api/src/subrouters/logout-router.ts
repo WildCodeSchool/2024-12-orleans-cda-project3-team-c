@@ -5,7 +5,8 @@ const userLogout = express.Router();
 
 userLogout.post('/', function (req, res) {
   try {
-    res.clearCookie('token');
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
     res.json({ ok: true });
   } catch (error) {
     console.error('Error during logout:', error);
