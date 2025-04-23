@@ -32,11 +32,7 @@ class UserApiConnection extends ApiConnection {
 
     const data = await res.json();
 
-    return {
-      ...data,
-      followersCount: data.followersCount ?? 0,
-      followingCount: data.followingCount ?? 0,
-    } as UserProfile;
+    return data as UserProfile;
   }
 }
 

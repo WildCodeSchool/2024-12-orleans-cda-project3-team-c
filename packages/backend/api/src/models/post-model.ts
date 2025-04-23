@@ -54,7 +54,7 @@ export default {
   getPostCountByUserId(userId: number) {
     return db
       .selectFrom('post')
-      .select(({ fn }) => fn.countAll().as('count'))
+      .select(({ fn }) => fn.countAll<number>().as('count'))
       .where('post.user_id', '=', userId)
       .executeTakeFirst();
   },

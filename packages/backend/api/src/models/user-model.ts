@@ -4,7 +4,7 @@ import { db } from '@app/backend-shared';
 
 export default {
   async getUserProfileById(userId: number) {
-    return await db
+    const profile = await db
       .selectFrom('user')
       .select((eb) => [
         'user.id',
@@ -14,12 +14,12 @@ export default {
         'user.notoriety',
         eb
           .selectFrom('follow_up')
-          .select(({ fn }) => fn.countAll().as('followersCount'))
+          .select(({ fn }) => fn.countAll<number>().as('followersCount'))
           .where('follow_up.followee_id', '=', userId)
           .as('followersCount'),
         eb
           .selectFrom('follow_up')
-          .select(({ fn }) => fn.countAll().as('followingCount'))
+          .select(({ fn }) => fn.countAll<number>().as('followingCount'))
           .where('follow_up.follower_id', '=', userId)
           .as('followingCount'),
         jsonArrayFrom(
@@ -41,5 +41,15 @@ export default {
       ])
       .where('user.id', '=', userId)
       .executeTakeFirst();
+
+    if (!profile) {
+      return null;
+    }
+
+    return {
+      ...profile,
+      followersCount: profile.followersCount ?? 0,
+      followingCount: profile.followingCount ?? 0,
+    };
   },
 };
