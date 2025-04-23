@@ -3,42 +3,6 @@ import { jsonArrayFrom } from 'kysely/helpers/mysql';
 import { db } from '@app/backend-shared';
 
 export default {
-  async getUserById(userId: number) {
-    return await db
-      .selectFrom('user')
-      .select([
-        'id',
-        'username',
-        'profile_picture',
-        'email',
-        'biography',
-        'notoriety',
-      ])
-      .where('id', '=', userId)
-      .executeTakeFirst();
-  },
-
-  async getUserByUsernameOrId(parameter: string) {
-    const isNumericId = /^\d+$/.test(parameter);
-
-    return await db
-      .selectFrom('user')
-      .select([
-        'id',
-        'username',
-        'profile_picture',
-        'email',
-        'biography',
-        'notoriety',
-      ])
-      .where((eb) =>
-        isNumericId
-          ? eb('id', '=', Number(parameter))
-          : eb('username', '=', parameter),
-      )
-      .executeTakeFirst();
-  },
-
   async getUserProfileById(userId: number) {
     return await db
       .selectFrom('user')
