@@ -12,7 +12,7 @@ router.use('/tags', tagsRouter);
 router.use('/users', usersRouter);
 
 router.use('*', (req, res) => {
-  res.status(404).json(`Resource ${req.path} not found`);
+  res.status(404).json({ message: `Resource ${req.path} not found` });
 });
 
 export default router;
