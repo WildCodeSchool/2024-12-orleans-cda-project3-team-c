@@ -53,7 +53,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
               alt={`${post.author?.username} profile picture`}
             />
           </div>
-          <h2 className='font-title text-[14px]'>
+          <h2 className='font-title text-sm md:text-base'>
             {'@'}
             {post.author?.username}
           </h2>
@@ -112,7 +112,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
         </div>
 
         {/* post description */}
-        <p className='mb-1 text-sm whitespace-pre-wrap'>
+        <p className='mb-1 text-sm whitespace-pre-wrap md:text-base'>
           <span className='font-title'>
             {'@'}
             {post.author?.username}
