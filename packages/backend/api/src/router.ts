@@ -1,3 +1,4 @@
+// src/router.ts
 import express from 'express';
 
 import postsRouter from './subrouters/posts-router';
@@ -10,8 +11,8 @@ router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
 router.use('/users', usersRouter);
 
-router.get('*', function (req, res) {
-  res.status(404).send(`ressource ${req.path} not found`);
+router.use('*', (req, res) => {
+  res.status(404).json({ message: `Resource ${req.path} not found` });
 });
 
 export default router;

@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div className='relative h-dvh w-full'>
       <NavBar />
-      <main>
+      <main className='h-full w-full'>
         <Outlet />
       </main>
     </div>
