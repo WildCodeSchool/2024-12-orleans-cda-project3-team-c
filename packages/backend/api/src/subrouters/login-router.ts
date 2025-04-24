@@ -1,5 +1,5 @@
 import argon2 from 'argon2';
-import { type Request, Router } from 'express';
+import { type Request, type Response, Router } from 'express';
 import * as jose from 'jose';
 
 import { env } from '@app/shared';
@@ -29,7 +29,7 @@ const refreshTokenSecret = new TextEncoder().encode(REFRESH_TOKEN_SECRET);
 
 // POST LOGIN**************************************************
 
-userLoginRouter.post('/', async function (req, res) {
+userLoginRouter.post('/', async function (req: Request, res: Response) {
   try {
     const { email, password } = req.body;
 
