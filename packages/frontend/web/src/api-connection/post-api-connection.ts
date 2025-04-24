@@ -2,10 +2,6 @@ import type { FeedPost } from '@app/api';
 
 import ApiConnection from './api-connection';
 
-type PostCountResponse = {
-  count: number;
-};
-
 class PostApiConnection extends ApiConnection {
   constructor(ressource = 'posts') {
     super(ressource);
@@ -25,46 +21,18 @@ class PostApiConnection extends ApiConnection {
     }
   }
 
-  async getOwnCountPost(): Promise<number> {
+  async create(body: FormData) {
     try {
-      const response = await fetch(`${this.ressourceUrl}/count`);
+      const response = await fetch(this.ressourceUrl, {
+        method: 'POST',
+        body,
+      });
+
       if (response.ok) {
-        const data: PostCountResponse = await response.json();
-        return data.count ?? 0;
-      } else {
-        throw new Error('Error fetching post count');
+        return true;
       }
     } catch (error) {
       console.error(error);
-      return 0;
-    }
-  }
-
-  async getFollowersCount(userId: number): Promise<number> {
-    try {
-      const response = await fetch(
-        `${this.ressourceUrl.replace('posts', 'follows')}/${userId}/followers`,
-      );
-      if (!response.ok) throw new Error('Error fetching followers');
-      const data: { count: number } = await response.json();
-      return data.count ?? 0;
-    } catch (error) {
-      console.error(error);
-      return 0;
-    }
-  }
-
-  async getFollowingCount(userId: number): Promise<number> {
-    try {
-      const response = await fetch(
-        `${this.ressourceUrl.replace('posts', 'follows')}/${userId}/following`,
-      );
-      if (!response.ok) throw new Error('Error fetching following');
-      const data: { count: number } = await response.json();
-      return data.count ?? 0;
-    } catch (error) {
-      console.error(error);
-      return 0;
     }
   }
 }

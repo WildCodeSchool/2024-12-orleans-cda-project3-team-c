@@ -44,12 +44,7 @@
 }
 
 body {
-  @apply font-main flex flex-row bg-purple-950 text-white;
-}
-
-#root {
-  height: 100%;
-  width: 100%;
+  @apply font-main bg-purple-950 text-white;
 }
 
 button {

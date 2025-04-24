@@ -13,14 +13,10 @@ type NavItemProps = {
   readonly label: string;
 };
 
-type NavBarProps = {
-  readonly isMobileHidden?: boolean;
-};
-
 const navItems: NavItemProps[] = [
-  { to: '/', icon: homeIcon, label: 'Home' },
+  { to: '/feed', icon: homeIcon, label: 'Home' },
   { to: '/search', icon: searchIcon, label: 'Search' },
-  { to: '/add', icon: addIcon, label: 'Add a post' },
+  { to: '/create', icon: addIcon, label: 'Create a post' },
   { to: '/chat', icon: chatIcon, label: 'Chat' },
   { to: '/notifications', icon: bellIcon, label: 'Notifications' },
   { to: '/profile', icon: userIcon, label: 'Profile' },
@@ -37,11 +33,10 @@ function NavItem({ to, icon, label }: NavItemProps) {
   );
 }
 
-export default function NavBar({ isMobileHidden = false }: NavBarProps) {
+export default function NavBar() {
   return (
     <>
-      {/* Desktop Nav */}
-      <nav className='hidden h-dvh w-56 pt-8 pl-8 sm:block'>
+      <nav className='fixed hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
         <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
         <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
@@ -50,27 +45,24 @@ export default function NavBar({ isMobileHidden = false }: NavBarProps) {
         </ul>
       </nav>
 
-      {/* Mobile Nav */}
-      {!isMobileHidden && (
-        <nav className='fixed bottom-0 h-16 bg-purple-950 sm:hidden'>
-          <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:left-[10%] after:w-[80%] after:border-t'>
-            {navItems
-              .filter((item) => item.label !== 'Notifications')
-              .map((item) => (
-                <li key={item.to}>
-                  <Link to={item.to} aria-label={item.label}>
-                    <img
-                      className='size-8'
-                      src={item.icon}
-                      alt=''
-                      aria-hidden='true'
-                    />
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </nav>
-      )}
+      <nav className='fixed bottom-0 h-16 bg-purple-950 md:hidden'>
+        <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:left-[10%] after:w-[80%] after:border-t'>
+          {navItems
+            .filter((item) => item.label !== 'Notifications')
+            .map((item) => (
+              <li key={item.to}>
+                <Link to={item.to} aria-label={item.label}>
+                  <img
+                    className='size-8'
+                    src={item.icon}
+                    alt=''
+                    aria-hidden='true'
+                  />
+                </Link>
+              </li>
+            ))}
+        </ul>
+      </nav>
     </>
   );
 }

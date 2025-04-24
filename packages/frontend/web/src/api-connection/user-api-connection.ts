@@ -16,6 +16,8 @@ export type UserProfile = {
   biography: string;
   notoriety: number;
   posts: UserPost[];
+  followersCount: number;
+  followingCount: number;
 };
 
 class UserApiConnection extends ApiConnection {
@@ -23,12 +25,13 @@ class UserApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  async getOwnProfile(): Promise<UserProfile> {
+  async getProfile(): Promise<UserProfile> {
     const res = await fetch(`${this.ressourceUrl}/profile`);
 
     if (!res.ok) throw new Error('Failed to load profile');
 
     const data = await res.json();
+
     return data as UserProfile;
   }
 
@@ -56,7 +59,6 @@ class UserApiConnection extends ApiConnection {
     if (!res.ok) throw new Error('Failed to update username');
   }
 
-  // ✅ Méthode pour mettre à jour la biographie
   async updateBiography(biography: string): Promise<void> {
     const res = await fetch(`${this.ressourceUrl}/biography`, {
       method: 'PUT',

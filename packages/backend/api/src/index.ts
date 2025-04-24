@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import fileUpload from 'express-fileupload';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -16,6 +17,8 @@ const PORT = process.env.BACKEND_PORT ?? 3000;
 
 app.use(express.json());
 app.use(cors());
+
+app.use(fileUpload());
 app.use(
   '/cdn',
   express.static(

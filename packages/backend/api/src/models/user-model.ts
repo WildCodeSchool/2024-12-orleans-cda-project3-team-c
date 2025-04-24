@@ -1,49 +1,56 @@
+import { jsonArrayFrom } from 'kysely/helpers/mysql';
+
 import { db } from '@app/backend-shared';
 
 export default {
-  async getUserById(userId: number) {
-    return await db
+  async getUserProfileById(userId: number) {
+    const profile = await db
       .selectFrom('user')
-      .select([
-        'id',
-        'username',
-        'profile_picture',
-        'email',
-        'biography',
-        'notoriety',
+      .select((eb) => [
+        'user.id',
+        'user.username',
+        'user.profile_picture',
+        'user.biography',
+        'user.notoriety',
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) => fn.countAll<number>().as('followersCount'))
+          .where('follow_up.followee_id', '=', userId)
+          .as('followersCount'),
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) => fn.countAll<number>().as('followingCount'))
+          .where('follow_up.follower_id', '=', userId)
+          .as('followingCount'),
+        jsonArrayFrom(
+          eb
+            .selectFrom('post')
+            .leftJoin('post_like', 'post_like.post_id', 'post.id')
+            .leftJoin('comment', 'comment.post_id', 'post.id')
+            .select((eb2) => [
+              'post.id',
+              'post.picture',
+              eb2.fn.count<number>('post_like.user_id').as('likeCount'),
+              eb2.fn.count<number>('comment.id').as('commentCount'),
+            ])
+            .where('post.user_id', '=', userId)
+            .groupBy('post.id')
+            .orderBy('post.created_at', 'desc')
+            .limit(8),
+        ).as('posts'),
       ])
-      .where('id', '=', userId)
+      .where('user.id', '=', userId)
       .executeTakeFirst();
-  },
 
-  async getUserByPicture(userId: number, userPicture: string) {
-    return await db
-      .selectFrom('user')
-      .select(['id', 'profile_picture'])
-      .where('id', '=', userId)
-      .where('profile_picture', '=', userPicture)
-      .executeTakeFirst();
-  },
+    if (!profile) {
+      return null;
+    }
 
-  async getUserByUsernameOrId(parameter: string) {
-    const isNumericId = /^\d+$/.test(parameter);
-
-    return await db
-      .selectFrom('user')
-      .select([
-        'id',
-        'username',
-        'profile_picture',
-        'email',
-        'biography',
-        'notoriety',
-      ])
-      .where((eb) =>
-        isNumericId
-          ? eb('id', '=', Number(parameter))
-          : eb('username', '=', parameter),
-      )
-      .executeTakeFirst();
+    return {
+      ...profile,
+      followersCount: profile.followersCount ?? 0,
+      followingCount: profile.followingCount ?? 0,
+    };
   },
 
   async updateProfilePicture(userId: number, newPicture: string) {
