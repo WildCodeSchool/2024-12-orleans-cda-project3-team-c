@@ -111,12 +111,6 @@ cookieRouterGet.get('/', async function (req: Request, res) {
       return;
     }
 
-    // const user = await db
-    //   .selectFrom('user')
-    //   .selectAll()
-    //   .where('user.id', '=', userId)
-    //   .executeTakeFirst();
-
     const user = await getUserById(userId);
 
     if (!user) {
