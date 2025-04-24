@@ -1,3 +1,4 @@
+// src/router.ts
 import express from 'express';
 
 import loginGuards from './middlewares/login.guards';
@@ -27,8 +28,8 @@ router.use('/logout', userLogout);
 
 router.use('/cookie', cookieRouterGet);
 
-router.get('*', function (req, res) {
-  res.status(404).send(`ressource ${req.path} not found`);
+router.use('*', (req, res) => {
+  res.status(404).json({ message: `Resource ${req.path} not found` });
 });
 
 export default router;
