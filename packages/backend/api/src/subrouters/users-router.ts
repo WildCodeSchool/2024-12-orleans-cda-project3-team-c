@@ -16,7 +16,8 @@ usersRouter.get('/profile', async (req, res) => {
     const profile = await userModel.getUserProfileById(userId);
 
     if (!profile) {
-      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return;
     }
 
     res.json(profile);
@@ -56,7 +57,8 @@ usersRouter.patch('/profile', upload.single('picture'), async (req, res) => {
     if (biography) updates.biography = biography;
 
     if (Object.keys(updates).length === 0) {
-      return res.status(400).json({ error: 'Aucune donnée à mettre à jour' });
+      res.status(400).json({ error: 'Aucune donnée à mettre à jour' });
+      return;
     }
 
     // Met à jour l'utilisateur dans la BDD avec les nouvelles informations
