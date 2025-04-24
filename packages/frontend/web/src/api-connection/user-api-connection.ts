@@ -38,6 +38,7 @@ class UserApiConnection extends ApiConnection {
   async updateProfilePicture(file: File): Promise<void> {
     const formData = new FormData();
     formData.append('picture', file);
+    formData.append('forceName', 'user-mock.png');
 
     const res = await fetch(`${this.ressourceUrl}/profile-picture`, {
       method: 'POST',

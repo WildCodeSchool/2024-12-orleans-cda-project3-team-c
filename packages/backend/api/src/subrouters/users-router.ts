@@ -5,18 +5,18 @@ import path from 'path';
 
 import userModel from '@/models/user-model';
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'uploads/' }); // où les fichiers seront temporaires
 
 const usersRouter = express.Router();
 
+// Route GET pour récupérer le profil de l'utilisateur
 usersRouter.get('/profile', async (req, res) => {
   try {
-    const userId = 1; // temporaire
+    const userId = 1; // temporaire, tu pourras récupérer l'ID de l'utilisateur via auth
     const profile = await userModel.getUserProfileById(userId);
 
     if (!profile) {
-      res.status(404).json({ error: 'Utilisateur non trouvé' });
-      return;
+      return res.status(404).json({ error: 'Utilisateur non trouvé' });
     }
 
     res.json(profile);
@@ -26,79 +26,48 @@ usersRouter.get('/profile', async (req, res) => {
   }
 });
 
-usersRouter.post(
-  '/profile-picture',
-  upload.single('picture'),
-  async (req, res) => {
-    try {
-      const userId = 1; // temporaire
-      const file = req.file;
-
-      if (!file) {
-        res.status(400).json({ error: 'Aucun fichier envoyé' });
-        return;
-      }
-
-      await userModel.updateProfilePicture(userId, file.filename);
-
-      res.status(200).json({
-        message: 'Image mise à jour',
-        filename: file.filename,
-      });
-    } catch (err) {
-      console.error('Erreur /profile-picture :', err);
-      res.status(500).json({ error: 'Erreur serveur' });
-    }
-  },
-);
-
-usersRouter.get('/pictures/:filename', (req, res) => {
-  const filename = req.params.filename;
-  const imagePath = path.join(process.cwd(), 'uploads', filename);
-
-  if (!fs.existsSync(imagePath)) {
-    res.status(404).json({ error: 'Image non trouvée' });
-    return;
-  }
-
-  res.sendFile(imagePath);
-});
-
-usersRouter.put('/username', async (req, res) => {
+// Route PATCH pour mettre à jour le profil, y compris la photo
+usersRouter.patch('/profile', upload.single('picture'), async (req, res) => {
   try {
-    const userId = 1; // temporaire
-    const { username } = req.body;
+    const userId = 1; // temporaire, ici tu devras récupérer l'ID utilisateur via un token d'authentification
+    const { username, biography } = req.body;
+    const file = req.file;
 
-    if (!username || typeof username !== 'string' || username.length > 30) {
-      res.status(400).json({ error: 'Nom d’utilisateur invalide' });
-      return;
+    const updates: {
+      username?: string;
+      biography?: string;
+      profile_picture?: string;
+    } = {};
+
+    // Si un fichier est reçu, on le traite
+    if (file) {
+      const fileName = `${userId}_${Date.now()}${path.extname(file.originalname)}`;
+      const targetPath = path.join('uploads', fileName);
+
+      // Déplace le fichier uploadé dans le bon répertoire
+      fs.renameSync(file.path, targetPath);
+
+      // On ajoute le nom de fichier à la mise à jour
+      updates.profile_picture = fileName;
     }
 
-    await userModel.updateUsername(userId, username);
+    // Si des informations ont été fournies pour le username ou la biographie, on les ajoute à la mise à jour
+    if (username) updates.username = username;
+    if (biography) updates.biography = biography;
 
-    res.status(200).json({ message: 'Nom d’utilisateur mis à jour' });
-  } catch (err) {
-    console.error('Erreur /username :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
-  }
-});
-
-usersRouter.put('/biography', async (req, res) => {
-  try {
-    const userId = 1; // temporaire
-    const { biography } = req.body;
-
-    if (!biography || typeof biography !== 'string' || biography.length > 350) {
-      res.status(400).json({ error: 'Biographie invalide' });
-      return;
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: 'Aucune donnée à mettre à jour' });
     }
 
-    await userModel.updateBiography(userId, biography);
+    // Met à jour l'utilisateur dans la BDD avec les nouvelles informations
+    await userModel.updateUserProfile(userId, updates);
 
-    res.status(200).json({ message: 'Biographie mise à jour' });
+    // Récupère et renvoie le profil mis à jour
+    const updatedProfile = await userModel.getUserProfileById(userId);
+    res.json(updatedProfile);
   } catch (err) {
-    console.error('Erreur /biography :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Erreur PATCH /profile :', err);
+    res.status(500).json({ error: 'Erreur serveur lors de la mise à jour' });
   }
 });
 

@@ -1,26 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import userApiConnection, {
-  type UserProfile,
-} from '../api-connection/user-api-connection';
-import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
+import userApiConnection from '@/api-connection/user-api-connection';
+import type { UserProfile } from '@/api-connection/user-api-connection';
+import arrowLeftIcon from '@/assets/icons/arrow-left-white.svg';
+
+const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function ProfileInformations() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [cacheBuster, setCacheBuster] = useState<number>(Date.now());
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const profile = await userApiConnection.getProfile();
-        setUserProfile(profile);
-      } catch (error) {
-        console.error('Erreur de récupération des données :', error);
-      }
-    };
-
-    void fetchData();
-  }, []);
+  const fetchProfile = async (): Promise<void> => {
+    try {
+      const profile = await userApiConnection.getProfile();
+      setUserProfile(profile);
+    } catch (error) {
+      console.error('Erreur de récupération du profil:', error);
+      setUserProfile(null);
+    }
+  };
 
   const handleProfilePictureChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -30,8 +29,8 @@ export default function ProfileInformations() {
 
     try {
       await userApiConnection.updateProfilePicture(file);
-      const updatedProfile = await userApiConnection.getProfile();
-      setUserProfile(updatedProfile);
+      await fetchProfile(); // Recharger le profil après la mise à jour de la photo
+      setCacheBuster(Date.now()); // Forcer un rechargement de l'image
     } catch (error) {
       console.error(
         'Erreur lors de la mise à jour de la photo de profil :',
@@ -42,7 +41,9 @@ export default function ProfileInformations() {
 
   if (!userProfile) {
     return (
-      <div className='pt-10 text-center text-white'>{'Loading profile...'}</div>
+      <div className='pt-10 text-center text-white'>
+        {'Erreur de chargement du profil...'}
+      </div>
     );
   }
 
@@ -57,9 +58,7 @@ export default function ProfileInformations() {
 
       <img
         className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
-        src={
-          userProfile.profile_picture || '../assets/icons/user-white.svg.jpg'
-        }
+        src={`${cdnUrl}/pictures/users/${userProfile.profile_picture}?t=${cacheBuster}`}
         alt='user'
       />
 
@@ -80,10 +79,7 @@ export default function ProfileInformations() {
       <div className='mt-4 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col'>
           <p className='text-sm'>{'Username'}</p>
-          <p className='font-title text-base'>
-            {'@'}
-            {userProfile.username}
-          </p>
+          <p className='font-title text-base'>{'@' + userProfile.username}</p>
         </div>
         <div className='flex h-6'>
           <Link
