@@ -43,6 +43,7 @@ userLoginRouter.post('/', async function (req, res) {
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: userPassword, ...restUser } = userAccess;
 
     //Access token

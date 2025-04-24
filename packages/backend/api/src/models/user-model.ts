@@ -2,7 +2,7 @@ import argon2 from 'argon2';
 
 import { db } from '@app/backend-shared';
 
-export async function userLogin(email: string) {
+export async function userLogin(email: string, password: string) {
   return db
     .selectFrom('user')
     .select(['user.id', 'user.password', 'user.email'])
