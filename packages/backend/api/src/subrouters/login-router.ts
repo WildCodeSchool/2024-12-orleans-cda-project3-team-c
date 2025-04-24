@@ -1,10 +1,10 @@
+import argon2 from 'argon2';
 import { type Request, Router } from 'express';
 import * as jose from 'jose';
 
-import { db } from '@app/backend-shared';
 import { env } from '@app/shared';
 
-import { userLogin } from '@/models/user-model';
+import { getUserById, userLogin } from '@/models/user-model';
 
 env();
 
@@ -34,11 +34,21 @@ userLoginRouter.post('/', async function (req, res) {
     const { email, password } = req.body;
 
     const userAccess = await userLogin(email, password);
+    if (!userAccess) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    const isPasswordValid = await argon2.verify(userAccess.password, password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+    const { password: userPassword, ...restUser } = userAccess;
 
     //Access token
     const accessToken = await new jose.SignJWT({
       sub: email,
-      userId: userAccess.user,
+      userId: restUser.id,
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -57,7 +67,7 @@ userLoginRouter.post('/', async function (req, res) {
     //Refresh token
     const refreshToken = await new jose.SignJWT({
       sub: email,
-      userId: userAccess.user,
+      userId: restUser.id,
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -73,7 +83,10 @@ userLoginRouter.post('/', async function (req, res) {
       // sameSite: 'strict',
     });
 
-    res.json(userAccess);
+    res.json({
+      message: 'Login successful',
+      user: restUser,
+    });
   } catch (error) {
     if (
       error instanceof Error &&
@@ -90,19 +103,21 @@ userLoginRouter.post('/', async function (req, res) {
 // GET COOKIES **************************************************
 
 cookieRouterGet.get('/', async function (req: Request, res) {
-  const userId = req.userId;
-
-  if (userId === undefined) {
-    res.json({ ok: 'false' });
-    return;
-  }
-
   try {
-    const user = await db
-      .selectFrom('user')
-      .selectAll()
-      .where('user.id', '=', userId)
-      .executeTakeFirst();
+    const userId = req.userId;
+
+    if (userId === undefined) {
+      res.json({ ok: 'false' });
+      return;
+    }
+
+    // const user = await db
+    //   .selectFrom('user')
+    //   .selectAll()
+    //   .where('user.id', '=', userId)
+    //   .executeTakeFirst();
+
+    const user = await getUserById(userId);
 
     if (!user) {
       res.json({ ok: 'false' });

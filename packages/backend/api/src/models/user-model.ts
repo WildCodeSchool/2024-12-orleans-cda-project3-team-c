@@ -3,59 +3,12 @@ import argon2 from 'argon2';
 import { db } from '@app/backend-shared';
 
 export async function userLogin(email: string, password: string) {
-  try {
-    const user = await db
-      .selectFrom('user')
-      .select(['user.id', 'user.password', 'user.email'])
-      .where('user.email', '=', email || 'user.username ')
-      .executeTakeFirst();
-
-    if (!user) {
-      return { error: 'Invalid email or password' };
-    }
-
-    const { password: userPassword, ...restUser } = user;
-
-    const isPasswordValid = await argon2.verify(user.password, password);
-
-    if (!isPasswordValid) {
-      return { error: 'Invalid email or password' };
-    }
-
-    return {
-      message: 'Login successful',
-      // userId: user.id,
-      // email: user.email,
-      user: restUser,
-    };
-  } catch (error) {
-    console.error('Error logging in:', error);
-    throw new Error('Internal server error');
-  }
+  return db
+    .selectFrom('user')
+    .select(['user.id', 'user.password', 'user.email'])
+    .where('user.email', '=', email || 'user.username ')
+    .executeTakeFirst();
 }
-
-// user register
-// export async function userRegister(
-//   email: string,
-//   username: string,
-//   password: string,
-// ) {
-//   const hashPassword = await argon2.hash(password, {
-//     memoryCost: 19456,
-//     timeCost: 2,
-//     parallelism: 1,
-//   });
-
-//   return db
-//     .insertInto('user')
-//     .values({ email, username, password: hashPassword })
-//     .executeTakeFirst()
-//     .then(() => ({ message: 'User created successfully' }))
-//     .catch((error: unknown) => {
-//       console.error('Error creating user:', error);
-//       throw new Error('Failed to create user');
-//     });
-// }
 
 export async function userRegister(
   email: string,
@@ -94,6 +47,7 @@ export async function userRegister(
       parallelism: 1,
     });
 
+    // Insert de l'utilisateur dans la base de données
     await db
       .insertInto('user')
       .values({ email, username, password: hashPassword })
@@ -106,4 +60,12 @@ export async function userRegister(
       error instanceof Error ? error.message : 'Failed to create user',
     );
   }
+}
+
+export async function getUserById(userId: number) {
+  return db
+    .selectFrom('user')
+    .selectAll()
+    .where('user.id', '=', userId)
+    .executeTakeFirst();
 }

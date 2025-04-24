@@ -1,7 +1,7 @@
 import ApiConnection from './api-connection';
 
 class RegisterApiConnection extends ApiConnection {
-  constructor(ressource = 'register') {
+  constructor(ressource = 'users') {
     super(ressource);
   }
 
@@ -9,7 +9,7 @@ class RegisterApiConnection extends ApiConnection {
     email: string,
     username: string,
     password: string,
-  ): Promise<unknown> {
+  ): Promise<string> {
     try {
       const response = await fetch(this.ressourceUrl, {
         headers: { 'Content-type': 'application/json' },
@@ -21,7 +21,8 @@ class RegisterApiConnection extends ApiConnection {
         throw new Error('Failed to register');
       }
 
-      return await response.json();
+      const result: { message: string } = await response.json();
+      return result.message;
     } catch (error) {
       console.error('Error during registration:', error);
       throw error;

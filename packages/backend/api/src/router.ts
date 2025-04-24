@@ -10,7 +10,8 @@ import usersRouter from './subrouters/users-router';
 
 const router = express.Router();
 
-router.use('/register', usersRouter);
+// users registration
+router.use('/users', usersRouter);
 
 router.use('/login', userLoginRouter);
 
@@ -21,7 +22,6 @@ router.use(loginMiddleware);
 router.use(loginGuards);
 router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
-router.use('/users', usersRouter);
 
 router.use('/logout', userLogout);
 
