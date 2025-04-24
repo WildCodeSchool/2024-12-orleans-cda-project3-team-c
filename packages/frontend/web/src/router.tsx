@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
-import UserSuggestion from './components/user-suggestion';
 import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
 import Feed from './pages/feed';

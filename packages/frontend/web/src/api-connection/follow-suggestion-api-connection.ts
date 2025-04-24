@@ -1,11 +1,6 @@
-import type { Follow } from '@app/api';
+import type { FollowAction, FollowCheckStatus, FollowersCount } from '@app/api';
 
 import ApiConnection from './api-connection';
-
-// Définir un type pour la réponse de getFollowersCount
-type FollowersCountResponse = {
-  followers_count: number;
-};
 
 class FollowApiConnection extends ApiConnection {
   constructor(resource = 'follow') {
@@ -15,13 +10,13 @@ class FollowApiConnection extends ApiConnection {
   async checkFollowStatus(
     followerId: number,
     followeeId: number,
-  ): Promise<Follow | null> {
+  ): Promise<FollowCheckStatus | null> {
     try {
       const response = await fetch(
         `${this.ressourceUrl}/check?followerId=${followerId}&followeeId=${followeeId}`,
       );
       if (response.ok) {
-        return (await response.json()) as Follow;
+        return (await response.json()) as FollowCheckStatus;
       } else {
         console.error('Failed to check follow status:', response.statusText);
         return null;
@@ -35,7 +30,7 @@ class FollowApiConnection extends ApiConnection {
   async followUser(
     followerId: number,
     followeeId: number,
-  ): Promise<Follow | null> {
+  ): Promise<FollowAction | null> {
     try {
       const response = await fetch(`${this.ressourceUrl}/follow`, {
         method: 'POST',
@@ -46,7 +41,7 @@ class FollowApiConnection extends ApiConnection {
       });
 
       if (response.ok) {
-        return (await response.json()) as Follow;
+        return (await response.json()) as FollowAction;
       } else {
         console.error('Failed to follow user:', response.statusText);
         return null;
@@ -60,7 +55,7 @@ class FollowApiConnection extends ApiConnection {
   async unfollowUser(
     followerId: number,
     followeeId: number,
-  ): Promise<Follow | null> {
+  ): Promise<FollowAction | null> {
     try {
       const response = await fetch(`${this.ressourceUrl}/unfollow`, {
         method: 'DELETE',
@@ -71,7 +66,7 @@ class FollowApiConnection extends ApiConnection {
       });
 
       if (response.ok) {
-        return (await response.json()) as Follow;
+        return (await response.json()) as FollowAction;
       } else {
         console.error('Failed to unfollow user:', response.statusText);
         return null;
@@ -82,15 +77,15 @@ class FollowApiConnection extends ApiConnection {
     }
   }
 
-  async getFollowersCount(
+  async getFollowersSuggestionCount(
     userId: number,
-  ): Promise<FollowersCountResponse | null> {
+  ): Promise<FollowersCount | null> {
     try {
       const response = await fetch(
         `${this.ressourceUrl}/followers-count/${userId}`,
       );
       if (response.ok) {
-        const data: FollowersCountResponse = await response.json();
+        const data: FollowersCount = await response.json();
         return data;
       } else {
         console.error('Failed to fetch followers count:', response.statusText);
@@ -103,14 +98,12 @@ class FollowApiConnection extends ApiConnection {
   }
 
   async fetchFollowersCount(userId: number): Promise<number> {
-    const response = await this.getFollowersCount(userId);
+    const response = await this.getFollowersSuggestionCount(userId);
     return response?.followers_count ?? 0;
   }
 }
 
-// Exporter une instance typée
 const followApiConnection = new FollowApiConnection();
 export default followApiConnection;
 
-// Définir le type pour l'instance exportée
 export type FollowApiConnectionInstance = typeof followApiConnection;

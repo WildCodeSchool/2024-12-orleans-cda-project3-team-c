@@ -3,14 +3,14 @@ import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import followsRouter from './subrouters/follows-router';
+import followsRouter from './subrouters/follows-suggestion-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
-import usersRouter from './subrouters/users-router';
+import usersRouter from './subrouters/users-suggestion-router';
 
-const filename = fileURLToPath(import.meta.url);
+// const filename = fileURLToPath(import.meta.url);
 
-const directory = dirname(filename);
+// const directory = dirname(filename);
 
 const router = express.Router();
 
@@ -19,10 +19,10 @@ router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
 router.use('/users', usersRouter);
 
-router.use(
-  '/api/public/pictures/users',
-  express.static(path.join(directory, '..', 'public', 'pictures', 'users')),
-);
+// router.use(
+//   '/api/public/pictures/users',
+//   express.static(path.join(directory, '..', 'public', 'pictures', 'users')),
+// );
 
 router.get('*', function (req, res) {
   res.status(404).send(`ressource ${req.path} not found`);

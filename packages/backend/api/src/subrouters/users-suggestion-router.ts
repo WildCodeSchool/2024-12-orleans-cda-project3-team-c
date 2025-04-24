@@ -1,8 +1,18 @@
 import express from 'express';
 
-import userModel from '@/models/user-model';
+import userModel from '@/models/user-suggestion-model';
 
 const usersRouter = express.Router();
+
+usersRouter.get('/user-suggestion', async (req, res) => {
+  try {
+    const usersWithFollowers = await userModel.getAllUsersWithFollowersCount();
+    res.json(usersWithFollowers);
+  } catch (error) {
+    console.error('Error getting users:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // GET **************************************************
 usersRouter.get('/:param', async (req, res) => {
@@ -11,12 +21,9 @@ usersRouter.get('/:param', async (req, res) => {
   if (!isNaN(Number(param))) {
     try {
       const userIdNumber = Number(param);
-      const user = await userModel.getUserById(userIdNumber);
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ error: 'User not found' });
-      }
+      const userWithFollowers =
+        await userModel.getUserWithFollowersCount(userIdNumber);
+      res.json(userWithFollowers);
     } catch (error) {
       console.error('Error getting user:', error);
       res.status(500).json({ error: 'Internal Server Error' });

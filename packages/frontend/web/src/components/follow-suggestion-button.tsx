@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import followApiConnection from '../api-connection/follow-api-connection';
+import followApiConnection from '../api-connection/follow-suggestion-api-connection';
 
 type FollowButtonProps = Readonly<{
   followerId: number;
@@ -26,8 +26,6 @@ function FollowButton({
         );
         if (status && 'isFollowing' in status) {
           setIsFollowing(status.isFollowing);
-        } else {
-          setIsFollowing(false);
         }
       } catch (error) {
         console.error('Error fetching follow status:', error);
@@ -37,7 +35,7 @@ function FollowButton({
     void fetchFollowStatus();
   }, [followerId, followeeId]);
 
-  const handleFollowClick = async () => {
+  const handleFollowClick = useCallback(async () => {
     try {
       if (isFollowing) {
         await followApiConnection.unfollowUser(followerId, followeeId);
@@ -46,18 +44,21 @@ function FollowButton({
         await followApiConnection.followUser(followerId, followeeId);
         setIsFollowing(true);
       }
-      // Notify the parent component about the follow status change
       onFollowChange(!isFollowing);
     } catch (error) {
       console.error('Error toggling follow status:', error);
     }
-  };
+  }, [followerId, followeeId, isFollowing, onFollowChange]);
 
   return (
     <button
       type='button'
       onClick={handleFollowClick}
-      className={`ml-auto h-6 w-14 cursor-pointer rounded border py-0.5 text-xs ${isFollowing ? 'border-rose-600 text-rose-600' : 'border-turquoise-blue-400 text-turquoise-blue-400 bg-transparent'}`}
+      className={`ml-auto h-6 w-14 cursor-pointer rounded border py-0.5 text-xs ${
+        isFollowing
+          ? 'border-rose-600 text-rose-600'
+          : 'border-turquoise-blue-400 text-turquoise-blue-400 bg-transparent'
+      }`}
     >
       {isFollowing ? 'Unfollow' : 'Follow'}
     </button>
