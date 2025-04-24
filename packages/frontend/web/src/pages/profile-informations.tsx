@@ -12,7 +12,7 @@ export default function ProfileInformations() {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const profile = await userApiConnection.getOwnProfile();
+        const profile = await userApiConnection.getProfile();
         setUserProfile(profile);
       } catch (error) {
         console.error('Erreur de récupération des données :', error);
@@ -30,7 +30,7 @@ export default function ProfileInformations() {
 
     try {
       await userApiConnection.updateProfilePicture(file);
-      const updatedProfile = await userApiConnection.getOwnProfile();
+      const updatedProfile = await userApiConnection.getProfile();
       setUserProfile(updatedProfile);
     } catch (error) {
       console.error(

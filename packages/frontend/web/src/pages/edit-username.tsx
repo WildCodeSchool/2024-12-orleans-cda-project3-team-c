@@ -15,7 +15,7 @@ export default function EditUsername() {
 
   const fetchData = async (): Promise<void> => {
     try {
-      const profile = await userApiConnection.getOwnProfile();
+      const profile = await userApiConnection.getProfile();
       setUserProfile(profile);
       setUsername(profile.username);
     } catch (error) {

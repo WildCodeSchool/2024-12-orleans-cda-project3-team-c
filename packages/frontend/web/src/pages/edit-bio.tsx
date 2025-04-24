@@ -15,7 +15,7 @@ export default function EditBio() {
 
   const fetchData = async (): Promise<void> => {
     try {
-      const profile = await userApiConnection.getOwnProfile();
+      const profile = await userApiConnection.getProfile();
       setUserProfile(profile);
       setBiography(profile.biography);
     } catch (error) {
