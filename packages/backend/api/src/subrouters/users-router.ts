@@ -2,20 +2,27 @@ import express from 'express';
 
 import { userRegister } from '@/models/user-model';
 
+import userModel from '@/models/user-model';
+
 const usersRouter = express.Router();
 
-// GET **************************************************
-usersRouter.get('/:param', function () {
-  // Getting a specified user from id or username
+usersRouter.get('/profile', async (req, res) => {
+  try {
+    const userId = 1; // temporaire
+    const profile = await userModel.getUserProfileById(userId);
+
+    if (!profile) {
+      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return;
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error('Erreur dans GET /profile :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
 });
 
-usersRouter.get('/:id/posts', function () {
-  // Getting posts from a specified user
-});
-
-usersRouter.get('/tag/:tag', function () {
-  // Getting posts from a specified tag
-});
 
 // POST **************************************************
 
@@ -35,4 +42,5 @@ usersRouter.post('/', async function (req, res) {
 // UPDATE **************************************************
 
 // DELETE **************************************************
+
 export default usersRouter;

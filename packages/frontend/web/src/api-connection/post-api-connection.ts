@@ -10,7 +10,6 @@ class PostApiConnection extends ApiConnection {
   async getPage(page = 1): Promise<FeedPost[]> {
     try {
       const response = await fetch(`${this.ressourceUrl}?page=${page}`);
-
       if (response.ok) {
         return (await response.json()) as FeedPost[];
       } else {
@@ -18,8 +17,8 @@ class PostApiConnection extends ApiConnection {
       }
     } catch (error) {
       console.error(error);
+      return [];
     }
-    return [];
   }
 
   async create(body: FormData) {

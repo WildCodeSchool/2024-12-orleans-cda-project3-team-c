@@ -2,6 +2,9 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { useLoginContext } from '@/contexts/login-context';
 
+import NavBar from './components/navbar';
+
+
 export default function App() {
   const loginAuth = useLoginContext();
 
@@ -17,8 +20,10 @@ export default function App() {
   }
 
   return (
-    <div className='h-dvh w-full'>
-      <main>
+    <div className='relative h-dvh w-full'>
+      <NavBar />
+      <main className='h-full w-full'>
+
         <Outlet />
       </main>
     </div>

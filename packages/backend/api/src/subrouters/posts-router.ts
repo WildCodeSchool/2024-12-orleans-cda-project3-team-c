@@ -17,7 +17,7 @@ interface PictureUploadedFile extends UploadedFile {
 }
 
 // GET **************************************************
-postsRouter.get('/:id', function () {
+postsRouter.get('/:id', function (req, res) {
   // Getting a specified post
 });
 
