@@ -1,12 +1,14 @@
 import express from 'express';
 
-import userModel from '@/models/user-suggestion-model';
+import userModel from '@/models/user-model';
 
 const usersRouter = express.Router();
 
-usersRouter.get('/user-suggestion', async (req, res) => {
+usersRouter.get('/users', async (req, res) => {
+  const testUser = 1;
   try {
-    const usersWithFollowers = await userModel.getAllUsersWithFollowersCount();
+    const usersWithFollowers =
+      await userModel.getUserSuggestionsForUser(testUser);
     res.json(usersWithFollowers);
   } catch (error) {
     console.error('Error getting users:', error);

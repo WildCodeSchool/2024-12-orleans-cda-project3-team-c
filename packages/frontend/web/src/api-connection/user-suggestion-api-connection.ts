@@ -1,3 +1,5 @@
+import type { UserSuggestion } from '@app/api';
+
 import ApiConnection from './api-connection';
 
 type UserWithFollowersResponse = {
@@ -8,7 +10,7 @@ type UserWithFollowersResponse = {
 };
 
 class UserApiConnection extends ApiConnection {
-  constructor(ressource = 'users') {
+  constructor(ressource = 'suggestion') {
     super(ressource);
   }
 
@@ -30,11 +32,11 @@ class UserApiConnection extends ApiConnection {
     }
   }
 
-  async getUsersWithFollowers(): Promise<UserWithFollowersResponse[]> {
+  async getUserSuggestions(): Promise<UserSuggestion[]> {
     try {
-      const response = await fetch(`${this.ressourceUrl}/user-suggestion`);
+      const response = await fetch(`${this.ressourceUrl}/users`);
       if (response.ok) {
-        const usersData: UserWithFollowersResponse[] = await response.json();
+        const usersData: UserSuggestion[] = await response.json();
         return usersData;
       } else {
         console.error('Failed to get users:', response.statusText);

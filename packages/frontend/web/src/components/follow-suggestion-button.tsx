@@ -1,54 +1,52 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import followApiConnection from '../api-connection/follow-suggestion-api-connection';
+import followApiConnection from '../api-connection/follow-api-connection';
 
 type FollowButtonProps = Readonly<{
-  followerId: number;
   followeeId: number;
-  onFollowChange: (isFollowing: boolean) => void;
-  isFollowing: boolean;
 }>;
 
-function FollowButton({
-  followerId,
-  followeeId,
-  onFollowChange,
-  isFollowing: initialIsFollowing,
-}: FollowButtonProps) {
-  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
+function FollowButton({ followeeId }: FollowButtonProps) {
+  const [isFollowing, setIsFollowing] = useState(false);
 
-  useEffect(() => {
-    const fetchFollowStatus = async () => {
-      try {
-        const status = await followApiConnection.checkFollowStatus(
-          followerId,
-          followeeId,
-        );
-        if (status && 'isFollowing' in status) {
-          setIsFollowing(status.isFollowing);
-        }
-      } catch (error) {
-        console.error('Error fetching follow status:', error);
-      }
-    };
-
-    void fetchFollowStatus();
-  }, [followerId, followeeId]);
-
-  const handleFollowClick = useCallback(async () => {
-    try {
-      if (isFollowing) {
-        await followApiConnection.unfollowUser(followerId, followeeId);
-        setIsFollowing(false);
-      } else {
-        await followApiConnection.followUser(followerId, followeeId);
-        setIsFollowing(true);
-      }
-      onFollowChange(!isFollowing);
-    } catch (error) {
-      console.error('Error toggling follow status:', error);
+  const handleFollowClick = async () => {
+    let newState;
+    if (isFollowing) {
+      newState = await followApiConnection.unfollowUser(followeeId);
+      // setIsFollowing(false);
+    } else {
+      newState = await followApiConnection.followUser(followeeId);
+      // setIsFollowing(true);
     }
-  }, [followerId, followeeId, isFollowing, onFollowChange]);
+    if (newState !== null) {
+      setIsFollowing(newState.isFollowing);
+    }
+  };
+
+  // const togglePostLike = async () => {
+  //   // Vérifier l'atat de postIsLiked
+  //   let newState: PostLike;
+  //   if (postLike.isLiked) {
+  //     newState = await postLikeApiConnection.unlikePost(post.id);
+  //   } else {
+  //     newState = await postLikeApiConnection.likePost(post.id);
+  //   }
+  //   if (newState) {
+  //     setPostLike({
+  //       isLiked: newState.isLiked,
+  //       likeCount: newState.likeCount ?? 0,
+  //     });
+  //   }
+  // };
+
+  // const handleFollowClick = useCallback(async () => {
+  //   try {
+
+  //     onFollowChange(!isFollowing);
+  //   } catch (error) {
+  //     console.error('Error toggling follow status:', error);
+  //   }
+  // }, [followerId, followeeId, isFollowing, onFollowChange]);
 
   return (
     <button

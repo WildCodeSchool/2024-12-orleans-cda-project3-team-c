@@ -1,6 +1,7 @@
-import type followModel from './follow-suggestion-model';
+import type followModel from './follow-model';
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
+import type userModel from './user-model';
 
 // Posts **************************************************
 export type FeedPost = Awaited<
@@ -32,28 +33,11 @@ export type PostTagInsertionList = {
 };
 
 // Follow **************************************************
-export type FollowCheckStatus = Awaited<
-  ReturnType<typeof followModel.checkFollowStatus>
->;
-
-export type FollowersCount = Awaited<
-  ReturnType<typeof followModel.getFollowersSuggestionCount>
->;
-
-export type FollowingCount = Awaited<
-  ReturnType<typeof followModel.getFollowingSuggestionCount>
->;
 
 export type FollowAction = Awaited<
-  ReturnType<
-    | typeof followModel.addFollowSuggestion
-    | typeof followModel.deleteFollowSuggestion
-  >
+  ReturnType<typeof followModel.addFollow | typeof followModel.deleteFollow>
 >;
 
-// // Union type for Follow
-// export type Follow =
-//   | FollowCheckStatus
-//   | FollowersCount
-//   | FollowingCount
-//   | FollowAction;
+export type UserSuggestion = Awaited<
+  ReturnType<typeof userModel.getUserSuggestionsForUser>
+>[number];
