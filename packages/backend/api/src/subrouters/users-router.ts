@@ -5,34 +5,39 @@ import path from 'path';
 
 import userModel from '@/models/user-model';
 
-const upload = multer({ dest: 'uploads/' }); // où les fichiers seront temporaires
-
+const upload = multer({ dest: 'uploads/' });
 const usersRouter = express.Router();
 
-// Route GET pour récupérer le profil de l'utilisateur
 usersRouter.get('/profile', async (req, res) => {
   try {
-    const userId = 1; // temporaire, tu pourras récupérer l'ID de l'utilisateur via auth
-    const profile = await userModel.getUserProfileById(userId);
+    const userId = 1;
+    console.log('[users-router] GET /profile → userId:', userId);
 
+    const profile = await userModel.getUserProfileById(userId);
     if (!profile) {
+      console.warn('[users-router] Profil non trouvé pour userId:', userId);
       res.status(404).json({ error: 'Utilisateur non trouvé' });
       return;
     }
 
+    console.log('[users-router] Profil trouvé →', profile);
     res.json(profile);
   } catch (err) {
-    console.error('Erreur /profile :', err);
+    console.error('[users-router] Erreur dans GET /profile:', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-// Route PATCH pour mettre à jour le profil, y compris la photo
 usersRouter.patch('/profile', upload.single('picture'), async (req, res) => {
   try {
-    const userId = 1; // temporaire, ici tu devras récupérer l'ID utilisateur via un token d'authentification
+    const userId = 1;
     const { username, biography } = req.body;
+    console.log('[users-router] Fichier reçu :', req.file);
+
     const file = req.file;
+
+    console.log('[users-router] PATCH /profile → body:', req.body);
+    console.log('[users-router] PATCH /profile → file:', file);
 
     const updates: {
       username?: string;
@@ -40,35 +45,54 @@ usersRouter.patch('/profile', upload.single('picture'), async (req, res) => {
       profile_picture?: string;
     } = {};
 
-    // Si un fichier est reçu, on le traite
     if (file) {
-      const fileName = `${userId}_${Date.now()}${path.extname(file.originalname)}`;
-      const targetPath = path.join('uploads', fileName);
+      try {
+        const fileName = `${userId}_${Date.now()}${path.extname(file.originalname)}`;
+        const targetPath = path.join('uploads', fileName);
 
-      // Déplace le fichier uploadé dans le bon répertoire
-      fs.renameSync(file.path, targetPath);
-
-      // On ajoute le nom de fichier à la mise à jour
-      updates.profile_picture = fileName;
+        console.log(
+          '[users-router] Tentative de déplacement du fichier:',
+          file.path,
+          '→',
+          targetPath,
+        );
+        fs.renameSync(file.path, targetPath);
+        updates.profile_picture = fileName;
+        console.log(
+          '[users-router] Nouvelle image de profil enregistrée →',
+          fileName,
+        );
+      } catch (fileError) {
+        console.error(
+          '[users-router] Erreur lors du déplacement du fichier:',
+          fileError,
+        );
+        res
+          .status(500)
+          .json({
+            error: "Erreur lors de l'enregistrement de la photo de profil",
+          });
+        return;
+      }
     }
 
-    // Si des informations ont été fournies pour le username ou la biographie, on les ajoute à la mise à jour
     if (username) updates.username = username;
     if (biography) updates.biography = biography;
 
     if (Object.keys(updates).length === 0) {
+      console.warn('[users-router] Aucun champ à mettre à jour');
       res.status(400).json({ error: 'Aucune donnée à mettre à jour' });
       return;
     }
 
-    // Met à jour l'utilisateur dans la BDD avec les nouvelles informations
+    console.log('[users-router] Mise à jour avec:', updates);
     await userModel.updateUserProfile(userId, updates);
 
-    // Récupère et renvoie le profil mis à jour
     const updatedProfile = await userModel.getUserProfileById(userId);
+    console.log('[users-router] Profil après mise à jour →', updatedProfile);
     res.json(updatedProfile);
   } catch (err) {
-    console.error('Erreur PATCH /profile :', err);
+    console.error('[users-router] Erreur dans PATCH /profile:', err);
     res.status(500).json({ error: 'Erreur serveur lors de la mise à jour' });
   }
 });

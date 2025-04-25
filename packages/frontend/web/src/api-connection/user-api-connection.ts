@@ -26,50 +26,32 @@ class UserApiConnection extends ApiConnection {
   }
 
   async getProfile(): Promise<UserProfile> {
+    console.log('[user-api-connection] getProfile()');
     const res = await fetch(`${this.ressourceUrl}/profile`);
 
-    if (!res.ok) throw new Error('Failed to load profile');
+    if (!res.ok) {
+      console.error('[user-api-connection] Erreur HTTP:', res.status);
+      throw new Error('Failed to fetch profile');
+    }
 
-    const data = await res.json();
-
-    return data as UserProfile;
+    const data = (await res.json()) as UserProfile;
+    console.log('[user-api-connection] Données reçues:', data);
+    return data;
   }
 
   async updateProfilePicture(file: File): Promise<void> {
     const formData = new FormData();
     formData.append('picture', file);
-    formData.append('forceName', 'user-mock.png');
 
-    const res = await fetch(`${this.ressourceUrl}/profile-picture`, {
-      method: 'POST',
+    const res = await fetch(`${this.ressourceUrl}/profile`, {
+      method: 'PATCH',
       body: formData,
     });
 
-    if (!res.ok) throw new Error('Failed to upload profile picture');
-  }
-
-  async updateUsername(username: string): Promise<void> {
-    const res = await fetch(`${this.ressourceUrl}/username`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username }),
-    });
-
-    if (!res.ok) throw new Error('Failed to update username');
-  }
-
-  async updateBiography(biography: string): Promise<void> {
-    const res = await fetch(`${this.ressourceUrl}/biography`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ biography }),
-    });
-
-    if (!res.ok) throw new Error('Failed to update biography');
+    if (!res.ok) {
+      console.error('[user-api-connection] Erreur HTTP:', res.status);
+      throw new Error('Failed to update profile picture');
+    }
   }
 }
 

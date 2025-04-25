@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import userApiConnection from '@/api-connection/user-api-connection';
@@ -13,10 +13,12 @@ export default function ProfileInformations() {
 
   const fetchProfile = async (): Promise<void> => {
     try {
+      console.log('[ProfileInformations] → Chargement du profil...');
       const profile = await userApiConnection.getProfile();
+      console.log('[ProfileInformations] → Profil reçu:', profile);
       setUserProfile(profile);
     } catch (error) {
-      console.error('Erreur de récupération du profil:', error);
+      console.error('[ProfileInformations] → Erreur chargement profil:', error);
       setUserProfile(null);
     }
   };
@@ -28,16 +30,22 @@ export default function ProfileInformations() {
     if (!file) return;
 
     try {
-      await userApiConnection.updateProfilePicture(file);
-      await fetchProfile(); // Recharger le profil après la mise à jour de la photo
-      setCacheBuster(Date.now()); // Forcer un rechargement de l'image
-    } catch (error) {
-      console.error(
-        'Erreur lors de la mise à jour de la photo de profil :',
-        error,
+      console.log(
+        '[ProfileInformations] → Envoi de la nouvelle image:',
+        file.name,
       );
+      await userApiConnection.updateProfilePicture(file);
+      await fetchProfile(); // Rechargement après update
+      setCacheBuster(Date.now()); // Forcer le refresh de l’image
+      console.log('[ProfileInformations] → Image mise à jour');
+    } catch (error) {
+      console.error('[ProfileInformations] → Erreur mise à jour image:', error);
     }
   };
+
+  useEffect(() => {
+    void fetchProfile();
+  }, []);
 
   if (!userProfile) {
     return (

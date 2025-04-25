@@ -3,8 +3,9 @@ import { jsonArrayFrom } from 'kysely/helpers/mysql';
 import { db } from '@app/backend-shared';
 
 export default {
-  // Fonction pour récupérer le profil de l'utilisateur
   async getUserProfileById(userId: number) {
+    console.log('[user-model] getUserProfileById → userId:', userId);
+
     const profile = await db
       .selectFrom('user')
       .select((eb) => [
@@ -43,18 +44,16 @@ export default {
       .where('user.id', '=', userId)
       .executeTakeFirst();
 
-    if (!profile) {
-      return null;
-    }
-
-    return {
-      ...profile,
-      followersCount: profile.followersCount ?? 0,
-      followingCount: profile.followingCount ?? 0,
-    };
+    console.log('[user-model] Profil récupéré:', profile);
+    return profile
+      ? {
+          ...profile,
+          followersCount: profile.followersCount ?? 0,
+          followingCount: profile.followingCount ?? 0,
+        }
+      : null;
   },
 
-  // Fonction pour mettre à jour le profil de l'utilisateur
   async updateUserProfile(
     userId: number,
     updates: {
@@ -63,6 +62,12 @@ export default {
       profile_picture?: string;
     },
   ) {
+    console.log(
+      '[user-model] updateUserProfile → userId:',
+      userId,
+      'updates:',
+      updates,
+    );
     await db
       .updateTable('user')
       .set(updates)
