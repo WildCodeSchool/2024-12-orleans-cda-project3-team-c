@@ -3,6 +3,11 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 type LoginProviderContextProps = PropsWithChildren<object>;
 
+type User = {
+  id: number;
+  email: string;
+};
+
 type LoginProviderState = {
   isUserLogged: boolean;
   isLoading: boolean;
@@ -21,7 +26,8 @@ export default function LoginContext({
 }: LoginProviderContextProps) {
   const [isUserLogged, setIsUserLogged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  // stocker le user connecté
+  // stocker le user connecté pour l'afficher dans le front
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     async function getConnected() {
@@ -31,10 +37,12 @@ export default function LoginContext({
 
       const data = (await response.json()) as {
         ok: boolean;
+        user: User;
       };
 
       if (data.ok) {
         setIsUserLogged(true);
+        setUser(data.user);
       }
 
       setIsLoading(false);
@@ -47,8 +55,10 @@ export default function LoginContext({
       isUserLogged,
       isLoading,
       setIsUserLogged,
+      user,
+      setUser,
     }),
-    [isUserLogged, isLoading],
+    [isUserLogged, isLoading, user],
   );
 
   return (
