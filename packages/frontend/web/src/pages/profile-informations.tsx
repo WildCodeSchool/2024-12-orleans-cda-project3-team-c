@@ -13,9 +13,7 @@ export default function ProfileInformations() {
 
   const fetchProfile = async (): Promise<void> => {
     try {
-      console.log('[ProfileInformations] → Chargement du profil...');
       const profile = await userApiConnection.getProfile();
-      console.log('[ProfileInformations] → Profil reçu:', profile);
       setUserProfile(profile);
     } catch (error) {
       console.error('[ProfileInformations] → Erreur chargement profil:', error);
@@ -30,14 +28,9 @@ export default function ProfileInformations() {
     if (!file) return;
 
     try {
-      console.log(
-        '[ProfileInformations] → Envoi de la nouvelle image:',
-        file.name,
-      );
       await userApiConnection.updateProfilePicture(file);
       await fetchProfile(); // Rechargement après update
       setCacheBuster(Date.now()); // Forcer le refresh de l’image
-      console.log('[ProfileInformations] → Image mise à jour');
     } catch (error) {
       console.error('[ProfileInformations] → Erreur mise à jour image:', error);
     }
@@ -66,7 +59,7 @@ export default function ProfileInformations() {
 
       <img
         className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
-        src={`${cdnUrl}/pictures/users/${userProfile.profile_picture}?t=${cacheBuster}`}
+        src={`${cdnUrl}/pictures/users/user-mock.png`}
         alt='user'
       />
 

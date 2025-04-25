@@ -6,95 +6,110 @@ import path from 'path';
 import userModel from '@/models/user-model';
 
 const upload = multer({ dest: 'uploads/' });
+
 const usersRouter = express.Router();
 
 usersRouter.get('/profile', async (req, res) => {
   try {
-    const userId = 1;
-    console.log('[users-router] GET /profile → userId:', userId);
+    const userId = 1; // temporaire
 
     const profile = await userModel.getUserProfileById(userId);
+
     if (!profile) {
-      console.warn('[users-router] Profil non trouvé pour userId:', userId);
       res.status(404).json({ error: 'Utilisateur non trouvé' });
       return;
     }
 
-    console.log('[users-router] Profil trouvé →', profile);
     res.json(profile);
   } catch (err) {
-    console.error('[users-router] Erreur dans GET /profile:', err);
+    console.error('Erreur /profile :', err);
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
 
-usersRouter.patch('/profile', upload.single('picture'), async (req, res) => {
+// //////////////////////////////////////////////
+
+usersRouter.put('/username', async (req, res) => {
   try {
-    const userId = 1;
-    const { username, biography } = req.body;
-    console.log('[users-router] Fichier reçu :', req.file);
+    const userId = 1; // temporaire
+    const { username } = req.body;
 
-    const file = req.file;
-
-    console.log('[users-router] PATCH /profile → body:', req.body);
-    console.log('[users-router] PATCH /profile → file:', file);
-
-    const updates: {
-      username?: string;
-      biography?: string;
-      profile_picture?: string;
-    } = {};
-
-    if (file) {
-      try {
-        const fileName = `${userId}_${Date.now()}${path.extname(file.originalname)}`;
-        const targetPath = path.join('uploads', fileName);
-
-        console.log(
-          '[users-router] Tentative de déplacement du fichier:',
-          file.path,
-          '→',
-          targetPath,
-        );
-        fs.renameSync(file.path, targetPath);
-        updates.profile_picture = fileName;
-        console.log(
-          '[users-router] Nouvelle image de profil enregistrée →',
-          fileName,
-        );
-      } catch (fileError) {
-        console.error(
-          '[users-router] Erreur lors du déplacement du fichier:',
-          fileError,
-        );
-        res
-          .status(500)
-          .json({
-            error: "Erreur lors de l'enregistrement de la photo de profil",
-          });
-        return;
-      }
-    }
-
-    if (username) updates.username = username;
-    if (biography) updates.biography = biography;
-
-    if (Object.keys(updates).length === 0) {
-      console.warn('[users-router] Aucun champ à mettre à jour');
-      res.status(400).json({ error: 'Aucune donnée à mettre à jour' });
+    if (!username || typeof username !== 'string' || username.length > 30) {
+      res.status(400).json({ error: 'Nom d’utilisateur invalide' });
       return;
     }
 
-    console.log('[users-router] Mise à jour avec:', updates);
-    await userModel.updateUserProfile(userId, updates);
+    await userModel.updateUserProfile(userId, { username });
 
-    const updatedProfile = await userModel.getUserProfileById(userId);
-    console.log('[users-router] Profil après mise à jour →', updatedProfile);
-    res.json(updatedProfile);
+    res.status(200).json({ message: 'Nom d’utilisateur mis à jour' });
   } catch (err) {
-    console.error('[users-router] Erreur dans PATCH /profile:', err);
-    res.status(500).json({ error: 'Erreur serveur lors de la mise à jour' });
+    console.error('Erreur /username :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
   }
+});
+
+usersRouter.put('/biography', async (req, res) => {
+  try {
+    const userId = 1; // temporaire
+    const { biography } = req.body;
+
+    if (!biography || typeof biography !== 'string' || biography.length > 350) {
+      res.status(400).json({ error: 'Biographie invalide' });
+      return;
+    }
+
+    await userModel.updateUserProfile(userId, { biography });
+
+    res.status(200).json({ message: 'Biographie mise à jour' });
+  } catch (err) {
+    console.error('Erreur /biography :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// //////////////////////////////////////////////
+
+// ✅ POST upload photo de profil
+usersRouter.post(
+  '/profile-picture',
+  upload.single('picture'),
+  async (req, res) => {
+    try {
+      const userId = 1; // temporaire
+      const file = req.file;
+
+      if (!file) {
+        res.status(400).json({ error: 'Aucun fichier envoyé' });
+        return;
+      }
+
+      // Mise à jour de l'image de profil dans la base de données
+      await userModel.updateUserProfile(userId, {
+        profile_picture: file.filename,
+      });
+
+      res.status(200).json({
+        message: 'Image mise à jour',
+        filename: file.filename,
+      });
+    } catch (err) {
+      console.error('Erreur /profile-picture :', err);
+      res.status(500).json({ error: 'Erreur serveur' });
+    }
+  },
+);
+
+// ✅ GET récupérer une photo de profil
+usersRouter.get('/pictures/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const imagePath = path.join(process.cwd(), 'uploads', filename);
+
+  if (!fs.existsSync(imagePath)) {
+    res.status(404).json({ error: 'Image non trouvée' });
+    return;
+  }
+
+  res.sendFile(imagePath);
 });
 
 export default usersRouter;

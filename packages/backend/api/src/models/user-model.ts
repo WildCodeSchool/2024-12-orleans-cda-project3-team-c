@@ -4,8 +4,6 @@ import { db } from '@app/backend-shared';
 
 export default {
   async getUserProfileById(userId: number) {
-    console.log('[user-model] getUserProfileById → userId:', userId);
-
     const profile = await db
       .selectFrom('user')
       .select((eb) => [
@@ -44,7 +42,6 @@ export default {
       .where('user.id', '=', userId)
       .executeTakeFirst();
 
-    console.log('[user-model] Profil récupéré:', profile);
     return profile
       ? {
           ...profile,
@@ -62,12 +59,6 @@ export default {
       profile_picture?: string;
     },
   ) {
-    console.log(
-      '[user-model] updateUserProfile → userId:',
-      userId,
-      'updates:',
-      updates,
-    );
     await db
       .updateTable('user')
       .set(updates)
