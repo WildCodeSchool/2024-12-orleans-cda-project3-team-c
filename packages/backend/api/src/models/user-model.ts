@@ -3,11 +3,11 @@ import { jsonArrayFrom } from 'kysely/helpers/mysql';
 
 import { db } from '@app/backend-shared';
 
-export async function userLogin(email: string, password: string) {
+export async function userLogin(email: string) {
   return db
     .selectFrom('user')
     .select(['user.id', 'user.password', 'user.email'])
-    .where('user.email', '=', email || 'user.username ')
+    .where('user.email', '=', email)
     .executeTakeFirst();
 }
 
@@ -18,26 +18,22 @@ export async function userRegister(
 ) {
   try {
     // Pour la verif du mail
-    const existingEmail = await db
+    const alreadyExists = await db
       .selectFrom('user')
-      .select('email')
-      .where('email', '=', email)
+      .select(['email', 'username'])
+      .where((eb) =>
+        eb.or([eb('email', '=', email), eb('username', '=', username)]),
+      )
       .executeTakeFirst();
 
-    if (existingEmail) {
-      return { error: 'Email is already in use, please use a different email' };
-    }
-
-    // Pour la verif du username
-    const existingUsername = await db
-      .selectFrom('user')
-      .select('username')
-      .where('username', '=', username)
-      .executeTakeFirst();
-
-    if (existingUsername) {
+    if (alreadyExists) {
+      if (alreadyExists.email === email) {
+        return {
+          error: 'Email is already in use, please use a different email',
+        };
+      }
       return {
-        error: 'Email is already in use, please use a different username',
+        error: 'username is already in use, please use a different username',
       };
     }
 

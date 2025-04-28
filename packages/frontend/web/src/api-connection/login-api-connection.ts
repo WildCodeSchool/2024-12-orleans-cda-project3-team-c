@@ -2,7 +2,9 @@ import ApiConnection from './api-connection';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface LoginApiConnectionInterface {
-  login(email: string, password: string): string;
+  email: string;
+  password: string;
+  ok: boolean;
 }
 class LoginApiConnection extends ApiConnection {
   constructor(resource = 'login') {

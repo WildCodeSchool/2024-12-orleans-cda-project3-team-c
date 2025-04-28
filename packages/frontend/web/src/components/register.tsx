@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import RegisterApiConnection from '@/api-connection/register-api-connection';
-import useShowPassword from '@/hooks/use-show-password';
+import useShowPassword from '@/hooks/use-disclosure';
 
-import hiden from '../assets/icons/hide-white.svg';
+import hidenpassword from '../assets/icons/hide-white.svg';
 import show from '../assets/icons/show-white.svg';
 import Button from './button';
 import Logo from './logo';
 
-export default function SignupComp() {
-  const [isVisible, toggleVisible] = useShowPassword() as [boolean, () => void];
+export default function Register() {
+  const [isTrue, setIsTrue] = useShowPassword() as [boolean, () => void];
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -66,7 +66,7 @@ export default function SignupComp() {
           />
           <div className='relative'>
             <input
-              type={isVisible ? 'text' : 'password'}
+              type={isTrue ? 'text' : 'password'}
               value={password}
               onChange={(event) => {
                 setPassword(event.target.value);
@@ -77,17 +77,17 @@ export default function SignupComp() {
 
             <div
               className='absolute top-1/2 right-5 flex h-5 w-5 -translate-y-1/2 cursor-pointer'
-              onClick={toggleVisible}
+              onClick={setIsTrue}
             >
-              {isVisible ? (
-                <img src={hiden} alt='eye hide' />
+              {isTrue ? (
+                <img src={hidenpassword} alt='eye hide' />
               ) : (
                 <img src={show} alt='eye show' />
               )}
             </div>
           </div>
           <input
-            type={isVisible ? 'text' : 'password'}
+            type={isTrue ? 'text' : 'password'}
             value={confirmPassword}
             onChange={(event) => {
               setConfirmPassword(event.target.value);

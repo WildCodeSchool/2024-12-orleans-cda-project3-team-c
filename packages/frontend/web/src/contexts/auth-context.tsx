@@ -20,7 +20,7 @@ const loginProviderContext = createContext<LoginProviderState | undefined>(
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function LoginContext({
+export default function AuthContext({
   children,
   ...props
 }: LoginProviderContextProps) {

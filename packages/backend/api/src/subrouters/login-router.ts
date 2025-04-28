@@ -1,5 +1,6 @@
 import argon2 from 'argon2';
-import { type Request, type Response, Router } from 'express';
+import type { Request, Response } from 'express';
+import express from 'express';
 import * as jose from 'jose';
 
 import { env } from '@app/shared';
@@ -8,16 +9,9 @@ import { getUserById, userLogin } from '@/models/user-model';
 
 env();
 
-const userLoginRouter = Router();
+const loginRouter = express.Router();
 
-export const cookieRouterGet = Router();
-
-declare module 'Express' {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-  interface Request {
-    userId?: number;
-  }
-}
+export const cookieRouterGet = express.Router();
 
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?? '';
 
@@ -29,19 +23,21 @@ const refreshTokenSecret = new TextEncoder().encode(REFRESH_TOKEN_SECRET);
 
 // POST LOGIN**************************************************
 
-userLoginRouter.post('/', async function (req: Request, res: Response) {
+loginRouter.post('/', async function (req: Request, res: Response) {
   try {
     const { email, password } = req.body;
 
-    const userAccess = await userLogin(email, password);
+    const userAccess = await userLogin(email);
     if (!userAccess) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      res.status(401).json({ message: 'Invalid email or password' });
+      return;
     }
 
     const isPasswordValid = await argon2.verify(userAccess.password, password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      res.status(401).json({ message: 'Invalid email or password' });
+      return;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: userPassword, ...restUser } = userAccess;
@@ -130,8 +126,8 @@ cookieRouterGet.get('/', async function (req: Request, res) {
 
 // GET **************************************************
 
-userLoginRouter.get('/:id', function (req, res) {
+loginRouter.get('/:id', function (req, res) {
   res.send('login get');
 });
 
-export default userLoginRouter;
+export default loginRouter;

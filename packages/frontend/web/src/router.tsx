@@ -2,10 +2,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
-import Forgottencomp from './components/forgotten-comp';
-import SignupComp from './components/register-comp';
-import loaders from './loaders';
 // Charger les loaders mis à jour
+import ForgottenPassword from './components/forgotten-password';
+import Register from './components/register';
+import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
 import Feed from './pages/feed';
 import Login from './pages/login';
@@ -40,11 +40,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/register',
-    element: <SignupComp />,
+    element: <Register />,
   },
   {
     path: '/forgotten-password',
-    element: <Forgottencomp />,
+    element: <ForgottenPassword />,
   },
 ]);
 

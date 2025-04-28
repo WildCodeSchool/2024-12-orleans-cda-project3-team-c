@@ -6,10 +6,10 @@ import type { FeedPost } from '@app/api';
 import logoutApiConnection from '@/api-connection/logout-api-connection';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
-import { useLoginContext } from '@/contexts/login-context';
+import { useLoginContext } from '@/contexts/auth-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
-import logOut from '../assets/icons/logout-white.svg';
+import logoutIcon from '../assets/icons/logout-white.svg';
 
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
@@ -81,7 +81,7 @@ export default function Feed() {
           onClick={logout}
           className='flex items-center gap-2'
         >
-          <img src={logOut} alt='log out icon' className='h-6 w-6' />
+          <img src={logoutIcon} alt='log out icon' className='h-6 w-6' />
           {'logout'}
         </button>
       </header>

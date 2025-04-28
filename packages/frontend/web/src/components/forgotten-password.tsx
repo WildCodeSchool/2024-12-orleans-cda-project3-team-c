@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from './button';
 import Logo from './logo';
 
-export default function Forgottencomp() {
+export default function ForgottenPassword() {
   return (
     <div className='flex flex-col items-center md:grid md:h-screen md:grid-cols-[60%_40%]'>
       <Logo />

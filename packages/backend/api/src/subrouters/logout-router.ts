@@ -1,9 +1,9 @@
 // POST LOGOUT**************************************************
 import express from 'express';
 
-const userLogout = express.Router();
+const logoutRouter = express.Router();
 
-userLogout.post('/', function (req, res) {
+logoutRouter.post('/', function (req, res) {
   try {
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
@@ -14,4 +14,4 @@ userLogout.post('/', function (req, res) {
   }
 });
 
-export default userLogout;
+export default logoutRouter;

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { useLoginContext } from '@/contexts/login-context';
+import { useLoginContext } from '@/contexts/auth-context';
 
 import NavBar from './components/navbar';
 

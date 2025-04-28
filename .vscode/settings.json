@@ -1,3 +1,10 @@
 {
-    "Devdb.colorTheme": "dark"
+    "Devdb.colorTheme": "dark",
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": true,
+        "scminput": false,
+        "scss": true
+    }
 }

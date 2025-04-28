@@ -13,7 +13,7 @@ const accessTokenSecret = new TextEncoder().encode(ACCESS_TOKEN_SECRET);
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const refreshTokenSecret = new TextEncoder().encode(REFRESH_TOKEN_SECRET);
 
-export default async function loginMiddleware(
+export default async function authMiddleware(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -42,8 +42,8 @@ export default async function loginMiddleware(
 
     req.isAuthenticated = true;
     req.userId = payload.userId;
-  } catch (aterror) {
-    console.error(aterror);
+  } catch (_aterror) {
+    res.status(401).json({ ok: false, message: 'accessToken is invalid' });
 
     // If the access token is invalid, we check if the refresh token is present
     const refreshToken = req.signedCookies.refreshToken;
@@ -80,12 +80,11 @@ export default async function loginMiddleware(
 
       req.isAuthenticated = true;
       req.userId = payload.userId;
-    } catch (rterror) {
-      console.error('Refresh token is invalid', rterror);
+    } catch (_rterror) {
+      res.status(401).json({ ok: false, message: 'refreshToken is invalid' });
 
       // If the refresh token is invalid,
       req.isAuthenticated = false;
-      return;
     }
   }
 

@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import loginApiConnection from '@/api-connection/login-api-connection';
 import Button from '@/components/button';
 import Logo from '@/components/logo';
-import { useLoginContext } from '@/contexts/login-context';
-import useShowPassword from '@/hooks/use-show-password';
+import { useLoginContext } from '@/contexts/auth-context';
+import useDisclosure from '@/hooks/use-disclosure';
 
-import hiden from '../assets/icons/hide-white.svg';
+import hidenpassword from '../assets/icons/hide-white.svg';
 import show from '../assets/icons/show-white.svg';
 
 export default function Login() {
-  const [isVisible, toggleVisible] = useShowPassword() as [boolean, () => void];
+  const [isTrue, toggleTrue] = useDisclosure();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,11 +24,9 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const loginData = (await loginApiConnection.login(email, password)) as {
-        message: string;
-      };
+      const loginData = await loginApiConnection.login(email, password);
 
-      if (loginData.message === 'Login successful') {
+      if (loginData.ok) {
         userLogged?.setIsUserLogged(true);
         await navigate('/feed');
       }
@@ -60,7 +58,7 @@ export default function Login() {
           />
           <div className='relative'>
             <input
-              type={isVisible ? 'Text' : 'Password'}
+              type={isTrue ? 'text' : 'password'}
               value={password}
               onChange={(event) => {
                 setPassword(event.target.value);
@@ -71,17 +69,16 @@ export default function Login() {
 
             <div
               className='absolute top-1/2 right-3 flex h-5 w-5 -translate-y-1/2 cursor-pointer'
-              onClick={toggleVisible}
+              onClick={() => toggleTrue}
             >
-              {isVisible ? (
-                <img src={hiden} alt='eye hide' />
+              {isTrue ? (
+                <img src={hidenpassword} alt='eye hide' />
               ) : (
                 <img src={show} alt='eye show' />
               )}
             </div>
           </div>
           <p className='text-end text-xs text-rose-600 underline'>
-            {' '}
             <Link to={'/forgotten-password'}>{'forgot my password? '}</Link>
           </p>
           <Button title={'Log in'} />
