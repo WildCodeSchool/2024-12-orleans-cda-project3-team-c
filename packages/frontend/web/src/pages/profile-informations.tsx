@@ -9,14 +9,22 @@ const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function ProfileInformations() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [cacheBuster, setCacheBuster] = useState<number>(Date.now());
 
   const fetchProfile = async (): Promise<void> => {
     try {
       const profile = await userApiConnection.getProfile();
       setUserProfile(profile);
-    } catch (error) {
-      console.error('[ProfileInformations] → Erreur chargement profil:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          '[ProfileInformations] → Erreur chargement profil:',
+          error.message,
+        );
+      } else {
+        console.error(
+          '[ProfileInformations] → Erreur chargement profil: Unkown error',
+        );
+      }
       setUserProfile(null);
     }
   };
@@ -29,15 +37,38 @@ export default function ProfileInformations() {
 
     try {
       await userApiConnection.updateProfilePicture(file);
-      await fetchProfile(); // Rechargement après update
-      setCacheBuster(Date.now()); // Forcer le refresh de l’image
-    } catch (error) {
-      console.error('[ProfileInformations] → Erreur mise à jour image:', error);
+      await fetchProfile();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          '[ProfileInformations] → Erreur mise à jour image:',
+          error.message,
+        );
+      } else {
+        console.error(
+          '[ProfileInformations] → Erreur mise à jour image: Unknown error',
+        );
+      }
     }
   };
 
   useEffect(() => {
-    void fetchProfile();
+    const loadProfile = async () => {
+      await fetchProfile();
+    };
+
+    loadProfile().catch((error: unknown) => {
+      if (error instanceof Error) {
+        console.error(
+          '[ProfileInformations] → Erreur lors du chargement du profil:',
+          error.message,
+        );
+      } else {
+        console.error(
+          '[ProfileInformations] → Erreur lors du chargement du profil: Unknown error',
+        );
+      }
+    });
   }, []);
 
   if (!userProfile) {
@@ -59,7 +90,7 @@ export default function ProfileInformations() {
 
       <img
         className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
-        src={`${cdnUrl}/pictures/users/user-mock.png`}
+        src={`${cdnUrl}/pictures/users/${userProfile.profile_picture || 'user.png'}`}
         alt='user'
       />
 
