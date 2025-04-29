@@ -23,7 +23,7 @@ function UserSuggestionContainer() {
       }
     };
 
-    fetchData().catch(console.error);
+    fetchData();
   }, []);
 
   return (
