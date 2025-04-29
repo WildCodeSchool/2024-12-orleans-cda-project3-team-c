@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import RegisterApiConnection from '@/api-connection/register-api-connection';
-import useShowPassword from '@/hooks/use-disclosure';
+import useDisclosure from '@/hooks/use-disclosure';
 
 import hidenpassword from '../assets/icons/hide-white.svg';
 import show from '../assets/icons/show-white.svg';
@@ -10,7 +10,7 @@ import Button from './button';
 import Logo from './logo';
 
 export default function Register() {
-  const [isTrue, setIsTrue] = useShowPassword() as [boolean, () => void];
+  const [isTrue, toggleTrue] = useDisclosure();
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -77,7 +77,7 @@ export default function Register() {
 
             <div
               className='absolute top-1/2 right-5 flex h-5 w-5 -translate-y-1/2 cursor-pointer'
-              onClick={setIsTrue}
+              onClick={toggleTrue}
             >
               {isTrue ? (
                 <img src={hidenpassword} alt='eye hide' />
@@ -101,7 +101,7 @@ export default function Register() {
           <p className='text-left text-xs text-black'>
             {'Already have an account ? '}
             <Link to={'/'} className='text-rose-600'>
-              {' Log in.'}
+              {'Log in.'}
             </Link>
           </p>
         </form>

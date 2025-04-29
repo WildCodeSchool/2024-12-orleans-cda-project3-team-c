@@ -69,7 +69,7 @@ export default function Login() {
 
             <div
               className='absolute top-1/2 right-3 flex h-5 w-5 -translate-y-1/2 cursor-pointer'
-              onClick={() => toggleTrue}
+              onClick={toggleTrue}
             >
               {isTrue ? (
                 <img src={hidenpassword} alt='eye hide' />

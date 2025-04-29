@@ -27,9 +27,9 @@ export default function ForgottenPassword() {
           <Button title={'Send'} />
 
           <p className='text-xs text-black'>
-            {'Go to log in . '}
+            {'Go to log in.'}
             <Link to={'/login'} className='text-rose-600'>
-              {' Log in.'}
+              {'Log in.'}
             </Link>
           </p>
         </form>

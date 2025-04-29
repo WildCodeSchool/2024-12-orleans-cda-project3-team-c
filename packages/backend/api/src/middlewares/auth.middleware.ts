@@ -43,8 +43,6 @@ export default async function authMiddleware(
     req.isAuthenticated = true;
     req.userId = payload.userId;
   } catch (_aterror) {
-    res.status(401).json({ ok: false, message: 'accessToken is invalid' });
-
     // If the access token is invalid, we check if the refresh token is present
     const refreshToken = req.signedCookies.refreshToken;
 

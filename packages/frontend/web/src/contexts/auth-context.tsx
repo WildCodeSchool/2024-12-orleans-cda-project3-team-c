@@ -1,20 +1,20 @@
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-type LoginProviderContextProps = PropsWithChildren<object>;
+type AuthProviderContextProps = PropsWithChildren<object>;
 
 type User = {
   id: number;
   email: string;
 };
 
-type LoginProviderState = {
+type AuthProviderState = {
   isUserLogged: boolean;
   isLoading: boolean;
   setIsUserLogged: (value: boolean) => void;
 };
 
-const loginProviderContext = createContext<LoginProviderState | undefined>(
+const authProviderContext = createContext<AuthProviderState | undefined>(
   undefined,
 );
 
@@ -23,7 +23,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function AuthContext({
   children,
   ...props
-}: LoginProviderContextProps) {
+}: AuthProviderContextProps) {
   const [isUserLogged, setIsUserLogged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   // stocker le user connecté pour l'afficher dans le front
@@ -62,14 +62,14 @@ export default function AuthContext({
   );
 
   return (
-    <loginProviderContext.Provider {...props} value={value}>
+    <authProviderContext.Provider {...props} value={value}>
       {children}
-    </loginProviderContext.Provider>
+    </authProviderContext.Provider>
   );
 }
 
 export function useLoginContext() {
-  const ctx = useContext(loginProviderContext);
+  const ctx = useContext(authProviderContext);
 
   return ctx;
 }
