@@ -17,6 +17,7 @@ const PORT = process.env.BACKEND_PORT ?? 3000;
 
 app.use(express.json());
 app.use(cors());
+
 app.use(fileUpload());
 app.use(
   '/cdn',

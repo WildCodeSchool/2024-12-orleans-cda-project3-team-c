@@ -1,3 +1,4 @@
+// src/router.ts
 import express from 'express';
 import path from 'path';
 import { dirname } from 'path';
@@ -24,8 +25,8 @@ router.use('/suggestion', suggestionRouter);
 //   express.static(path.join(directory, '..', 'public', 'pictures', 'users')),
 // );
 
-router.get('*', function (req, res) {
-  res.status(404).send(`ressource ${req.path} not found`);
+router.use('*', (req, res) => {
+  res.status(404).json({ message: `Resource ${req.path} not found` });
 });
 
 export default router;

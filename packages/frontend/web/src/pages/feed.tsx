@@ -45,11 +45,12 @@ export default function Feed() {
   }
 
   return (
+    // feed section
     <>
-      <section className='mx-auto max-w-[460px]'>
+      <section className='mx-auto max-w-[460px] md:pt-8'>
         <header
           id='feed-header'
-          className='flex items-center justify-between p-4'
+          className='flex items-center justify-between p-4 md:hidden'
         >
           <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
           <Link to={'/notifications'}>
