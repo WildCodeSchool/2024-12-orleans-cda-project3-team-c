@@ -6,9 +6,7 @@ import type { FeedPost } from '@app/api';
 import logoutApiConnection from '@/api-connection/logout-api-connection';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
-
 import UserSuggestionContainer from '@/components/user-suggestion';
-
 import { useLoginContext } from '@/contexts/auth-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
@@ -71,9 +69,7 @@ export default function Feed() {
     // feed section
     <>
       <section className='mx-auto max-w-[460px] md:pt-8'>
-        <header
-          className='flex items-center justify-between p-4 md:hidden'
-        >
+        <header className='flex items-center justify-between p-4 md:hidden'>
           <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
           <Link to={'/notifications'}>
             <img src={bellIcon} alt='' className='w-8' />

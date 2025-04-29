@@ -1,10 +1,9 @@
 import express from 'express';
 
-import followUpsRouter from './subrouters/follow-ups-router';
 import authMiddleware from './middlewares/auth.middleware';
 import loginGuards from './middlewares/login.guards';
 import authRouter from './subrouters/auth-router';
-
+import followUpsRouter from './subrouters/follow-ups-router';
 import postsRouter from './subrouters/posts-router';
 import suggestionRouter from './subrouters/suggestions-router';
 import tagsRouter from './subrouters/tags-router';
