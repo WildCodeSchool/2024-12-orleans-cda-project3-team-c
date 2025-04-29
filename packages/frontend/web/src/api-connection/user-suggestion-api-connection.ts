@@ -2,34 +2,9 @@ import type { UserSuggestion } from '@app/api';
 
 import ApiConnection from './api-connection';
 
-type UserWithFollowersResponse = {
-  id: number;
-  username: string;
-  profile_picture: string;
-  followers_count: number;
-};
-
 class UserApiConnection extends ApiConnection {
   constructor(ressource = 'suggestion') {
     super(ressource);
-  }
-
-  async getUserWithFollowersById(
-    userId: number,
-  ): Promise<UserWithFollowersResponse | null> {
-    try {
-      const response = await fetch(`${this.ressourceUrl}/${userId}`);
-      if (response.ok) {
-        const userData: UserWithFollowersResponse = await response.json();
-        return userData;
-      } else {
-        console.error('Failed to get user:', response.statusText);
-        return null;
-      }
-    } catch (error) {
-      console.error('Error getting user:', error);
-      return null;
-    }
   }
 
   async getUserSuggestions(): Promise<UserSuggestion[]> {

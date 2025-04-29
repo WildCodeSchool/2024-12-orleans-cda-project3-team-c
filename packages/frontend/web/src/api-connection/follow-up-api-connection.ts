@@ -2,14 +2,14 @@ import type { FollowAction } from '@app/api';
 
 import ApiConnection from './api-connection';
 
-class FollowApiConnection extends ApiConnection {
-  constructor(resource = 'follow') {
+class FollowUpApiConnection extends ApiConnection {
+  constructor(resource = 'follows') {
     super(resource);
   }
 
   async followUser(followeeId: number): Promise<FollowAction | null> {
     try {
-      const response = await fetch(`${this.ressourceUrl}/follow`, {
+      const response = await fetch(`${this.ressourceUrl}/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ class FollowApiConnection extends ApiConnection {
 
   async unfollowUser(followeeId: number): Promise<FollowAction | null> {
     try {
-      const response = await fetch(`${this.ressourceUrl}/unfollow`, {
+      const response = await fetch(`${this.ressourceUrl}/`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,4 @@ class FollowApiConnection extends ApiConnection {
   }
 }
 
-const followApiConnection = new FollowApiConnection();
-export default followApiConnection;
-
-export type FollowApiConnectionInstance = typeof followApiConnection;
+export default new FollowUpApiConnection();

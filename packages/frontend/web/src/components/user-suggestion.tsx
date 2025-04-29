@@ -5,7 +5,7 @@ import type { UserSuggestion } from '@app/api';
 
 import userApiConnection from '@/api-connection/user-suggestion-api-connection';
 
-import followApiConnection from '../api-connection/follow-api-connection';
+import followUpApiConnection from '../api-connection/follow-up-api-connection';
 import FollowButton from './follow-suggestion-button';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
@@ -27,7 +27,7 @@ function UserSuggestionContainer() {
   }, []);
 
   return (
-    <aside className='absolute top-40 right-8 hidden w-64 text-white lg:flex lg:flex-col'>
+    <aside className='absolute top-40 right-8 hidden w-64 text-white md:hidden lg:flex lg:flex-col'>
       <div className='mb-6 text-base'>
         <h1>{'Suggestions'}</h1>
       </div>
@@ -47,11 +47,9 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
   const handleFollowClick = async () => {
     let newState;
     if (isFollowing) {
-      newState = await followApiConnection.unfollowUser(user.id);
-      // setIsFollowing(false);
+      newState = await followUpApiConnection.unfollowUser(user.id);
     } else {
-      newState = await followApiConnection.followUser(user.id);
-      // setIsFollowing(true);
+      newState = await followUpApiConnection.followUser(user.id);
     }
     if (newState !== null) {
       setIsFollowing(newState.isFollowing);
@@ -61,7 +59,11 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
 
   return (
     <div className='mb-2 flex h-8 items-center justify-center text-sm'>
-      <Link to={`/profile/${user.id}`} className='flex items-center'>
+      <Link
+        to={`/profile/${user.id}`}
+        className='flex items-center'
+        title={`See ${user.username}'s profile`}
+      >
         <img
           src={`${cdnUrl}/pictures/users/${user.profile_picture}`}
           alt={`${user.username}'s profile`}
@@ -70,13 +72,15 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
         <div className='flex flex-col'>
           <h2 className='font-title text-center text-sm'>{user.username}</h2>
           <p className='text-[8px] opacity-60'>
-            {followCount} {'followers'}
+            {followCount}{' '}
+            {`follower${followCount && followCount > 1 ? 's' : ''}`}
           </p>
         </div>
       </Link>
       <FollowButton
         isFollowing={isFollowing}
         handleFollowClick={handleFollowClick}
+        username={user.username}
       />
     </div>
   );
