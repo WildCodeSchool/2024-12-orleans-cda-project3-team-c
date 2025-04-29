@@ -2,10 +2,13 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
-import loaders from './loaders';
 // Charger les loaders mis à jour
+import ForgottenPassword from './components/forgotten-password';
+import Register from './components/register';
+import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
 import Feed from './pages/feed';
+import Login from './pages/login';
 import ProfilePage from './pages/profile-page';
 
 const router = createBrowserRouter([
@@ -30,6 +33,18 @@ const router = createBrowserRouter([
         element: <CreatePostPage />,
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/forgotten-password',
+    element: <ForgottenPassword />,
   },
 ]);
 
