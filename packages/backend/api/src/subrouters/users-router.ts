@@ -92,7 +92,8 @@ usersRouter.post(
       const temporaryPath = path.join('public', 'pictures', 'temp');
       const finalPath = path.join('public', 'pictures', 'users');
 
-      const fileName = fileUploadManager.renameFile(file.mimetype);
+      // Utiliser la fonction renameFileUser pour générer le nom du fichier de l'utilisateur
+      const fileName = fileUploadManager.renameFileUser(userId.toString());
 
       // ✅ Déplacer le fichier téléchargé vers le dossier temporaire
       await fsPromises.rename(

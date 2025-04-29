@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import type { UploadedFile } from 'express-fileupload';
 import fs from 'node:fs/promises';
 import path from 'path';
@@ -43,6 +44,11 @@ export default {
 
   renameFile(format: string): string {
     return `${crypto.randomUUID()}.${format.split('/')[1]}`;
+  },
+
+  // Nouvelle fonction renameFileUser pour générer un nom de fichier basé sur l'ID utilisateur
+  renameFileUser(userId: string): string {
+    return `user${userId}-mock.png`;
   },
 
   async saveTemporary(file: UploadedFile) {
@@ -110,16 +116,25 @@ export default {
   },
 
   // Nouvelle fonction pour l'upload de l'image de l'utilisateur
-  async saveUserPicture(file: UploadedFile) {
+  async saveUserPicture(file: UploadedFile, userId: string) {
     try {
       // Sauvegarder le fichier temporairement
       await this.saveTemporary(file);
+
+      // Renommer le fichier de l'utilisateur
+      const newFileName = this.renameFileUser(userId);
 
       // Redimensionner l'image (si nécessaire) pour qu'elle ait une largeur maximale de 1080px
       await this.resizePicture(file.name, 1080);
 
       // Convertir l'image en format WebP
-      const newFileName = await this.convertPicture(file.name, 'webp');
+      const finalFileName = await this.convertPicture(file.name, 'webp');
+
+      // Renommer le fichier avec le nom personnalisé
+      await fs.rename(
+        path.join(this.tempFolderPath, finalFileName),
+        path.join(this.usersPictureFolderPath, newFileName),
+      );
 
       return newFileName;
     } catch (error) {
