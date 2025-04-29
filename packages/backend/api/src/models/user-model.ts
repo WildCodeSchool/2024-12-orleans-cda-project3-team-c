@@ -1,6 +1,71 @@
+import argon2 from 'argon2';
 import { jsonArrayFrom } from 'kysely/helpers/mysql';
 
 import { db } from '@app/backend-shared';
+
+export async function userLogin(email: string) {
+  return db
+    .selectFrom('user')
+    .select(['user.id', 'user.password', 'user.email'])
+    .where('user.email', '=', email)
+    .executeTakeFirst();
+}
+
+export async function userRegister(
+  email: string,
+  username: string,
+  password: string,
+) {
+  try {
+    // Pour la verif du mail
+    const alreadyExists = await db
+      .selectFrom('user')
+      .select(['email', 'username'])
+      .where((eb) =>
+        eb.or([eb('email', '=', email), eb('username', '=', username)]),
+      )
+      .executeTakeFirst();
+
+    if (alreadyExists) {
+      if (alreadyExists.email === email) {
+        return {
+          error: 'Email is already in use, please use a different email',
+        };
+      }
+      return {
+        error: 'username is already in use, please use a different username',
+      };
+    }
+
+    // Hachage du mot de passe
+    const hashPassword = await argon2.hash(password, {
+      memoryCost: 19456,
+      timeCost: 2,
+      parallelism: 1,
+    });
+
+    // Insert de l'utilisateur dans la base de données
+    await db
+      .insertInto('user')
+      .values({ email, username, password: hashPassword })
+      .executeTakeFirst();
+
+    return { message: 'User created successfully' };
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw new Error(
+      error instanceof Error ? error.message : 'Failed to create user',
+    );
+  }
+}
+
+export async function getUserById(userId: number) {
+  return db
+    .selectFrom('user')
+    .selectAll()
+    .where('user.id', '=', userId)
+    .executeTakeFirst();
+}
 
 export default {
   async getUserProfileById(userId: number) {

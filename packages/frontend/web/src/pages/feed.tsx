@@ -3,17 +3,25 @@ import { Link, useLoaderData } from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
+import logoutApiConnection from '@/api-connection/logout-api-connection';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
+
 import UserSuggestionContainer from '@/components/user-suggestion';
 
+import { useLoginContext } from '@/contexts/auth-context';
+
 import bellIcon from '../assets/icons/bell-white.svg';
+import logoutIcon from '../assets/icons/logout-white.svg';
 
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
   let page = 1;
+
+  //context à mettre dans la navbar
+  const loginAuth = useLoginContext();
 
   useEffect(() => {
     let infiniteScrollObserver: IntersectionObserver;
@@ -43,6 +51,21 @@ export default function Feed() {
       await fetchNewPosts();
     }
   }
+
+  // à mettre dans la navbar
+  const logout = async () => {
+    try {
+      const data = await logoutApiConnection.logout();
+
+      if (data.ok) {
+        loginAuth.setIsUserLogged(false);
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout', error);
+    }
+  };
 
   return (
     // feed section
