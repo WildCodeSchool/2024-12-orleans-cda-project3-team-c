@@ -11,9 +11,10 @@ const upload = multer({ dest: 'uploads/' });
 
 const usersRouter = express.Router();
 
+// GET **************************************************
 usersRouter.get('/profile', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = 1; // Utiliser l'ID de l'utilisateur connecté, par exemple via req.user.id
 
     const profile = await userModel.getUserProfileById(userId);
 
@@ -29,9 +30,10 @@ usersRouter.get('/profile', async (req, res) => {
   }
 });
 
+// PUT **************************************************
 usersRouter.put('/username', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = 1; // Utiliser l'ID de l'utilisateur connecté
     const { username } = req.body;
 
     if (!username || typeof username !== 'string' || username.length > 30) {
@@ -50,7 +52,7 @@ usersRouter.put('/username', async (req, res) => {
 
 usersRouter.put('/biography', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = 1; // Utiliser l'ID de l'utilisateur connecté
     const { biography } = req.body;
 
     if (!biography || typeof biography !== 'string' || biography.length > 350) {
@@ -67,12 +69,13 @@ usersRouter.put('/biography', async (req, res) => {
   }
 });
 
+// POST **************************************************
 usersRouter.post(
   '/profile-picture',
   upload.single('picture'),
   async (req, res) => {
     try {
-      const userId = 1;
+      const userId = 1; // Utiliser l'ID de l'utilisateur connecté
       const file = req.file;
 
       if (!file) {
@@ -91,7 +94,7 @@ usersRouter.post(
 
       const fileName = fileUploadManager.renameFile(file.mimetype);
 
-      // ✅ fs.promises.rename pour respecter le type Promise attendu
+      // ✅ Déplacer le fichier téléchargé vers le dossier temporaire
       await fsPromises.rename(
         file.path,
         path.join(temporaryPath, file.filename),
@@ -101,16 +104,19 @@ usersRouter.post(
         path.join(temporaryPath, fileName),
       );
 
+      // Convertir l'image en format WebP
       const finalFileName = await fileUploadManager.convertPicture(
         fileName,
         'webp',
       );
 
+      // Déplacer l'image convertie dans le dossier final
       await fsPromises.rename(
         path.join(temporaryPath, finalFileName),
         path.join(finalPath, finalFileName),
       );
 
+      // Mettre à jour le profil de l'utilisateur avec la nouvelle image
       await userModel.updateUserProfile(userId, {
         profile_picture: finalFileName,
       });
@@ -126,6 +132,7 @@ usersRouter.post(
   },
 );
 
+// GET **************************************************
 usersRouter.get('/pictures/:filename', (req, res) => {
   const filename = req.params.filename;
   const imagePath = path.join(

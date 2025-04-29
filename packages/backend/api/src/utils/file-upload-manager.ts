@@ -24,6 +24,15 @@ export default {
     'pictures',
     'posts',
   ),
+  usersPictureFolderPath: path.join(
+    fileURLToPath(import.meta.url),
+    '..',
+    '..',
+    '..',
+    'public',
+    'pictures',
+    'users',
+  ),
 
   checkFormat(format: string) {
     if (this.imageFormat.includes(format.split('/')[1])) {
@@ -82,7 +91,7 @@ export default {
 
       await fs.rename(
         path.join(this.tempFolderPath, newFileName),
-        path.join(this.postsPictureFolderPath, newFileName),
+        path.join(this.usersPictureFolderPath, newFileName),
       );
 
       return newFileName;
@@ -97,6 +106,28 @@ export default {
       return newName;
     } catch (error) {
       console.error(error);
+    }
+  },
+
+  // Nouvelle fonction pour l'upload de l'image de l'utilisateur
+  async saveUserPicture(file: UploadedFile) {
+    try {
+      // Sauvegarder le fichier temporairement
+      await this.saveTemporary(file);
+
+      // Redimensionner l'image (si nécessaire) pour qu'elle ait une largeur maximale de 1080px
+      await this.resizePicture(file.name, 1080);
+
+      // Convertir l'image en format WebP
+      const newFileName = await this.convertPicture(file.name, 'webp');
+
+      return newFileName;
+    } catch (error) {
+      console.error(
+        "Erreur lors de l'upload de la photo de l'utilisateur:",
+        error,
+      );
+      throw new Error("Erreur lors de l'upload de la photo");
     }
   },
 };
