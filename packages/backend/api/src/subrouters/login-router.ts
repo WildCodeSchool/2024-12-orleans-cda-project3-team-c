@@ -5,13 +5,11 @@ import * as jose from 'jose';
 
 import { env } from '@app/shared';
 
-import { getUserById, userLogin } from '@/models/user-model';
+import { userLogin } from '@/models/user-model';
 
 env();
 
 const loginRouter = express.Router();
-
-export const cookieRouterGet = express.Router();
 
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?? '';
 
@@ -95,39 +93,6 @@ loginRouter.post('/', async function (req: Request, res: Response) {
       res.status(500).json({ message: 'Internal login server error' });
     }
   }
-});
-
-// GET COOKIES **************************************************
-
-cookieRouterGet.get('/', async function (req: Request, res) {
-  try {
-    const userId = req.userId;
-
-    if (userId === undefined) {
-      res.json({ ok: 'false' });
-      return;
-    }
-
-    const user = await getUserById(userId);
-
-    if (!user) {
-      res.json({ ok: 'false' });
-      return;
-    }
-    res.json({ user, ok: 'true' });
-  } catch (error) {
-    console.error(error);
-    res.json(
-      'not authorized, please login to get your token or check your cookies',
-    );
-    return;
-  }
-});
-
-// GET **************************************************
-
-loginRouter.get('/:id', function (req, res) {
-  res.send('login get');
 });
 
 export default loginRouter;

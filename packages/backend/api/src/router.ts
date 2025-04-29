@@ -4,7 +4,6 @@ import express from 'express';
 import authMiddleware from './middlewares/auth.middleware';
 import loginGuards from './middlewares/login.guards';
 import authRouter from './subrouters/auth-router';
-import { cookieRouterGet } from './subrouters/login-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
 
@@ -19,8 +18,6 @@ router.use('/auth', authRouter);
 router.use(loginGuards);
 router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
-
-router.use('/cookie', cookieRouterGet);
 
 router.use('*', (req, res) => {
   res.status(404).json({ message: `Resource ${req.path} not found` });

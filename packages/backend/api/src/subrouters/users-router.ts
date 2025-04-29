@@ -21,8 +21,4 @@ usersRouter.get('/profile', async (req, res) => {
   }
 });
 
-// UPDATE **************************************************
-
-// DELETE **************************************************
-
 export default usersRouter;
