@@ -14,16 +14,14 @@ function UserSuggestionContainer() {
   const [usersData, setUsersData] = useState<UserSuggestion[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       try {
         const userSuggestions = await userApiConnection.getUserSuggestions();
         setUsersData(userSuggestions);
       } catch (error) {
         console.error('Error fetching users data:', error);
       }
-    };
-
-    fetchData();
+    })();
   }, []);
 
   return (
