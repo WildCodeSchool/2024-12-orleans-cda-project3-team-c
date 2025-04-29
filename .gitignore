@@ -57,6 +57,3 @@ web-build/
 deployment/db/
 *-mock.*
 test.js
-
-# Ignorer l'image user1.png
-packages/backend/api/public/pictures/users/user1.png
