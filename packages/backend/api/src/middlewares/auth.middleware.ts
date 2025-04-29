@@ -52,7 +52,7 @@ export default async function authMiddleware(
 
       // If the refresh token is valid, we  create a new access token and set it in the cookie
 
-      const newAccessToken = await new jose.SignJWT({
+      const accessToken = await new jose.SignJWT({
         sub: payload.sub,
         userId: payload.userId,
       })
@@ -63,7 +63,7 @@ export default async function authMiddleware(
         .setExpirationTime('60s')
         .sign(accessTokenSecret);
 
-      res.cookie('newAccessToken', newAccessToken, {
+      res.cookie('accessToken', accessToken, {
         httpOnly: true,
         signed: true,
         // secure: true,
