@@ -21,12 +21,6 @@ export default async function authMiddleware(
   // Check if the request has a signed cookie named accessToken
   const accessToken = req.signedCookies.accessToken;
 
-  if (accessToken === undefined) {
-    console.error('accessToken is missing in signed cookies');
-    res.status(401).json({ ok: false, message: 'accessToken is missing' });
-    return;
-  }
-
   try {
     // Verify the access token and extract the payload
     const { payload } = await jose.jwtVerify<{ userId: number }>(
@@ -79,8 +73,6 @@ export default async function authMiddleware(
       req.isAuthenticated = true;
       req.userId = payload.userId;
     } catch (_rterror) {
-      res.status(401).json({ ok: false, message: 'refreshToken is invalid' });
-
       // If the refresh token is invalid,
       req.isAuthenticated = false;
     }
