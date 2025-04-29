@@ -10,9 +10,11 @@ suggestionsRouter.get('/users', async (req, res) => {
     const usersWithFollowers =
       await userModel.getUserSuggestionsForUser(testUser);
     res.json(usersWithFollowers);
+    return;
   } catch (error) {
     console.error('Error getting users:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+    return;
   }
 });
 

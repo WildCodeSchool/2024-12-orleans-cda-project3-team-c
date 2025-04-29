@@ -16,9 +16,11 @@ followUpsRouter.post('/', async (req, res) => {
   try {
     const result = await followUpModel.addFollow(testUser, followeeId);
     res.status(201).json(result);
+    return;
   } catch (error) {
     console.error('Error adding follow:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+    return;
   }
 });
 
@@ -33,9 +35,11 @@ followUpsRouter.delete('/', async (req, res) => {
   try {
     const result = await followUpModel.deleteFollow(testUser, followeeId);
     res.json(result);
+    return;
   } catch (error) {
     console.error('Error deleting follow:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+    return;
   }
 });
 
