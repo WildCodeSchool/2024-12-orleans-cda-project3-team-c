@@ -5,45 +5,21 @@ import type { UserSuggestion } from '@app/api';
 
 import userApiConnection from '@/api-connection/user-suggestion-api-connection';
 
+import followApiConnection from '../api-connection/follow-api-connection';
 import FollowButton from './follow-suggestion-button';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
-type UserWithFollowersResponse = {
-  id: number;
-  username: string;
-  profile_picture: string;
-  followers_count: number;
-};
-
 function UserSuggestionContainer() {
   const [usersData, setUsersData] = useState<UserSuggestion[]>([]);
-  const [isFollowingMap, setIsFollowingMap] = useState<Record<number, boolean>>(
-    {},
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userSuggestions = await userApiConnection.getUserSuggestions();
-
-        // const followStatusMap: Record<number, boolean> = {};
-        // for (const user of usersWithFollowers) {
-        //   const status = await followApiConnection.checkFollowStatus(
-        //     followerId,
-        //     user.id,
-        //   );
-        //   if (status && 'isFollowing' in status) {
-        //     followStatusMap[user.id] = status.isFollowing;
-        //   }
-        // }
         setUsersData(userSuggestions);
-        console.log(userSuggestions);
       } catch (error) {
         console.error('Error fetching users data:', error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -65,6 +41,24 @@ function UserSuggestionContainer() {
 }
 
 function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followCount, setFollowCount] = useState(user.follower_count);
+
+  const handleFollowClick = async () => {
+    let newState;
+    if (isFollowing) {
+      newState = await followApiConnection.unfollowUser(user.id);
+      // setIsFollowing(false);
+    } else {
+      newState = await followApiConnection.followUser(user.id);
+      // setIsFollowing(true);
+    }
+    if (newState !== null) {
+      setIsFollowing(newState.isFollowing);
+      setFollowCount(newState.followerCount ?? 0);
+    }
+  };
+
   return (
     <div className='mb-2 flex h-8 items-center justify-center text-sm'>
       <Link to={`/profile/${user.id}`} className='flex items-center'>
@@ -76,11 +70,14 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
         <div className='flex flex-col'>
           <h2 className='font-title text-center text-sm'>{user.username}</h2>
           <p className='text-[8px] opacity-60'>
-            {user.follower_count} {'followers'}
+            {followCount} {'followers'}
           </p>
         </div>
       </Link>
-      <FollowButton followeeId={user.id} />
+      <FollowButton
+        isFollowing={isFollowing}
+        handleFollowClick={handleFollowClick}
+      />
     </div>
   );
 }

@@ -40,7 +40,16 @@ export default {
           .as('follower_count'),
       ])
       .where('user.id', '!=', userId)
-      .where(({ eb }) => eb.or([eb('follower_id', '!=', userId)]))
+      .where((eb) =>
+        eb(
+          'user.id',
+          'not in',
+          eb
+            .selectFrom('follow_up')
+            .select('followee_id')
+            .where('follower_id', '=', userId),
+        ),
+      )
       .groupBy('user.id')
       .limit(5)
       .execute();

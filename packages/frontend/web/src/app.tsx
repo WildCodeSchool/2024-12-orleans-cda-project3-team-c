@@ -9,7 +9,6 @@ export default function App() {
       {/* <NavBarLeftWeb /> */}
       <main>
         <Outlet />
-        <UserSuggestion />
       </main>
     </div>
   );

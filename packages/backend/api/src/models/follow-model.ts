@@ -11,14 +11,19 @@ export default {
           followee_id: followeeId,
         })
         .execute();
-
-      return { isFollowing: true };
+      const followerCount = await this.getFollowerCount(followeeId);
+      return { isFollowing: true, followerCount: followerCount?.follow_count };
     } catch (error) {
       if ((error as QueryError).code === 'ER_DUP_ENTRY') {
-        return { isFollowing: true };
+        const followerCount = await this.getFollowerCount(followeeId);
+        return {
+          isFollowing: true,
+          followerCount: followerCount?.follow_count,
+        };
       }
       console.error('Error adding follow:', error);
-      return { isFollowing: false };
+      const followerCount = await this.getFollowerCount(followeeId);
+      return { isFollowing: false, followerCount: followerCount?.follow_count };
     }
   },
 
@@ -29,11 +34,19 @@ export default {
         .where('follower_id', '=', followerId)
         .where('followee_id', '=', followeeId)
         .execute();
-
-      return { isFollowing: false };
+      const followerCount = await this.getFollowerCount(followeeId);
+      return { isFollowing: false, followerCount: followerCount?.follow_count };
     } catch (error) {
       console.error('Error deleting follow:', error);
-      return { isFollowing: true };
+      const followerCount = await this.getFollowerCount(followeeId);
+      return { isFollowing: true, followerCount: followerCount?.follow_count };
     }
+  },
+  getFollowerCount(userId: number) {
+    return db
+      .selectFrom('follow_up')
+      .select(({ fn }) => [fn.count<number>('follower_id').as('follow_count')])
+      .where('followee_id', '=', userId)
+      .executeTakeFirst();
   },
 };
