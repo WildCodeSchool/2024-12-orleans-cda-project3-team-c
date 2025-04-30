@@ -2,12 +2,15 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
-import loaders from './loaders';
 // Charger les loaders mis à jour
+import ForgottenPassword from './components/forgotten-password';
+import Register from './components/register';
+import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
 import EditBio from './pages/edit-bio';
 import EditUsername from './pages/edit-username';
 import Feed from './pages/feed';
+import Login from './pages/login';
 import Parameters from './pages/parameters';
 import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
@@ -51,6 +54,18 @@ const router = createBrowserRouter([
         element: <EditBio />,
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/forgotten-password',
+    element: <ForgottenPassword />,
   },
 ]);
 
