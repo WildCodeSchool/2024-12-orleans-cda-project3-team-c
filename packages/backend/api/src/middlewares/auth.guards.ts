@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 
-export default function loginGuards(
+export default function authGuards(
   req: Request,
   res: Response,
   next: NextFunction,

@@ -1,11 +1,14 @@
+import type { User } from '@/contexts/auth-context';
+
 import ApiConnection from './api-connection';
 
 type LoginApiConnectionInterface = {
-  email: string;
+  user: User;
+  message: string;
   ok: boolean;
 };
 class LoginApiConnection extends ApiConnection {
-  constructor(resource = 'login') {
+  constructor(resource = 'auth/login') {
     super(resource);
   }
 

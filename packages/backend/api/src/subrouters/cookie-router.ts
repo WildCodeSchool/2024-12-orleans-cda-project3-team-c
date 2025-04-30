@@ -10,17 +10,17 @@ cookieRouter.get('/', async function (req: Request, res) {
     const userId = req.userId;
 
     if (userId === undefined) {
-      res.json({ ok: 'false' });
+      res.json({ ok: false });
       return;
     }
 
     const user = await getUserById(userId);
 
     if (!user) {
-      res.json({ ok: 'false' });
+      res.json({ ok: false });
       return;
     }
-    res.json({ user, ok: 'true' });
+    res.json({ user, ok: true });
     return;
   } catch (error) {
     console.error(error);
