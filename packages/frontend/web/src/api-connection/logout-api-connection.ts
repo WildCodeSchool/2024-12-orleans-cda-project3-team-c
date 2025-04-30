@@ -1,7 +1,7 @@
 import ApiConnection from './api-connection';
 
 class LoginApiConnection extends ApiConnection {
-  constructor(ressource = 'logout') {
+  constructor(ressource = 'auth/logout') {
     super(ressource);
   }
 
