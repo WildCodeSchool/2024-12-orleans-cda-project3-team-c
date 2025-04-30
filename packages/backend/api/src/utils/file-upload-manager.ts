@@ -46,11 +46,6 @@ export default {
     return `${crypto.randomUUID()}.${format.split('/')[1]}`;
   },
 
-  // Nouvelle fonction renameFileUser pour générer un nom de fichier basé sur l'ID utilisateur
-  renameFileUser(userId: string): string {
-    return `user${userId}-mock.png`;
-  },
-
   async saveTemporary(file: UploadedFile) {
     await file.mv(path.join(this.tempFolderPath, file.name));
   },

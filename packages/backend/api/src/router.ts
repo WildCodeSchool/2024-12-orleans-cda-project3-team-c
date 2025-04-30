@@ -6,10 +6,6 @@ import authRouter from './subrouters/auth-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
 
-// type MulterRequest = Request & {
-//   file: Express.Multer.File;
-// };
-
 const router = express.Router();
 
 // Middleware to check if the user is authenticated
