@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
 
 import userApiConnection from '@/api-connection/user-api-connection';
 import type { UserProfile } from '@/api-connection/user-api-connection';
@@ -8,26 +8,14 @@ import arrowLeftIcon from '@/assets/icons/arrow-left-white.svg';
 const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function ProfileInformations() {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-
-  const fetchProfile = async (): Promise<void> => {
-    try {
-      const profile = await userApiConnection.getProfile();
-      setUserProfile(profile);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          '[ProfileInformations] → Erreur chargement profil:',
-          error.message,
-        );
-      } else {
-        console.error(
-          '[ProfileInformations] → Erreur chargement profil: Unkown error',
-        );
-      }
-      setUserProfile(null);
-    }
-  };
+  const { profile } = useLoaderData<{ profile: UserProfile | null }>();
+  const [profilePicturePath, setProfilePicturePath] = useState<
+    string | undefined
+  >(
+    profile?.profile_picture
+      ? `${cdnUrl}/pictures/users/${profile.profile_picture}`
+      : `${cdnUrl}/pictures/users/user.png`,
+  );
 
   const handleProfilePictureChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -37,41 +25,17 @@ export default function ProfileInformations() {
 
     try {
       await userApiConnection.updateProfilePicture(file);
-      await fetchProfile();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          '[ProfileInformations] → Erreur mise à jour image:',
-          error.message,
-        );
-      } else {
-        console.error(
-          '[ProfileInformations] → Erreur mise à jour image: Unknown error',
-        );
-      }
+      const newPictureUrl = URL.createObjectURL(file);
+      setProfilePicturePath(newPictureUrl);
+    } catch (error) {
+      console.error(
+        'Erreur lors de la mise à jour de la photo de profil :',
+        error,
+      );
     }
   };
 
-  useEffect(() => {
-    const loadProfile = async () => {
-      await fetchProfile();
-    };
-
-    loadProfile().catch((error: unknown) => {
-      if (error instanceof Error) {
-        console.error(
-          '[ProfileInformations] → Erreur lors du chargement du profil:',
-          error.message,
-        );
-      } else {
-        console.error(
-          '[ProfileInformations] → Erreur lors du chargement du profil: Unknown error',
-        );
-      }
-    });
-  }, []);
-
-  if (!userProfile) {
+  if (!profile) {
     return (
       <div className='pt-10 text-center text-white'>
         {'Erreur de chargement du profil...'}
@@ -90,7 +54,7 @@ export default function ProfileInformations() {
 
       <img
         className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
-        src={`${cdnUrl}/pictures/users/${userProfile.profile_picture || 'user.png'}`}
+        src={profilePicturePath}
         alt='user'
       />
 
@@ -102,7 +66,6 @@ export default function ProfileInformations() {
         <input
           id='profilePicUpload'
           type='file'
-          accept='image/*'
           className='hidden'
           onChange={handleProfilePictureChange}
         />
@@ -111,7 +74,7 @@ export default function ProfileInformations() {
       <div className='mt-4 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col'>
           <p className='text-sm'>{'Username'}</p>
-          <p className='font-title text-base'>{'@' + userProfile.username}</p>
+          <p className='font-title text-base'>{'@' + profile.username}</p>
         </div>
         <div className='flex h-6'>
           <Link
@@ -126,7 +89,7 @@ export default function ProfileInformations() {
       <div className='mt-4 mb-8 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col pr-6'>
           <p className='text-sm'>{'Bio'}</p>
-          <p className='text-base'>{userProfile.biography}</p>
+          <p className='text-base'>{profile.biography}</p>
         </div>
         <div className='flex h-6'>
           <Link

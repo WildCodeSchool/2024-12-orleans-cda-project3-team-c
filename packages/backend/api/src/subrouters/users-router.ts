@@ -1,20 +1,22 @@
 import express from 'express';
+import type { UploadedFile } from 'express-fileupload';
 import fs from 'fs';
-import fsPromises from 'fs/promises';
-import multer from 'multer';
 import path from 'path';
 
 import userModel from '@/models/user-model';
 import fileUploadManager from '@/utils/file-upload-manager';
 
-const upload = multer({ dest: 'uploads/' });
-
 const usersRouter = express.Router();
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface PictureUploadedFile extends UploadedFile {
+  mimetype: string;
+}
 
 // GET **************************************************
 usersRouter.get('/profile', async (req, res) => {
   try {
-    const userId = 1; // Utiliser l'ID de l'utilisateur connecté, par exemple via req.user.id
+    const userId = 1;
 
     const profile = await userModel.getUserProfileById(userId);
 
@@ -33,7 +35,7 @@ usersRouter.get('/profile', async (req, res) => {
 // PUT **************************************************
 usersRouter.put('/username', async (req, res) => {
   try {
-    const userId = 1; // Utiliser l'ID de l'utilisateur connecté
+    const userId = 1;
     const { username } = req.body;
 
     if (!username || typeof username !== 'string' || username.length > 30) {
@@ -52,7 +54,7 @@ usersRouter.put('/username', async (req, res) => {
 
 usersRouter.put('/biography', async (req, res) => {
   try {
-    const userId = 1; // Utiliser l'ID de l'utilisateur connecté
+    const userId = 1;
     const { biography } = req.body;
 
     if (!biography || typeof biography !== 'string' || biography.length > 350) {
@@ -70,68 +72,46 @@ usersRouter.put('/biography', async (req, res) => {
 });
 
 // POST **************************************************
-usersRouter.post(
-  '/profile-picture',
-  upload.single('picture'),
-  async (req, res) => {
-    try {
-      const userId = 1; // Utiliser l'ID de l'utilisateur connecté
-      const file = req.file;
+usersRouter.post('/profile-picture', async (req, res) => {
+  try {
+    const userId = 1;
 
-      if (!file) {
-        res.status(400).json({ error: 'Aucun fichier envoyé' });
-        return;
-      }
+    const picture = req.files?.picture as
+      | PictureUploadedFile
+      | PictureUploadedFile[]
+      | undefined;
 
-      const formatOk = fileUploadManager.checkFormat(file.mimetype);
-      if (!formatOk) {
-        res.status(400).json({ error: 'Format de fichier non supporté' });
-        return;
-      }
-
-      const temporaryPath = path.join('public', 'pictures', 'temp');
-      const finalPath = path.join('public', 'pictures', 'users');
-
-      // Utiliser la fonction renameFileUser pour générer le nom du fichier de l'utilisateur
-      const fileName = fileUploadManager.renameFileUser(userId.toString());
-
-      // ✅ Déplacer le fichier téléchargé vers le dossier temporaire
-      await fsPromises.rename(
-        file.path,
-        path.join(temporaryPath, file.filename),
-      );
-      await fsPromises.rename(
-        path.join(temporaryPath, file.filename),
-        path.join(temporaryPath, fileName),
-      );
-
-      // Convertir l'image en format WebP
-      const finalFileName = await fileUploadManager.convertPicture(
-        fileName,
-        'webp',
-      );
-
-      // Déplacer l'image convertie dans le dossier final
-      await fsPromises.rename(
-        path.join(temporaryPath, finalFileName),
-        path.join(finalPath, finalFileName),
-      );
-
-      // Mettre à jour le profil de l'utilisateur avec la nouvelle image
-      await userModel.updateUserProfile(userId, {
-        profile_picture: finalFileName,
-      });
-
-      res.status(200).json({
-        message: 'Image mise à jour',
-        filename: finalFileName,
-      });
-    } catch (err) {
-      console.error('Erreur /profile-picture :', err);
-      res.status(500).json({ error: 'Erreur serveur' });
+    if (!picture) {
+      res.status(400).json({ error: 'Aucun fichier envoyé' });
+      return;
     }
-  },
-);
+
+    const pictureFile = Array.isArray(picture) ? picture[0] : picture;
+
+    if (!fileUploadManager.checkFormat(pictureFile.mimetype)) {
+      res.status(400).json({ error: 'Format de fichier non supporté' });
+      return;
+    }
+
+    pictureFile.name = fileUploadManager.renameFile(pictureFile.mimetype);
+    await fileUploadManager.saveTemporary(pictureFile);
+    const pictureName = await fileUploadManager.saveUserPicture(
+      pictureFile.name,
+    );
+
+    await userModel.updateUserProfile(userId, {
+      profile_picture: pictureName,
+    });
+
+    res.status(200).json({
+      message: 'Image mise à jour',
+      filename: pictureName,
+    });
+  } catch (err) {
+    console.error('Erreur /profile-picture :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
 
 // GET **************************************************
 usersRouter.get('/pictures/:filename', (req, res) => {

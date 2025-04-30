@@ -16,7 +16,7 @@ export default {
     'pictures',
     'temp',
   ),
-  postsPictureFolderPath: path.join(
+  postPicturesFolderPath: path.join(
     fileURLToPath(import.meta.url),
     '..',
     '..',
@@ -25,7 +25,7 @@ export default {
     'pictures',
     'posts',
   ),
-  usersPictureFolderPath: path.join(
+  userPicturesFolderPath: path.join(
     fileURLToPath(import.meta.url),
     '..',
     '..',
@@ -85,7 +85,7 @@ export default {
     }
   },
 
-  async convertPicture(fileName: string, format: string) {
+  async convertPicture(fileName: string, format: string, type: string) {
     if (await this.checkNeedsConverting(fileName, format)) {
       const newFileName = fileName.split('.')[0] + '.' + format;
 
@@ -95,10 +95,23 @@ export default {
 
       await fs.unlink(path.join(this.tempFolderPath, fileName));
 
-      await fs.rename(
-        path.join(this.tempFolderPath, newFileName),
-        path.join(this.usersPictureFolderPath, newFileName),
-      );
+      switch (type) {
+        case 'post':
+          await fs.rename(
+            path.join(this.tempFolderPath, newFileName),
+            path.join(this.postPicturesFolderPath, newFileName),
+          );
+          break;
+
+        case 'user':
+          await fs.rename(
+            path.join(this.tempFolderPath, newFileName),
+            path.join(this.userPicturesFolderPath, newFileName),
+          );
+          break;
+        default:
+          break;
+      }
 
       return newFileName;
     }
@@ -108,7 +121,7 @@ export default {
   async savePostPicture(fileName: string) {
     try {
       await this.resizePicture(fileName, 1080);
-      const newName = await this.convertPicture(fileName, 'webp');
+      const newName = await this.convertPicture(fileName, 'webp', 'post');
       return newName;
     } catch (error) {
       console.error(error);
@@ -116,27 +129,14 @@ export default {
   },
 
   // Nouvelle fonction pour l'upload de l'image de l'utilisateur
-  async saveUserPicture(file: UploadedFile, userId: string) {
+  async saveUserPicture(fileName: string) {
     try {
-      // Sauvegarder le fichier temporairement
-      await this.saveTemporary(file);
-
-      // Renommer le fichier de l'utilisateur
-      const newFileName = this.renameFileUser(userId);
-
       // Redimensionner l'image (si nécessaire) pour qu'elle ait une largeur maximale de 1080px
-      await this.resizePicture(file.name, 1080);
+      await this.resizePicture(fileName, 256);
 
       // Convertir l'image en format WebP
-      const finalFileName = await this.convertPicture(file.name, 'webp');
-
-      // Renommer le fichier avec le nom personnalisé
-      await fs.rename(
-        path.join(this.tempFolderPath, finalFileName),
-        path.join(this.usersPictureFolderPath, newFileName),
-      );
-
-      return newFileName;
+      const finalFileName = await this.convertPicture(fileName, 'webp', 'user');
+      return finalFileName;
     } catch (error) {
       console.error(
         "Erreur lors de l'upload de la photo de l'utilisateur:",

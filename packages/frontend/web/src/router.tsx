@@ -40,6 +40,7 @@ const router = createBrowserRouter([
       {
         path: '/profile-informations',
         element: <ProfileInformations />,
+        loader: loaders.userLoaders.getUserProfile,
       },
       {
         path: '/edit-username',
