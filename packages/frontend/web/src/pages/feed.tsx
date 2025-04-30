@@ -3,13 +3,11 @@ import { Link, useLoaderData } from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
-import logoutApiConnection from '@/api-connection/logout-api-connection';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
 import { useLoginContext } from '@/contexts/auth-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
-import logoutIcon from '../assets/icons/logout-white.svg';
 
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
@@ -50,19 +48,19 @@ export default function Feed() {
   }
 
   // à mettre dans la navbar
-  const logout = async () => {
-    try {
-      const data = await logoutApiConnection.logout();
+  // const logout = async () => {
+  //   try {
+  //     const data = await logoutApiConnection.logout();
 
-      if (data.ok) {
-        loginAuth.setIsUserLogged(false);
-      } else {
-        console.error('Logout failed');
-      }
-    } catch (error) {
-      console.error('Error during logout', error);
-    }
-  };
+  //     if (data.ok) {
+  //       loginAuth.setIsUserLogged(false);
+  //     } else {
+  //       console.error('Logout failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during logout', error);
+  //   }
+  // };
 
   return (
     // feed section
@@ -76,14 +74,14 @@ export default function Feed() {
           <img src={bellIcon} alt='' className='w-8' />
         </Link>
 
-        <button
+        {/* <button
           type='button'
           onClick={logout}
           className='flex items-center gap-2'
         >
           <img src={logoutIcon} alt='log out icon' className='h-6 w-6' />
           {'logout'}
-        </button>
+        </button> */}
       </header>
 
       {posts.map((post: FeedPost) => {

@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 type AuthProviderContextProps = PropsWithChildren<object>;
 
-type User = {
+export type User = {
   id: number;
   email: string;
 };
@@ -31,7 +31,7 @@ export default function AuthContext({
 
   useEffect(() => {
     async function getConnected() {
-      const response = await fetch(`${API_URL}/cookie`, {
+      const response = await fetch(`${API_URL}/auth/cookie`, {
         credentials: 'include',
       });
 
