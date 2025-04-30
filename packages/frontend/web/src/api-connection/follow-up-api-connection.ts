@@ -15,6 +15,7 @@ class FollowUpApiConnection extends ApiConnection {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ followeeId }),
+        credentials: 'include',
       });
 
       if (response.ok) {
@@ -37,6 +38,7 @@ class FollowUpApiConnection extends ApiConnection {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ followeeId }),
+        credentials: 'include',
       });
 
       if (response.ok) {
