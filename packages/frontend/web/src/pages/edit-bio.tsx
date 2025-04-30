@@ -45,7 +45,7 @@ export default function EditBio() {
       await userApiConnection.updateBiography(biography);
       setSuccessMessage('Biography updated successfully');
 
-      await fetchData(); // refresh local data
+      await fetchData();
     } catch (error) {
       console.error('Error updating biography:', error);
       setErrorMessage('Error during saving');

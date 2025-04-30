@@ -123,13 +123,10 @@ export default {
     }
   },
 
-  // Nouvelle fonction pour l'upload de l'image de l'utilisateur
   async saveUserPicture(fileName: string) {
     try {
-      // Redimensionner l'image (si nécessaire) pour qu'elle ait une largeur maximale de 1080px
       await this.resizePicture(fileName, 256);
 
-      // Convertir l'image en format WebP
       const finalFileName = await this.convertPicture(fileName, 'webp', 'user');
       return finalFileName;
     } catch (error) {
