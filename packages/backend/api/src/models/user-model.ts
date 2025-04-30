@@ -30,10 +30,12 @@ export async function userRegister(
       if (alreadyExists.email === email) {
         return {
           error: 'Email is already in use, please use a different email',
+          ok: false,
         };
       }
       return {
         error: 'username is already in use, please use a different username',
+        ok: false,
       };
     }
 
@@ -50,7 +52,7 @@ export async function userRegister(
       .values({ email, username, password: hashPassword })
       .executeTakeFirst();
 
-    return { message: 'User created successfully' };
+    return { message: 'User created successfully', ok: true };
   } catch (error) {
     console.error('Error creating user:', error);
     throw new Error(

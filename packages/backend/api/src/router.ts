@@ -1,7 +1,7 @@
 import express from 'express';
 
+import authGuards from './middlewares/auth.guards';
 import authMiddleware from './middlewares/auth.middleware';
-import loginGuards from './middlewares/login.guards';
 import authRouter from './subrouters/auth-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
@@ -18,7 +18,7 @@ router.use(authMiddleware);
 router.use('/auth', authRouter);
 
 //login guards il faudra mettre mettre toutes les routes qui necessitent d'etre authentifié
-router.use(loginGuards);
+router.use(authGuards);
 router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
 

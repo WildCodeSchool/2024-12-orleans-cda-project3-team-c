@@ -29,7 +29,7 @@ export default function Register() {
       setPassword('');
       setConfirmPassword('');
 
-      await navigate('/');
+      await navigate('/login');
     } catch (error) {
       console.error(error);
     }

@@ -26,7 +26,9 @@ class UserApiConnection extends ApiConnection {
   }
 
   async getProfile(): Promise<UserProfile> {
-    const res = await fetch(`${this.ressourceUrl}/profile`);
+    const res = await fetch(`${this.ressourceUrl}/profile`, {
+      credentials: 'include',
+    });
 
     if (!res.ok) {
       throw new Error('Failed to fetch profile');
