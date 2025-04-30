@@ -1,7 +1,8 @@
+// src/router.ts
 import express from 'express';
 
+import authGuards from './middlewares/auth.guards';
 import authMiddleware from './middlewares/auth.middleware';
-import loginGuards from './middlewares/login.guards';
 import authRouter from './subrouters/auth-router';
 import followUpsRouter from './subrouters/follow-ups-router';
 import postsRouter from './subrouters/posts-router';
@@ -16,8 +17,7 @@ router.use(authMiddleware);
 router.use('/auth', authRouter);
 
 //login guards il faudra mettre mettre toutes les routes qui necessitent d'etre authentifié
-router.use(loginGuards);
-
+router.use(authGuards);
 router.use('/follows', followUpsRouter);
 router.use('/posts', postsRouter);
 router.use('/suggestion', suggestionRouter);

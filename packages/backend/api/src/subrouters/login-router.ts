@@ -79,6 +79,7 @@ loginRouter.post('/', async function (req: Request, res: Response) {
     });
 
     res.json({
+      ok: true,
       message: 'Login successful',
       user: restUser,
     });
