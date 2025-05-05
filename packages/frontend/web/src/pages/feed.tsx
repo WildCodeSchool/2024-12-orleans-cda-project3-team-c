@@ -5,7 +5,6 @@ import type { FeedPost } from '@app/api';
 
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
-import { useLoginContext } from '@/contexts/auth-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
 
@@ -13,10 +12,8 @@ export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
-  let page = 1;
 
-  //context à mettre dans la navbar
-  const loginAuth = useLoginContext();
+  let page = 1;
 
   useEffect(() => {
     let infiniteScrollObserver: IntersectionObserver;
@@ -47,21 +44,6 @@ export default function Feed() {
     }
   }
 
-  // à mettre dans la navbar
-  // const logout = async () => {
-  //   try {
-  //     const data = await logoutApiConnection.logout();
-
-  //     if (data.ok) {
-  //       loginAuth.setIsUserLogged(false);
-  //     } else {
-  //       console.error('Logout failed');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error during logout', error);
-  //   }
-  // };
-
   return (
     // feed section
     <section className='mx-auto max-w-[460px] md:pt-8'>
@@ -73,15 +55,6 @@ export default function Feed() {
         <Link to={'/notifications'}>
           <img src={bellIcon} alt='' className='w-8' />
         </Link>
-
-        {/* <button
-          type='button'
-          onClick={logout}
-          className='flex items-center gap-2'
-        >
-          <img src={logoutIcon} alt='log out icon' className='h-6 w-6' />
-          {'logout'}
-        </button> */}
       </header>
 
       {posts.map((post: FeedPost) => {
