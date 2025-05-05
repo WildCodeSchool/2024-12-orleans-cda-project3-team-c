@@ -44,6 +44,7 @@ class UserApiConnection extends ApiConnection {
     const res = await fetch(`${this.ressourceUrl}/profile-picture`, {
       method: 'POST',
       body: formData,
+      credentials: 'include',
     });
 
     if (!res.ok) throw new Error('Failed to upload profile picture');
@@ -56,6 +57,7 @@ class UserApiConnection extends ApiConnection {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username }),
+      credentials: 'include',
     });
 
     if (!res.ok) throw new Error('Failed to update username');
@@ -68,6 +70,7 @@ class UserApiConnection extends ApiConnection {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ biography }),
+      credentials: 'include',
     });
 
     if (!res.ok) throw new Error('Failed to update biography');

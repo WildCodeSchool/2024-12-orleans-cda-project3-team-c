@@ -49,6 +49,7 @@ usersRouter.put('/username', async (req, res) => {
   } catch (err) {
     console.error('Erreur /username :', err);
     res.status(500).json({ error: 'Erreur serveur' });
+    return;
   }
 });
 
@@ -68,18 +69,16 @@ usersRouter.put('/biography', async (req, res) => {
   } catch (err) {
     console.error('Erreur /biography :', err);
     res.status(500).json({ error: 'Erreur serveur' });
+    return;
   }
 });
 
-// POST **************************************************
-usersRouter.post('/profile-picture', async (req, res) => {
+// PUT **************************************************
+usersRouter.put('/profile-picture', async (req, res) => {
   try {
     const userId = 1;
 
-    const picture = req.files?.picture as
-      | PictureUploadedFile
-      | PictureUploadedFile[]
-      | undefined;
+    const picture = req.files?.picture as PictureUploadedFile | undefined;
 
     if (!picture) {
       res.status(400).json({ error: 'Aucun fichier envoyé' });
@@ -110,26 +109,10 @@ usersRouter.post('/profile-picture', async (req, res) => {
   } catch (err) {
     console.error('Erreur /profile-picture :', err);
     res.status(500).json({ error: 'Erreur serveur' });
+    return;
   }
 });
 
 // GET **************************************************
-usersRouter.get('/pictures/:filename', (req, res) => {
-  const filename = req.params.filename;
-  const imagePath = path.join(
-    process.cwd(),
-    'public',
-    'pictures',
-    'users',
-    filename,
-  );
-
-  if (!fs.existsSync(imagePath)) {
-    res.status(404).json({ error: 'Image non trouvée' });
-    return;
-  }
-
-  res.sendFile(imagePath);
-});
 
 export default usersRouter;

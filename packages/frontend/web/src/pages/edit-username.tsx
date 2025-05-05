@@ -43,7 +43,7 @@ export default function EditUsername() {
       await userApiConnection.updateUsername(username);
       setSuccessMessage('Username updated successfully');
 
-      await fetchData(); // refresh the displayed part
+      await fetchData();
     } catch (error) {
       console.error('Error updating username:', error);
       setErrorMessage('Error during saving');
@@ -85,7 +85,7 @@ export default function EditUsername() {
           <p className='text-placeholder text-xs'>{`${username.length}/30`}</p>
         </div>
 
-        <div className='mt-1 flex h-6 w-72 items-center rounded-md border border-gray-300 bg-purple-900 p-2'>
+        <form className='mt-1 flex h-6 w-72 items-center rounded-md border border-gray-300 bg-purple-900 p-2'>
           <p className='text-xs'>{'@'}</p>
           <input
             className='flex-1 bg-purple-900 text-xs text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
@@ -94,7 +94,7 @@ export default function EditUsername() {
             value={username}
             onChange={handleChange}
           />
-        </div>
+        </form>
       </section>
 
       <div className='mt-8 flex flex-col items-center gap-2 pl-4 sm:w-full sm:pl-0'>

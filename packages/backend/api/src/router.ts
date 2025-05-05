@@ -5,6 +5,7 @@ import authMiddleware from './middlewares/auth.middleware';
 import authRouter from './subrouters/auth-router';
 import postsRouter from './subrouters/posts-router';
 import tagsRouter from './subrouters/tags-router';
+import usersRouter from './subrouters/users-router';
 
 const router = express.Router();
 
@@ -17,6 +18,7 @@ router.use('/auth', authRouter);
 router.use(authGuards);
 router.use('/posts', postsRouter);
 router.use('/tags', tagsRouter);
+router.use('/users', usersRouter);
 
 router.use('*', (req, res) => {
   res.status(404).json({ message: `Resource ${req.path} not found` });

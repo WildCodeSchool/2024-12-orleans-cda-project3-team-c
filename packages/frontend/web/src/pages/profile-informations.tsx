@@ -28,17 +28,14 @@ export default function ProfileInformations() {
       const newPictureUrl = URL.createObjectURL(file);
       setProfilePicturePath(newPictureUrl);
     } catch (error) {
-      console.error(
-        'Erreur lors de la mise à jour de la photo de profil :',
-        error,
-      );
+      console.error('Error while updating the profile picture:', error);
     }
   };
 
   if (!profile) {
     return (
       <div className='pt-10 text-center text-white'>
-        {'Erreur de chargement du profil...'}
+        {'Profile loading error...'}
       </div>
     );
   }

@@ -80,14 +80,14 @@ export default function EditBio() {
           <p className='text-placeholder text-xs'>{`${biography.length}/350`}</p>
         </div>
 
-        <div className='mt-1 flex w-72 items-center rounded-md border border-gray-300 bg-purple-900 p-1'>
+        <form className='mt-1 flex w-72 items-center rounded-md border border-gray-300 bg-purple-900 p-1'>
           <textarea
             className='h-40 flex-1 bg-purple-900 px-2 py-1 text-xs leading-tight text-white placeholder-gray-500 focus:outline-none'
             value={biography}
             onChange={handleBiographyChange}
             placeholder='Write something about yourself...'
           />
-        </div>
+        </form>
       </section>
 
       <div className='mt-8 flex flex-col items-center gap-2 pl-4 sm:w-full sm:pl-0'>
