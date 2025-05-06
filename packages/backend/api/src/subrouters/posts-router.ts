@@ -28,14 +28,14 @@ postsRouter.get('', async function (req: Request, res) {
     if (!page) {
       res
         .status(400)
-        .send('Bad request, you should provide a valid page number');
+        .json({error: 'Bad request, you should provide a valid page number'});
       return;
     }
   }
 
   const userId = req.userId;
   if (userId === undefined) {
-    res.status(401).send('Unauthorized: user not authenticated');
+    res.status(401).json({error: 'Unauthorized: user not authenticated'});
     return;
   }
 
@@ -53,7 +53,7 @@ postsRouter.post('', async function (req: Request, res) {
   } else if (!fileUploadManager.checkFormat(picture.mimetype)) {
     res
       .status(400)
-      .send('Wrong picture format. Should be jpg, png, webp or avif');
+      .json({error: 'Wrong picture format. Should be jpg, png, webp or avif'});
     return;
   }
 
@@ -64,7 +64,7 @@ postsRouter.post('', async function (req: Request, res) {
   if (pictureName !== undefined) {
     const userId = req.userId;
     if (userId === undefined) {
-      res.status(401).send('Unauthorized');
+      res.status(401).json({error: 'Unauthorized'});
       return;
     }
 
@@ -101,12 +101,12 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
   const postId = +req.params.postId;
 
   if (userId === undefined) {
-    res.status(401).send('Unauthorized');
+    res.status(401).json({error: 'Unauthorized'});
     return;
   }
 
   if (!postId) {
-    res.status(400).send('Bad request, you should provide a valid post id');
+    res.status(400).json({error: 'Bad request, you should provide a valid post id'});
     return;
   }
 
@@ -114,7 +114,7 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
   if (data) {
     res.json(data);
   } else {
-    res.status(500).send('Something went wrong while liking post');
+    res.status(500).json({error: 'Something went wrong while liking post'});
   }
 });
 
@@ -123,12 +123,12 @@ postsRouter.delete('/:postId/like', async function (req: Request, res) {
   const postId = +req.params.postId;
 
   if (userId === undefined) {
-    res.status(401).send('Unauthorized');
+    res.status(401).json({error: 'Unauthorized'});
     return;
   }
 
   if (!postId) {
-    res.status(400).send('Bad request, you should provide a valid post id');
+    res.status(400).json({error: 'Bad request, you should provide a valid post id'});
     return;
   }
 
@@ -136,7 +136,7 @@ postsRouter.delete('/:postId/like', async function (req: Request, res) {
   if (data) {
     res.json(data);
   } else {
-    res.status(500).send('Something went wrong while unliking post');
+    res.status(500).json({error: 'Something went wrong while unliking post'});
   }
 });
 
