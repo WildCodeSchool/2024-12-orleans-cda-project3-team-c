@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 
+import type { UserProfile } from '@app/api';
+
 import userApiConnection from '@/api-connection/user-api-connection';
-import type { UserProfile } from '@/api-connection/user-api-connection';
 import arrowLeftIcon from '@/assets/icons/arrow-left-white.svg';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;
@@ -48,25 +49,26 @@ export default function ProfileInformations() {
         </Link>
         <h2 className='font-title ml-16 text-2xl'>{'Profile Informations'}</h2>
       </div>
-
-      <img
-        className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
-        src={profilePicturePath}
-        alt='user'
-      />
-
-      <label
-        htmlFor='profilePicUpload'
-        className='text-turquoise-blue-400 border-turquoise-blue-400 cursor-pointer rounded-md border px-2 py-1 text-sm'
-      >
-        {'Change profile picture'}
-        <input
-          id='profilePicUpload'
-          type='file'
-          className='hidden'
-          onChange={handleProfilePictureChange}
+      <form action=''>
+        <img
+          className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
+          src={profilePicturePath}
+          alt='user'
         />
-      </label>
+
+        <label
+          htmlFor='profilePicUpload'
+          className='text-turquoise-blue-400 border-turquoise-blue-400 cursor-pointer rounded-md border px-2 py-1 text-sm'
+        >
+          {'Change profile picture'}
+          <input
+            id='profilePicUpload'
+            type='file'
+            className='hidden'
+            onChange={handleProfilePictureChange}
+          />
+        </label>
+      </form>
 
       <div className='mt-4 flex w-72 items-center justify-between rounded-md border border-purple-900 px-3 py-2'>
         <div className='flex flex-col'>

@@ -1,5 +1,6 @@
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
+import type userModel from './user-model';
 
 // Posts **************************************************
 export type FeedPost = Awaited<
@@ -29,3 +30,9 @@ export type PostTagInsertionList = {
   tag_id: number;
   post_id: number;
 };
+
+export type UserPost = Awaited<ReturnType<typeof postModel.getFeedPage>>;
+
+export type UserProfile = Awaited<
+  ReturnType<typeof userModel.getUserProfileById>
+>;

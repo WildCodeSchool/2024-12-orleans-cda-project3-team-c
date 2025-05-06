@@ -1,24 +1,6 @@
+import type { UserProfile } from '@app/api';
+
 import ApiConnection from './api-connection';
-
-export type UserPost = {
-  id: number;
-  picture: string;
-  description: string;
-  created_at: string;
-  likeCount: number;
-  commentCount: number;
-};
-
-export type UserProfile = {
-  id: number;
-  username: string;
-  profile_picture: string;
-  biography: string;
-  notoriety: number;
-  posts: UserPost[];
-  followersCount: number;
-  followingCount: number;
-};
 
 class UserApiConnection extends ApiConnection {
   constructor(ressource = 'users') {

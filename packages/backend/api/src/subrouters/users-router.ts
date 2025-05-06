@@ -1,7 +1,5 @@
 import express from 'express';
 import type { UploadedFile } from 'express-fileupload';
-import fs from 'fs';
-import path from 'path';
 
 import userModel from '@/models/user-model';
 import fileUploadManager from '@/utils/file-upload-manager';
@@ -21,14 +19,14 @@ usersRouter.get('/profile', async (req, res) => {
     const profile = await userModel.getUserProfileById(userId);
 
     if (!profile) {
-      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      res.status(404).json({ error: 'User not found' });
       return;
     }
 
     res.json(profile);
   } catch (err) {
-    console.error('Erreur /profile :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Error /profile:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -39,16 +37,16 @@ usersRouter.put('/username', async (req, res) => {
     const { username } = req.body;
 
     if (!username || typeof username !== 'string' || username.length > 30) {
-      res.status(400).json({ error: 'Nom d’utilisateur invalide' });
+      res.status(400).json({ error: 'Invalid username' });
       return;
     }
 
     await userModel.updateUserProfile(userId, { username });
 
-    res.status(200).json({ message: 'Nom d’utilisateur mis à jour' });
+    res.status(200).json({ message: 'Username updated' });
   } catch (err) {
-    console.error('Erreur /username :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Error /username:', err);
+    res.status(500).json({ error: 'Server error' });
     return;
   }
 });
@@ -59,16 +57,16 @@ usersRouter.put('/biography', async (req, res) => {
     const { biography } = req.body;
 
     if (!biography || typeof biography !== 'string' || biography.length > 350) {
-      res.status(400).json({ error: 'Biographie invalide' });
+      res.status(400).json({ error: 'Invalid biography' });
       return;
     }
 
     await userModel.updateUserProfile(userId, { biography });
 
-    res.status(200).json({ message: 'Biographie mise à jour' });
+    res.status(200).json({ message: 'Biography updated' });
   } catch (err) {
-    console.error('Erreur /biography :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Error /biography:', err);
+    res.status(500).json({ error: 'Server error' });
     return;
   }
 });
@@ -81,14 +79,14 @@ usersRouter.put('/profile-picture', async (req, res) => {
     const picture = req.files?.picture as PictureUploadedFile | undefined;
 
     if (!picture) {
-      res.status(400).json({ error: 'Aucun fichier envoyé' });
+      res.status(400).json({ error: 'No file uploaded' });
       return;
     }
 
     const pictureFile = Array.isArray(picture) ? picture[0] : picture;
 
     if (!fileUploadManager.checkFormat(pictureFile.mimetype)) {
-      res.status(400).json({ error: 'Format de fichier non supporté' });
+      res.status(400).json({ error: 'Unsupported file format' });
       return;
     }
 
@@ -98,17 +96,24 @@ usersRouter.put('/profile-picture', async (req, res) => {
       pictureFile.name,
     );
 
+    const existingProfile = await userModel.getUserProfileById(userId);
+    const previousPicture = existingProfile?.profile_picture;
+
     await userModel.updateUserProfile(userId, {
       profile_picture: pictureName,
     });
 
+    if (previousPicture && previousPicture !== 'user.png') {
+      await fileUploadManager.deleteUserPicture(previousPicture);
+    }
+
     res.status(200).json({
-      message: 'Image mise à jour',
+      message: 'Image updated',
       filename: pictureName,
     });
   } catch (err) {
-    console.error('Erreur /profile-picture :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Error /profile-picture:', err);
+    res.status(500).json({ error: 'Server error' });
     return;
   }
 });

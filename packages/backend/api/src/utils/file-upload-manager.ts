@@ -137,4 +137,16 @@ export default {
       throw new Error("Erreur lors de l'upload de la photo");
     }
   },
+
+  async deleteUserPicture(fileName: string) {
+    try {
+      const filePath = path.join(this.userPicturesFolderPath, fileName);
+      await fs.unlink(filePath);
+    } catch (error) {
+      console.error(
+        `Erreur lors de la suppression de l'image utilisateur :`,
+        error,
+      );
+    }
+  },
 };
