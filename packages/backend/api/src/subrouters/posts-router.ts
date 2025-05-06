@@ -1,6 +1,8 @@
 import express from 'express';
+import type { Request } from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
+import authMiddleware from '@/middlewares/auth.middleware';
 import type { PostTagInsertionList } from '@/models/model-types';
 import postLikeModel from '@/models/post-like-model';
 import postModel from '@/models/post-model';
@@ -11,17 +13,15 @@ import textParsers from '@/utils/text-parsers';
 
 const postsRouter = express.Router();
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-interface PictureUploadedFile extends UploadedFile {
+type PictureUploadedFile = {
   mimetype: string;
-}
+} & UploadedFile;
 
-// GET **************************************************
-postsRouter.get('/:id', function () {
-  // Getting a specified post
-});
+postsRouter.use(authMiddleware);
 
-postsRouter.get('', async function (req, res) {
+//postsRouter.get('/:id', function () {});
+
+postsRouter.get('', async function (req: Request, res) {
   let page = 1;
   if (req.query.page !== '' && req.query.page !== undefined) {
     page = +req.query.page;
@@ -29,16 +29,21 @@ postsRouter.get('', async function (req, res) {
       res
         .status(400)
         .send('Bad request, you should provide a valid page number');
+      return;
     }
   }
 
-  const testConnectedUser = 1;
-  const data = await postModel.getFeedPage(page, testConnectedUser);
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized: user not authenticated');
+    return;
+  }
+
+  const data = await postModel.getFeedPage(page, userId);
   res.json(data);
 });
 
-// POST **************************************************
-postsRouter.post('', async function (req, res) {
+postsRouter.post('', async function (req: Request, res) {
   const picture = req.files?.picture as PictureUploadedFile;
   const description = req.body.description;
 
@@ -49,19 +54,21 @@ postsRouter.post('', async function (req, res) {
     res
       .status(400)
       .send('Wrong picture format. Should be jpg, png, webp or avif');
+    return;
   }
 
-  // Picture upload
   picture.name = fileUploadManager.renameFile(picture.mimetype);
   await fileUploadManager.saveTemporary(picture);
   const pictureName = await fileUploadManager.savePostPicture(picture.name);
+
   if (pictureName !== undefined) {
-    const testConnectedUser = 1;
-    const data = await postModel.create(
-      pictureName,
-      description,
-      testConnectedUser,
-    );
+    const userId = req.userId;
+    if (userId === undefined) {
+      res.status(401).send('Unauthorized');
+      return;
+    }
+
+    const data = await postModel.create(pictureName, description, userId);
     const postId = Number(data.insertId);
 
     if (description !== '') {
@@ -78,25 +85,32 @@ postsRouter.post('', async function (req, res) {
             });
           }
         }
+
         if (postTagInsertionList.length > 0) {
           await postTagModel.createMany(postTagInsertionList);
         }
       }
     }
+
     res.sendStatus(200);
   }
 });
 
-postsRouter.post('/:postId/like', async function (req, res) {
-  const testConnectedUser = 1;
-
+postsRouter.post('/:postId/like', async function (req: Request, res) {
+  const userId = req.userId;
   const postId = +req.params.postId;
+
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
 
   if (!postId) {
     res.status(400).send('Bad request, you should provide a valid post id');
+    return;
   }
 
-  const data = await postLikeModel.addPostLike(postId, testConnectedUser);
+  const data = await postLikeModel.addPostLike(postId, userId);
   if (data) {
     res.json(data);
   } else {
@@ -104,19 +118,21 @@ postsRouter.post('/:postId/like', async function (req, res) {
   }
 });
 
-// UPDATE **************************************************
-
-// DELETE **************************************************
-postsRouter.delete('/:postId/like', async function (req, res) {
-  const testConnectedUser = 1;
-
+postsRouter.delete('/:postId/like', async function (req: Request, res) {
+  const userId = req.userId;
   const postId = +req.params.postId;
+
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
 
   if (!postId) {
     res.status(400).send('Bad request, you should provide a valid post id');
+    return;
   }
 
-  const data = await postLikeModel.deletePostLike(postId, testConnectedUser);
+  const data = await postLikeModel.deletePostLike(postId, userId);
   if (data) {
     res.json(data);
   } else {

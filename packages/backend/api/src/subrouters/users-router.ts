@@ -1,20 +1,21 @@
 import express from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
+import authMiddleware from '@/middlewares/auth.middleware';
 import userModel from '@/models/user-model';
 import fileUploadManager from '@/utils/file-upload-manager';
 
 const usersRouter = express.Router();
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-interface PictureUploadedFile extends UploadedFile {
+type PictureUploadedFile = {
   mimetype: string;
-}
+} & UploadedFile;
 
-// GET **************************************************
+usersRouter.use(authMiddleware);
+
 usersRouter.get('/profile', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = req.cookies.userId;
 
     const profile = await userModel.getUserProfileById(userId);
 
@@ -30,10 +31,9 @@ usersRouter.get('/profile', async (req, res) => {
   }
 });
 
-// PUT **************************************************
 usersRouter.put('/username', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = req.cookies.userId;
     const { username } = req.body;
 
     if (!username || typeof username !== 'string' || username.length > 30) {
@@ -53,7 +53,7 @@ usersRouter.put('/username', async (req, res) => {
 
 usersRouter.put('/biography', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = req.cookies.userId;
     const { biography } = req.body;
 
     if (!biography || typeof biography !== 'string' || biography.length > 350) {
@@ -71,10 +71,9 @@ usersRouter.put('/biography', async (req, res) => {
   }
 });
 
-// PUT **************************************************
 usersRouter.put('/profile-picture', async (req, res) => {
   try {
-    const userId = 1;
+    const userId = req.cookies.userId;
 
     const picture = req.files?.picture as PictureUploadedFile | undefined;
 
@@ -117,7 +116,5 @@ usersRouter.put('/profile-picture', async (req, res) => {
     return;
   }
 });
-
-// GET **************************************************
 
 export default usersRouter;
