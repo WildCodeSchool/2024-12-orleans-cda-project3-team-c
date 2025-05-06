@@ -115,6 +115,7 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
     res.json(data);
   } else {
     res.status(500).json({error: 'Something went wrong while liking post'});
+    return;
   }
 });
 
@@ -137,6 +138,7 @@ postsRouter.delete('/:postId/like', async function (req: Request, res) {
     res.json(data);
   } else {
     res.status(500).json({error: 'Something went wrong while unliking post'});
+    return;
   }
 });
 
