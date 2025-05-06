@@ -1,4 +1,3 @@
-// src/router.ts
 import express from 'express';
 
 import authGuards from './middlewares/auth.guards';
