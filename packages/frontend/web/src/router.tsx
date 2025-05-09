@@ -10,6 +10,7 @@ import CreatePostPage from './pages/create-post-page';
 import Feed from './pages/feed';
 import Login from './pages/login';
 import ProfilePage from './pages/profile-page';
+import Search from './pages/search';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: '/create',
         element: <CreatePostPage />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
     ],
   },
