@@ -32,14 +32,14 @@ loginRouter.post('/', async function (req: Request, res: Response) {
 
     const userAccess = await userLogin(email);
     if (!userAccess) {
-      res.status(401).json({ message: 'Invalid email or password 1' });
+      res.status(401).json({ message: 'Invalid email or password' });
       return;
     }
 
     const isPasswordValid = await argon2.verify(userAccess.password, password);
 
     if (!isPasswordValid) {
-      res.status(401).json({ message: 'Invalid email or password 2' });
+      res.status(401).json({ message: 'Invalid email or password' });
       return;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
