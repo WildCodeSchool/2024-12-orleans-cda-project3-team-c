@@ -61,10 +61,38 @@ export async function userRegister(
   }
 }
 
-export async function getUserById(userId: number) {
+export async function checkIfCredentialsAlreadyExists(
+  email: string,
+  username: string,
+) {
+  const messages: { email?: string; username?: string } = {};
+
+  const results = await db
+    .selectFrom('user')
+    .select(['email', 'username'])
+    .where((eb) =>
+      eb.or([eb('email', '=', email), eb('username', '=', username)]),
+    )
+    .execute();
+
+  if (results.length) {
+    results.forEach((result) => {
+      if (result.email === email) {
+        messages.email = 'This email address is already in use';
+      }
+      if (result.username === username) {
+        messages.username = 'This username is not available';
+      }
+    });
+    return messages;
+  }
+  return false;
+}
+
+export async function getLoggedInUser(userId: number) {
   return db
     .selectFrom('user')
-    .selectAll()
+    .select(['id', 'profile_picture'])
     .where('user.id', '=', userId)
     .executeTakeFirst();
 }

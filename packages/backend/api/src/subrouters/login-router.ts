@@ -23,7 +23,12 @@ const refreshTokenSecret = new TextEncoder().encode(REFRESH_TOKEN_SECRET);
 
 loginRouter.post('/', async function (req: Request, res: Response) {
   try {
-    const { email, password } = req.body;
+    const { email, password }: { email: string; password: string } = req.body;
+
+    if (!email.length || !password.length) {
+      res.status(400).json({ message: 'All inputs are required' });
+      return;
+    }
 
     const userAccess = await userLogin(email);
     if (!userAccess) {
