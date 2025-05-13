@@ -5,6 +5,8 @@ import type { FeedPost } from '@app/api';
 
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
+import UserSuggestionContainer from '@/components/user-suggestion';
+import { useLoginContext } from '@/contexts/auth-context';
 
 import bellIcon from '../assets/icons/bell-white.svg';
 
@@ -46,23 +48,26 @@ export default function Feed() {
 
   return (
     // feed section
-    <section className='mx-auto max-w-[460px] md:pt-8'>
-      <header
-        id='feed-header'
-        className='flex items-center justify-between p-4 md:hidden'
-      >
-        <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
-        <Link to={'/notifications'}>
-          <img src={bellIcon} alt='' className='w-8' />
-        </Link>
-      </header>
+    <>
+      <section className='mx-auto max-w-[460px] md:pt-8'>
+        <header
+          id='feed-header'
+          className='flex items-center justify-between p-4 md:hidden'
+        >
+          <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
+          <Link to={'/notifications'}>
+            <img src={bellIcon} alt='' className='w-8' />
+          </Link>
+        </header>
 
-      {posts.map((post: FeedPost) => {
-        return <Post post={post} key={post.id} />;
-      })}
-      {/* enlever la hauteur et la couleur, rajouter un offset */}
-      {/* à garder comme ça le temps de terminer toutes les fonctionnalités liées à ça */}
-      <div className='h-1 bg-amber-400' ref={infiniteScrollTrigger} />
-    </section>
+        {posts.map((post: FeedPost) => {
+          return <Post post={post} key={post.id} />;
+        })}
+        {/* enlever la hauteur et la couleur, rajouter un offset */}
+        {/* à garder comme ça le temps de terminer toutes les fonctionnalités liées à ça */}
+        <div className='h-1 bg-amber-400' ref={infiniteScrollTrigger} />
+      </section>
+      <UserSuggestionContainer />
+    </>
   );
 }
