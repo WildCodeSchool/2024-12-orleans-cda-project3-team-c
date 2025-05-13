@@ -21,7 +21,6 @@ usersRouter.get('/profile', async (req: Request, res) => {
 
     res.json(profile);
   } catch (err) {
-    console.error('Erreur dans GET /profile :', err);
     console.error('Error /profile:', err);
     res.status(500).json({ error: 'Server error' });
     return;
