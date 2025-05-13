@@ -1,3 +1,4 @@
+import type followModel from './follow-up-model';
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
 import type userModel from './user-model';
@@ -36,3 +37,12 @@ export type UserPost = Awaited<ReturnType<typeof postModel.getFeedPage>>;
 export type UserProfile = Awaited<
   ReturnType<typeof userModel.getUserProfileById>
 >;
+
+// Follow **************************************************
+export type FollowAction = Awaited<
+  ReturnType<typeof followModel.addFollow | typeof followModel.deleteFollow>
+>;
+
+export type UserSuggestion = Awaited<
+  ReturnType<typeof userModel.getUserSuggestionsForUser>
+>[number];

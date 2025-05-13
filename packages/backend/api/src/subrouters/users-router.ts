@@ -33,6 +33,7 @@ usersRouter.get('/profile', async (req: Request, res) => {
   } catch (err) {
     console.error('Error /profile:', err);
     res.status(500).json({ error: 'Server error' });
+    return;
   }
 });
 
@@ -53,6 +54,7 @@ usersRouter.put('/username', async (req: Request, res) => {
     await userModel.updateUserProfile(userId, { username });
 
     res.status(200).json({ message: 'Username updated' });
+    return;
   } catch (err) {
     console.error('Error /username:', err);
     res.status(500).json({ error: 'Server error' });
@@ -77,6 +79,7 @@ usersRouter.put('/biography', async (req: Request, res) => {
     await userModel.updateUserProfile(userId, { biography });
 
     res.status(200).json({ message: 'Biography updated' });
+    return;
   } catch (err) {
     console.error('Error /biography:', err);
     res.status(500).json({ error: 'Server error' });
@@ -127,6 +130,7 @@ usersRouter.put('/profile-picture', async (req: Request, res) => {
       message: 'Image updated',
       filename: pictureName,
     });
+    return;
   } catch (err) {
     console.error('Error /profile-picture:', err);
     res.status(500).json({ error: 'Server error' });

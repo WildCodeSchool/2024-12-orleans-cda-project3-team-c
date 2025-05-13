@@ -132,4 +132,38 @@ export default {
       .where('id', '=', userId)
       .execute();
   },
+
+  async getUserSuggestionsForUser(userId: number) {
+    return db
+      .selectFrom('user')
+      .leftJoin('follow_up', (join) =>
+        join.onRef('follow_up.follower_id', '=', 'user.id'),
+      )
+      .select((eb) => [
+        'user.id',
+        'user.username',
+        'user.profile_picture',
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) =>
+            fn.count<number>('follow_up.followee_id').as('follower_count'),
+          )
+          .whereRef('followee_id', '=', 'user.id')
+          .as('follower_count'),
+      ])
+      .where('user.id', '!=', userId)
+      .where((eb) =>
+        eb(
+          'user.id',
+          'not in',
+          eb
+            .selectFrom('follow_up')
+            .select('followee_id')
+            .where('follower_id', '=', userId),
+        ),
+      )
+      .groupBy('user.id')
+      .limit(5)
+      .execute();
+  },
 };
