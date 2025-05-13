@@ -33,7 +33,11 @@ function NavItem({ to, icon, label }: NavItemProps) {
 }
 
 export default function NavBar() {
-  const { user } = useLoginContext();
+  const context = useLoginContext();
+  let user;
+  if (context !== undefined) {
+    user = context.user;
+  }
 
   const navItems: NavItemProps[] = [
     { to: '/feed', icon: homeIcon, label: 'Home' },
@@ -43,7 +47,7 @@ export default function NavBar() {
     { to: '/notifications', icon: bellIcon, label: 'Notifications' },
     {
       to: '/profile',
-      icon: `${cdnUrl}/pictures/users/${user.profile_picture}`,
+      icon: `${cdnUrl}/pictures/users/${user?.profile_picture}`,
       label: 'Profile',
     },
   ];

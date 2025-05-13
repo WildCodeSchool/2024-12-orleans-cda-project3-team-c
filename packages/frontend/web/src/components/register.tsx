@@ -27,6 +27,9 @@ export default function Register() {
 
   const userRegister = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    setErrorMessages({});
+
     const newErrorMessages: {
       email?: string;
       username?: string;
@@ -65,7 +68,16 @@ export default function Register() {
     }
 
     try {
-      await RegisterApiConnection.register(email, username, password);
+      const response = await RegisterApiConnection.register(
+        email,
+        username,
+        password,
+      );
+
+      if (Object.keys(response).length > 0) {
+        setErrorMessages(response);
+        return;
+      }
 
       setEmail('');
       setUsername('');

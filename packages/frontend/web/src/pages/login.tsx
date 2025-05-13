@@ -34,6 +34,7 @@ export default function Login() {
 
     if (loginData.ok) {
       userLogged?.setIsUserLogged(true);
+      userLogged?.setUser(loginData.user);
       await navigate('/feed');
     } else {
       setErrorMessage(loginData.message);
@@ -57,7 +58,7 @@ export default function Login() {
             {'Email or username'}
           </label>
           <input
-            type='email'
+            type='text'
             value={email}
             onChange={(event) => {
               setEmail(event.target.value);

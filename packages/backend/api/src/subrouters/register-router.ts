@@ -57,15 +57,11 @@ registerRouter.post('/', async function (req, res) {
 
     if (Object.keys(errors).length) {
       res.status(400).json(errors);
+      return;
     }
 
-    const result = await userRegister(email, username, password);
-
-    if (Object.keys(result).includes('error')) {
-      res.status(400).json(result);
-    }
-
-    res.json(result);
+    await userRegister(email, username, password);
+    res.status(201).json({});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal register server error' });
