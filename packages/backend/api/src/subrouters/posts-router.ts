@@ -2,7 +2,6 @@ import express from 'express';
 import type { Request } from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
-import authMiddleware from '@/middlewares/auth.middleware';
 import type { PostTagInsertionList } from '@/models/model-types';
 import postLikeModel from '@/models/post-like-model';
 import postModel from '@/models/post-model';
@@ -16,8 +15,6 @@ const postsRouter = express.Router();
 type PictureUploadedFile = {
   mimetype: string;
 } & UploadedFile;
-
-postsRouter.use(authMiddleware);
 
 // GET **************************************************
 postsRouter.get('', async function (req: Request, res) {
