@@ -19,8 +19,7 @@ type PictureUploadedFile = {
 
 postsRouter.use(authMiddleware);
 
-//postsRouter.get('/:id', function () {});
-
+// GET **************************************************
 postsRouter.get('', async function (req: Request, res) {
   let page = 1;
   if (req.query.page !== '' && req.query.page !== undefined) {
@@ -34,6 +33,7 @@ postsRouter.get('', async function (req: Request, res) {
   }
 
   const userId = req.userId;
+
   if (userId === undefined) {
     res.status(401).json({ error: 'Unauthorized: user not authenticated' });
     return;
@@ -43,19 +43,25 @@ postsRouter.get('', async function (req: Request, res) {
   res.json(data);
 });
 
+// POST **************************************************
 postsRouter.post('', async function (req: Request, res) {
   const picture = req.files?.picture as PictureUploadedFile;
   const description = req.body.description;
+
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
 
   if (picture === undefined) {
     res.sendStatus(400);
     return;
   } else if (!fileUploadManager.checkFormat(picture.mimetype)) {
-    res
-      .status(400)
-      .json({
-        error: 'Wrong picture format. Should be jpg, png, webp or avif',
-      });
+    res.status(400).json({
+      error: 'Wrong picture format. Should be jpg, png, webp or avif',
+    });
     return;
   }
 
@@ -100,12 +106,13 @@ postsRouter.post('', async function (req: Request, res) {
 
 postsRouter.post('/:postId/like', async function (req: Request, res) {
   const userId = req.userId;
-  const postId = +req.params.postId;
 
   if (userId === undefined) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
+
+  const postId = +req.params.postId;
 
   if (!postId) {
     res
@@ -123,14 +130,18 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
   }
 });
 
+// UPDATE **************************************************
+
+// DELETE **************************************************
 postsRouter.delete('/:postId/like', async function (req: Request, res) {
   const userId = req.userId;
-  const postId = +req.params.postId;
 
   if (userId === undefined) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
+
+  const postId = +req.params.postId;
 
   if (!postId) {
     res
@@ -140,6 +151,7 @@ postsRouter.delete('/:postId/like', async function (req: Request, res) {
   }
 
   const data = await postLikeModel.deletePostLike(postId, userId);
+
   if (data) {
     res.json(data);
   } else {

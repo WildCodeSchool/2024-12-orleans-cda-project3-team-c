@@ -15,13 +15,12 @@ type PictureUploadedFile = {
 usersRouter.use(authMiddleware);
 
 usersRouter.get('/profile', async (req: Request, res) => {
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized: user not authenticated');
+    return;
+  }
   try {
-    const userId = req.userId;
-    if (userId === undefined) {
-      res.status(401).send('Unauthorized: user not authenticated');
-      return;
-    }
-
     const profile = await userModel.getUserProfileById(userId);
 
     if (!profile) {
@@ -38,19 +37,17 @@ usersRouter.get('/profile', async (req: Request, res) => {
 });
 
 usersRouter.put('/username', async (req: Request, res) => {
+  const userId = req.userId;
+  const { username } = req.body;
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized: user not authenticated');
+    return;
+  }
+  if (!username || typeof username !== 'string' || username.length > 30) {
+    res.status(400).json({ error: 'Invalid username' });
+    return;
+  }
   try {
-    const userId = req.userId;
-    const { username } = req.body;
-    if (userId === undefined) {
-      res.status(401).send('Unauthorized: user not authenticated');
-      return;
-    }
-
-    if (!username || typeof username !== 'string' || username.length > 30) {
-      res.status(400).json({ error: 'Invalid username' });
-      return;
-    }
-
     await userModel.updateUserProfile(userId, { username });
 
     res.status(200).json({ message: 'Username updated' });
@@ -63,12 +60,12 @@ usersRouter.put('/username', async (req: Request, res) => {
 });
 
 usersRouter.put('/biography', async (req: Request, res) => {
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized: user not authenticated');
+    return;
+  }
   try {
-    const userId = req.userId;
-    if (userId === undefined) {
-      res.status(401).send('Unauthorized: user not authenticated');
-      return;
-    }
     const { biography } = req.body;
 
     if (!biography || typeof biography !== 'string' || biography.length > 350) {
@@ -88,13 +85,12 @@ usersRouter.put('/biography', async (req: Request, res) => {
 });
 
 usersRouter.put('/profile-picture', async (req: Request, res) => {
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).send('Unauthorized: user not authenticated');
+    return;
+  }
   try {
-    const userId = req.userId;
-    if (userId === undefined) {
-      res.status(401).send('Unauthorized: user not authenticated');
-      return;
-    }
-
     const picture = req.files?.picture as PictureUploadedFile | undefined;
 
     if (!picture) {

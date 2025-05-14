@@ -24,13 +24,6 @@ class LoginApiConnection extends ApiConnection {
         credentials: 'include',
       });
 
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Invalid email or password');
-        }
-        throw new Error('Failed to log in');
-      }
-
       return (await response.json()) as LoginApiConnectionInterface;
     } catch (error) {
       console.error('Error during login:', error);
