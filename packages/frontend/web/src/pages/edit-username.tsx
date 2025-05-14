@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import userApiConnection, {
-  type UserProfile,
-} from '../api-connection/user-api-connection';
+import type { UserProfile } from '@app/api';
+
+import userApiConnection from '../api-connection/user-api-connection';
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 
 export default function EditUsername() {
@@ -17,7 +17,7 @@ export default function EditUsername() {
     try {
       const profile = await userApiConnection.getProfile();
       setUserProfile(profile);
-      setUsername(profile.username);
+      setUsername(profile?.username ?? '');
     } catch (error) {
       console.error('Error fetching profile data:', error);
     }
