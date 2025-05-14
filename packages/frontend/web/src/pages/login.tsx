@@ -13,7 +13,7 @@ import show from '../assets/icons/show-white.svg';
 export default function Login() {
   const [isTrue, toggleTrue] = useDisclosure();
 
-  const [email, setEmail] = useState('');
+  const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -25,12 +25,12 @@ export default function Login() {
     event.preventDefault();
     setErrorMessage('');
 
-    if (!email.length || !password.length) {
+    if (!credential.length || !password.length) {
       setErrorMessage('All inputs are required');
       return;
     }
 
-    const loginData = await loginApiConnection.login(email, password);
+    const loginData = await loginApiConnection.login(credential, password);
 
     if (loginData.ok) {
       userLogged?.setIsUserLogged(true);
@@ -54,17 +54,17 @@ export default function Login() {
             {'Log in'}
           </h1>
 
-          <label htmlFor='credentials' className='hidden'>
+          <label htmlFor='credential' className='hidden'>
             {'Email or username'}
           </label>
           <input
             type='text'
-            value={email}
+            value={credential}
             onChange={(event) => {
-              setEmail(event.target.value);
+              setCredential(event.target.value);
             }}
             placeholder='Email or username'
-            id='credentials'
+            id='credential'
             className='w-full rounded-sm border bg-indigo-900 p-2 text-white outline-indigo-950'
           />
 
