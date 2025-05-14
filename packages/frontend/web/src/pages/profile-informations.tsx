@@ -36,7 +36,7 @@ export default function ProfileInformations() {
   if (!profile) {
     return (
       <div className='pt-10 text-center text-white'>
-        {'Profile loading error...'}
+        {'No profile information available.'}
       </div>
     );
   }

@@ -14,7 +14,7 @@ type PictureUploadedFile = {
 usersRouter.get('/profile', async (req: Request, res) => {
   const userId = req.userId;
   if (userId === undefined) {
-    res.status(401).send('Unauthorized: user not authenticated');
+    res.status(401).json('Unauthorized: user not authenticated');
     return;
   }
   try {
@@ -37,7 +37,7 @@ usersRouter.put('/username', async (req: Request, res) => {
   const userId = req.userId;
   const { username } = req.body;
   if (userId === undefined) {
-    res.status(401).send('Unauthorized: user not authenticated');
+    res.status(401).json('Unauthorized: user not authenticated');
     return;
   }
   if (!username || typeof username !== 'string' || username.length > 30) {
@@ -59,7 +59,7 @@ usersRouter.put('/username', async (req: Request, res) => {
 usersRouter.put('/biography', async (req: Request, res) => {
   const userId = req.userId;
   if (userId === undefined) {
-    res.status(401).send('Unauthorized: user not authenticated');
+    res.status(401).json('Unauthorized: user not authenticated');
     return;
   }
   try {
@@ -84,7 +84,7 @@ usersRouter.put('/biography', async (req: Request, res) => {
 usersRouter.put('/profile-picture', async (req: Request, res) => {
   const userId = req.userId;
   if (userId === undefined) {
-    res.status(401).send('Unauthorized: user not authenticated');
+    res.status(401).json('Unauthorized: user not authenticated');
     return;
   }
   try {

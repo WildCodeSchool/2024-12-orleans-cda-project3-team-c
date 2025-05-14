@@ -107,12 +107,13 @@ export default function EditUsername() {
           {saving ? 'Saving...' : 'Save'}
         </button>
 
-        {!!successMessage && (
+        {successMessage ? (
           <p className='text-xs text-green-400'>{successMessage}</p>
-        )}
-        {!!errorMessage && (
+        ) : null}
+
+        {errorMessage ? (
           <p className='text-xs text-red-400'>{errorMessage}</p>
-        )}
+        ) : null}
       </div>
     </>
   );
