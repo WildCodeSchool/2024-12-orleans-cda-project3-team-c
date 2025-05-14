@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 
 export function getTimeAgo(datetime: Date): string {
   const timing = Date.now() - Date.parse(datetime.toString());
-
   if (timing >= 31536000000) {
     const years = Math.floor(timing / 31536000000);
     return `${years} day${years > 1 ? 's' : ''} ago`;
   } else if (timing >= 2592000000) {
     const months = Math.floor(timing / 2592000000);
-    return `${months} day${months > 1 ? 's' : ''} ago`;
+    return `${months} month${months > 1 ? 's' : ''} ago`;
   } else if (timing >= 604800000) {
     const weeks = Math.floor(timing / 604800000);
-    return `${weeks} day${weeks > 1 ? 's' : ''} ago`;
+    return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
   } else if (timing >= 86400000) {
     const days = Math.floor(timing / 86400000);
     return `${days} day${days > 1 ? 's' : ''} ago`;

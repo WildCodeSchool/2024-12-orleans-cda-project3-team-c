@@ -48,7 +48,7 @@ export default function Feed() {
   return (
     // feed section
     <>
-      <section className='mx-auto max-w-[460px] md:pt-8'>
+      <section className='mx-auto max-w-[460px] pb-16 md:pt-8'>
         <header
           id='feed-header'
           className='flex items-center justify-between p-4 md:hidden'
@@ -62,9 +62,7 @@ export default function Feed() {
         {posts.map((post: FeedPost) => {
           return <Post post={post} key={post.id} />;
         })}
-        {/* enlever la hauteur et la couleur, rajouter un offset */}
-        {/* à garder comme ça le temps de terminer toutes les fonctionnalités liées à ça */}
-        <div className='h-1 bg-amber-400' ref={infiniteScrollTrigger} />
+        <div ref={infiniteScrollTrigger} />
       </section>
       <UserSuggestionContainer />
     </>
