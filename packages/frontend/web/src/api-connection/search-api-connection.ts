@@ -6,7 +6,7 @@ type UserSearchResult = {
   profile_picture: string;
 };
 
-type PostSearchResult = {
+type PostByTagSearchResult = {
   id: number;
   description: string | null;
   picture: string;
@@ -14,7 +14,7 @@ type PostSearchResult = {
 
 type SearchResults = {
   users: UserSearchResult[];
-  posts: PostSearchResult[];
+  posts: PostByTagSearchResult[];
 };
 
 type SearchResponse = {
@@ -27,13 +27,20 @@ class SearchApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  async search(query: string): Promise<SearchResponse> {
+  async search(
+    query: string,
+    userLimit: number,
+    postByTagLimit: number,
+  ): Promise<SearchResponse> {
     if (!query) return { data: null, error: 'Query is empty' };
 
     try {
-      const res = await fetch(`${this.ressourceUrl}?search=${query}`, {
-        credentials: 'include',
-      });
+      const res = await fetch(
+        `${this.ressourceUrl}?search=${query}&userlimit=${userLimit}&posttaglimit=${postByTagLimit}`,
+        {
+          credentials: 'include',
+        },
+      );
 
       if (!res.ok) {
         const errorMessage = `Failed to fetch search results: ${res.status} ${res.statusText}`;
