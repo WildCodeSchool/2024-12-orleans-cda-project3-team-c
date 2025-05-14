@@ -5,11 +5,7 @@ class RegisterApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  async register(
-    email: string,
-    username: string,
-    password: string,
-  ): Promise<string> {
+  async register(email: string, username: string, password: string) {
     try {
       const response = await fetch(this.ressourceUrl, {
         headers: { 'Content-type': 'application/json' },
@@ -17,12 +13,14 @@ class RegisterApiConnection extends ApiConnection {
         body: JSON.stringify({ email, username, password }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to register');
-      }
+      const result: {
+        email?: string;
+        username?: string;
+        password?: string;
+        ok?: boolean;
+      } = await response.json();
 
-      const result: { message: string; ok: boolean } = await response.json();
-      return result.message;
+      return result;
     } catch (error) {
       console.error('Error during registration:', error);
       throw error;
