@@ -5,27 +5,44 @@ import {
   getUsersInfoBySearch,
 } from '@/models/search-model';
 
+type UserSearchResult = {
+  id: number;
+  username: string;
+  profile_picture: string;
+};
+
+type PostSearchResult = {
+  id: number;
+  description: string | null;
+  picture: string;
+};
+
 const searchRouter = express.Router();
 
 searchRouter.get('/', async (req, res) => {
-  try {
-    const searchResults = await getUsersInfoBySearch(
-      req.query.search as string,
-    );
+  const searchQuery = req.query.search as string;
 
-    const postsResults = await getPostsInfoBySearch(req.query.search as string);
-
-    console.log('searchResults', searchResults);
-    console.log('postsResults', postsResults);
-    // if (!searchResults) {
-    //   res.status(404).json({ error: 'Aucun utilisateur trouvé' });
-    //   return;
-    // }
-    res.json(searchResults);
+  if (!searchQuery || searchQuery.trim() === '') {
+    res.status(400).json({ error: 'Search query is required' });
     return;
-  } catch (err) {
-    console.error('Erreur dans GET /search :', err);
-    res.status(500).json({ error: 'Erreur serveur' });
+  }
+
+  try {
+    const usersResults: UserSearchResult[] =
+      await getUsersInfoBySearch(searchQuery);
+
+    const postsResults: PostSearchResult[] =
+      await getPostsInfoBySearch(searchQuery);
+
+    res.json({
+      users: usersResults,
+      posts: postsResults,
+    });
+
+    return;
+  } catch (error) {
+    console.error('Error during search', error);
+    res.status(500).json({ error: 'Server error' });
     return;
   }
 });

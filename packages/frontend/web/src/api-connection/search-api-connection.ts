@@ -1,11 +1,25 @@
 import ApiConnection from './api-connection';
 
-type SearchResults = {
+type UserSearchResult = {
   id: number;
-  description: string;
-  picture: string;
   username: string;
   profile_picture: string;
+};
+
+type PostSearchResult = {
+  id: number;
+  description: string | null;
+  picture: string;
+};
+
+type SearchResults = {
+  users: UserSearchResult[];
+  posts: PostSearchResult[];
+};
+
+type SearchResponse = {
+  data: SearchResults | null;
+  error: string;
 };
 
 class SearchApiConnection extends ApiConnection {
@@ -13,17 +27,32 @@ class SearchApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  async search(query: string): Promise<SearchResults[] | null> {
-    if (!query) return null;
-    const res = await fetch(`${this.ressourceUrl}?query=${query}`, {
-      credentials: 'include',
-    });
+  async search(query: string): Promise<SearchResponse> {
+    if (!query) return { data: null, error: 'Query is empty' };
 
-    if (!res.ok) throw new Error('Failed to load search results');
+    try {
+      const res = await fetch(`${this.ressourceUrl}?search=${query}`, {
+        credentials: 'include',
+      });
 
-    const data = await res.json();
+      if (!res.ok) {
+        const errorMessage = `Failed to fetch search results: ${res.status} ${res.statusText}`;
+        return { data: null, error: errorMessage };
+      }
 
-    return data as SearchResults[];
+      const data = await res.json();
+
+      // Validation et typage des données reçues
+      const searchResults: SearchResults = {
+        users: data.users ?? [],
+        posts: data.posts ?? [],
+      };
+
+      return { data: searchResults, error: '' };
+    } catch (error) {
+      console.error('Error during search fetch:', error);
+      return { data: null, error: 'An unexpected error occurred' };
+    }
   }
 }
 

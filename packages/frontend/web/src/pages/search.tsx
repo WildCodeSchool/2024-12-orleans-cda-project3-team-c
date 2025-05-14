@@ -9,7 +9,7 @@ export default function Search() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<{
     users: Array<{ id: string; name: string }>;
-    posts: Array<{ id: string; title: string }>;
+    posts: Array<{ id: string; title: string | null }>;
   }>({
     users: [],
     posts: [],
@@ -18,43 +18,40 @@ export default function Search() {
   const [postLimit, setPostLimit] = useState(3);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
     const input = event.target.value;
     setSearch(input);
   };
 
   const getSearchResults = async () => {
     try {
-      const searchData = await searchApiConnection.search(search);
-      if (!searchData) {
-        console.error('No data found');
+      const { data, error } = await searchApiConnection.search(search);
+
+      if (error) {
+        console.error('Error fetching search results:', error);
         return;
       }
 
-      const usersResults = searchData
-        .filter((userItem) => userItem.username === search)
-        .map((userInfo) => ({
-          id: userInfo.id.toString(),
-          name: userInfo.username,
+      if (data) {
+        const usersResults = data.users.map((user) => ({
+          id: user.id.toString(),
+          name: user.username,
         }));
 
-      const postsResults = searchData
-        .filter((postItem) => postItem.description === search)
-        .map((postInfo) => ({
-          id: postInfo.id.toString(),
-          title: postInfo.description,
+        const postsResults = data.posts.map((post) => ({
+          id: post.id.toString(),
+          title: post.description,
         }));
 
-      setResults({ users: usersResults, posts: postsResults });
+        setResults({ users: usersResults, posts: postsResults });
+      }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Unexpected error:', error);
     }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     void getSearchResults();
-    setSearch('');
   };
 
   const loadMoreUsers = () => {
@@ -89,7 +86,6 @@ export default function Search() {
         </Link>
       </div>
       <ul>
-        {' '}
         {'Search results'}
         {results.users.length > 0 && (
           <li>
@@ -101,41 +97,37 @@ export default function Search() {
             </ul>
             {userLimit < results.users.length && (
               <button
-                onClick={() => {
-                  loadMoreUsers();
-                }}
+                onClick={loadMoreUsers}
                 type='button'
                 className='border-turquoise-blue-400 flex items-center rounded border'
               >
                 <span className='text-turquoise-blue-400 px-3 py-1 text-center text-xs'>
-                  {'More'}{' '}
+                  {'More'}
                 </span>
               </button>
             )}
           </li>
         )}
         {results.posts.length > 0 && (
-          <li>
+          <>
             <h3>{'Posts:'}</h3>
             <ul>
               {results.posts.slice(0, postLimit).map((post) => (
-                <li key={post.id}>{post.title}</li>
+                <li key={post.id}>{post.title ?? 'No description'}</li>
               ))}
             </ul>
             {postLimit < results.posts.length && (
               <button
-                onClick={() => {
-                  loadMorePosts();
-                }}
+                onClick={loadMorePosts}
                 type='button'
                 className='border-turquoise-blue-400 flex items-center rounded border'
               >
                 <span className='text-turquoise-blue-400 px-3 py-1 text-center text-xs'>
-                  {'More'}{' '}
+                  {'More'}
                 </span>
               </button>
             )}
-          </li>
+          </>
         )}
       </ul>
     </section>
