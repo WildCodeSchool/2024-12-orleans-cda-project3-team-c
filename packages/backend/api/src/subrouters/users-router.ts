@@ -1,3 +1,4 @@
+import { log } from 'console';
 import express from 'express';
 import type { Request } from 'express';
 import type { UploadedFile } from 'express-fileupload';
@@ -85,6 +86,8 @@ usersRouter.put('/biography', async (req: Request, res) => {
 });
 
 usersRouter.put('/profile-picture', async (req: Request, res) => {
+  console.log('test');
+
   const userId = req.userId;
   if (userId === undefined) {
     res.status(401).send('Unauthorized: user not authenticated');

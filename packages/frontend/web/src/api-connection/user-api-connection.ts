@@ -24,7 +24,7 @@ class UserApiConnection extends ApiConnection {
     const formData = new FormData();
     formData.append('picture', file);
     const res = await fetch(`${this.ressourceUrl}/profile-picture`, {
-      method: 'POST',
+      method: 'PUT',
       body: formData,
       credentials: 'include',
     });

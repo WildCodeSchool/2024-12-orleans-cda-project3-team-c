@@ -49,7 +49,7 @@ export default function ProfileInformations() {
         </Link>
         <h2 className='font-title ml-16 text-2xl'>{'Profile Informations'}</h2>
       </div>
-      <form action=''>
+      <form>
         <img
           className='mt-8 mb-4 h-16 w-16 rounded-md object-cover'
           src={profilePicturePath}
