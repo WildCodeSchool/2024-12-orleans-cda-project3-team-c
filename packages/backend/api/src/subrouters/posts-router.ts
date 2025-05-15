@@ -1,5 +1,5 @@
-import type { Request } from 'express';
 import express from 'express';
+import type { Request } from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
 import type { PostTagInsertionList } from '@/models/model-types';
@@ -12,10 +12,9 @@ import textParsers from '@/utils/text-parsers';
 
 const postsRouter = express.Router();
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-interface PictureUploadedFile extends UploadedFile {
+type PictureUploadedFile = {
   mimetype: string;
-}
+} & UploadedFile;
 
 // GET **************************************************
 postsRouter.get('', async function (req: Request, res) {
@@ -63,12 +62,17 @@ postsRouter.post('', async function (req: Request, res) {
     return;
   }
 
-  // Picture upload
   picture.name = fileUploadManager.renameFile(picture.mimetype);
   await fileUploadManager.saveTemporary(picture);
   const pictureName = await fileUploadManager.savePostPicture(picture.name);
 
   if (pictureName !== undefined) {
+    const userId = req.userId;
+    if (userId === undefined) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+
     const data = await postModel.create(pictureName, description, userId);
     const postId = Number(data.insertId);
 
@@ -86,11 +90,13 @@ postsRouter.post('', async function (req: Request, res) {
             });
           }
         }
+
         if (postTagInsertionList.length > 0) {
           await postTagModel.createMany(postTagInsertionList);
         }
       }
     }
+
     res.sendStatus(200);
   }
 });
@@ -135,10 +141,14 @@ postsRouter.delete('/:postId/like', async function (req: Request, res) {
   const postId = +req.params.postId;
 
   if (!postId) {
-    res.status(400).send('Bad request, you should provide a valid post id');
+    res
+      .status(400)
+      .json({ error: 'Bad request, you should provide a valid post id' });
+    return;
   }
 
   const data = await postLikeModel.deletePostLike(postId, userId);
+
   if (data) {
     res.json(data);
   } else {
