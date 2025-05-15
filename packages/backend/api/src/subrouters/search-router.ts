@@ -1,7 +1,5 @@
 import express from 'express';
 
-import type { PostSearchResult, UserSearchResult } from '@app/api';
-
 import {
   getPostsInfoInTagBySearch,
   getUsersInfoBySearch,
@@ -20,15 +18,10 @@ searchRouter.get('/', async (req, res) => {
   }
 
   try {
-    const usersResults: UserSearchResult[] = await getUsersInfoBySearch(
-      searchQuery,
-      userLimit,
-    );
-
-    const postsResults: PostSearchResult[] = await getPostsInfoInTagBySearch(
-      searchQuery,
-      postByTagLimit,
-    );
+    const [usersResults, postsResults] = await Promise.all([
+      getUsersInfoBySearch(searchQuery, userLimit),
+      getPostsInfoInTagBySearch(searchQuery, postByTagLimit),
+    ]);
 
     res.json({
       users: usersResults,

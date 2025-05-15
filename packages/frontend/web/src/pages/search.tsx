@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import type { PostSearchResult, UserSearchResult } from '@app/api';
+
 import searchApiConnection from '@/api-connection/search-api-connection';
 
 import searchIcon from '../assets/icons/search-white.svg';
@@ -10,8 +12,8 @@ const cdnUrl = import.meta.env.VITE_CDN_URL;
 export default function Search() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<{
-    users: Array<{ id: number; username: string; profile_picture: string }>;
-    posts: Array<{ id: number; description: string | null; picture: string }>;
+    users: UserSearchResult[];
+    posts: PostSearchResult[];
   }>({
     users: [],
     posts: [],
@@ -87,7 +89,7 @@ export default function Search() {
         </Link>
       </div>
       <ul>
-        {results.users.length > 0 && (
+        {results.users.length > 0 ? (
           <li>
             <h3>{'Users:'}</h3>
             <ul>
@@ -96,6 +98,8 @@ export default function Search() {
               ))}
             </ul>
           </li>
+        ) : (
+          ''
         )}
         <button
           onClick={loadMoreUsers}
@@ -106,7 +110,7 @@ export default function Search() {
             {'More'}
           </span>
         </button>
-        {results.posts.length > 0 && (
+        {results.posts.length > 0 ? (
           <>
             <h3>{'Posts:'}</h3>
             <ul>
@@ -119,7 +123,7 @@ export default function Search() {
                 </li>
               ))}
             </ul>
-            {postByTagLimit < results.posts.length && (
+            {postByTagLimit < results.posts.length ? (
               <button
                 onClick={loadMorePosts}
                 type='button'
@@ -129,8 +133,12 @@ export default function Search() {
                   {'More'}
                 </span>
               </button>
+            ) : (
+              ''
             )}
           </>
+        ) : (
+          ''
         )}
       </ul>
     </section>
