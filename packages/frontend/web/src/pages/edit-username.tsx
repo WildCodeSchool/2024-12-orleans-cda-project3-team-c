@@ -46,7 +46,7 @@ export default function EditUsername() {
       await fetchData();
     } catch (error) {
       console.error('Error updating username:', error);
-      setErrorMessage('Error during saving');
+      setErrorMessage('Username already used');
     } finally {
       setSaving(false);
     }
