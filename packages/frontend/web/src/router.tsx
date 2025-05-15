@@ -7,8 +7,12 @@ import ForgottenPassword from './components/forgotten-password';
 import Register from './components/register';
 import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
+import EditBio from './pages/edit-bio';
+import EditUsername from './pages/edit-username';
 import Feed from './pages/feed';
 import Login from './pages/login';
+import Parameters from './pages/parameters';
+import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
 import Search from './pages/search';
 
@@ -36,6 +40,22 @@ const router = createBrowserRouter([
       {
         path: '/search',
         element: <Search />,
+
+        path: 'parameters',
+        element: <Parameters />,
+      },
+      {
+        path: '/profile-informations',
+        element: <ProfileInformations />,
+        loader: loaders.userLoaders.getUserProfile,
+      },
+      {
+        path: '/edit-username',
+        element: <EditUsername />,
+      },
+      {
+        path: '/edit-bio',
+        element: <EditBio />,
       },
     ],
   },

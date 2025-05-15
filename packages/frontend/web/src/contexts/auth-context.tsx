@@ -6,12 +6,15 @@ type AuthProviderContextProps = PropsWithChildren<object>;
 export type User = {
   id: number;
   email: string;
+  profile_picture: string;
 };
 
 type AuthProviderState = {
   isUserLogged: boolean;
   isLoading: boolean;
   setIsUserLogged: (value: boolean) => void;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
 const authProviderContext = createContext<AuthProviderState | undefined>(

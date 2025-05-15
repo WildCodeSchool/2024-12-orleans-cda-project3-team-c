@@ -3,11 +3,13 @@ import { jsonArrayFrom } from 'kysely/helpers/mysql';
 
 import { db } from '@app/backend-shared';
 
-export async function userLogin(email: string) {
+export async function userLogin(credential: string) {
   return db
     .selectFrom('user')
     .select(['user.id', 'user.password', 'user.email'])
-    .where('user.email', '=', email)
+    .where((eb) =>
+      eb.or([eb('email', '=', credential), eb('username', '=', credential)]),
+    )
     .executeTakeFirst();
 }
 
@@ -17,28 +19,6 @@ export async function userRegister(
   password: string,
 ) {
   try {
-    // Pour la verif du mail
-    const alreadyExists = await db
-      .selectFrom('user')
-      .select(['email', 'username'])
-      .where((eb) =>
-        eb.or([eb('email', '=', email), eb('username', '=', username)]),
-      )
-      .executeTakeFirst();
-
-    if (alreadyExists) {
-      if (alreadyExists.email === email) {
-        return {
-          error: 'Email is already in use, please use a different email',
-          ok: false,
-        };
-      }
-      return {
-        error: 'username is already in use, please use a different username',
-        ok: false,
-      };
-    }
-
     // Hachage du mot de passe
     const hashPassword = await argon2.hash(password, {
       memoryCost: 19456,
@@ -52,7 +32,7 @@ export async function userRegister(
       .values({ email, username, password: hashPassword })
       .executeTakeFirst();
 
-    return { message: 'User created successfully', ok: true };
+    return true;
   } catch (error) {
     console.error('Error creating user:', error);
     throw new Error(
@@ -61,10 +41,38 @@ export async function userRegister(
   }
 }
 
-export async function getUserById(userId: number) {
+export async function checkIfCredentialsAlreadyExists(
+  email: string,
+  username: string,
+) {
+  const messages: { email?: string; username?: string } = {};
+
+  const results = await db
+    .selectFrom('user')
+    .select(['email', 'username'])
+    .where((eb) =>
+      eb.or([eb('email', '=', email), eb('username', '=', username)]),
+    )
+    .execute();
+
+  if (results.length) {
+    results.forEach((result) => {
+      if (result.email === email) {
+        messages.email = 'This email address is already in use';
+      }
+      if (result.username === username) {
+        messages.username = 'This username is not available';
+      }
+    });
+    return messages;
+  }
+  return false;
+}
+
+export async function getLoggedInUser(userId: number) {
   return db
     .selectFrom('user')
-    .selectAll()
+    .select(['id', 'profile_picture'])
     .where('user.id', '=', userId)
     .executeTakeFirst();
 }
@@ -109,15 +117,28 @@ export default {
       .where('user.id', '=', userId)
       .executeTakeFirst();
 
-    if (!profile) {
-      return null;
-    }
+    return profile
+      ? {
+          ...profile,
+          followersCount: profile.followersCount ?? 0,
+          followingCount: profile.followingCount ?? 0,
+        }
+      : null;
+  },
 
-    return {
-      ...profile,
-      followersCount: profile.followersCount ?? 0,
-      followingCount: profile.followingCount ?? 0,
-    };
+  async updateUserProfile(
+    userId: number,
+    updates: {
+      username?: string;
+      biography?: string;
+      profile_picture?: string;
+    },
+  ) {
+    await db
+      .updateTable('user')
+      .set(updates)
+      .where('id', '=', userId)
+      .execute();
   },
 
   async getUserSuggestionsForUser(userId: number) {

@@ -41,6 +41,7 @@ export default typescriptPlugin.config([
       'packages/frontend/mobile/android',
       'deployment/mysql/data',
       '**/*.tsbuildinfo',
+      '**/*.rollup.cache',
     ],
   },
   {

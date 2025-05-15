@@ -36,8 +36,13 @@ export type PostTagInsertionList = {
   post_id: number;
 };
 
-// Follow **************************************************
+export type UserPost = Awaited<ReturnType<typeof postModel.getFeedPage>>;
 
+export type UserProfile = Awaited<
+  ReturnType<typeof userModel.getUserProfileById>
+>;
+
+// Follow **************************************************
 export type FollowAction = Awaited<
   ReturnType<typeof followModel.addFollow | typeof followModel.deleteFollow>
 >;
