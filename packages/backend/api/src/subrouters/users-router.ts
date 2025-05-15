@@ -95,18 +95,14 @@ usersRouter.put('/profile-picture', async (req: Request, res) => {
       return;
     }
 
-    const pictureFile = Array.isArray(picture) ? picture[0] : picture;
-
-    if (!fileUploadManager.checkFormat(pictureFile.mimetype)) {
+    if (!fileUploadManager.checkFormat(picture.mimetype)) {
       res.status(400).json({ error: 'Unsupported file format' });
       return;
     }
 
-    pictureFile.name = fileUploadManager.renameFile(pictureFile.mimetype);
-    await fileUploadManager.saveTemporary(pictureFile);
-    const pictureName = await fileUploadManager.saveUserPicture(
-      pictureFile.name,
-    );
+    picture.name = fileUploadManager.renameFile(picture.mimetype);
+    await fileUploadManager.saveTemporary(picture);
+    const pictureName = await fileUploadManager.saveUserPicture(picture.name);
 
     const existingProfile = await userModel.getUserProfileById(userId);
     const previousPicture = existingProfile?.profile_picture;
