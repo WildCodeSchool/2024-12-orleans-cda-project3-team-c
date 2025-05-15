@@ -1,21 +1,11 @@
 import express from 'express';
 
+import type { PostSearchResult, UserSearchResult } from '@app/api';
+
 import {
   getPostsInfoInTagBySearch,
   getUsersInfoBySearch,
 } from '@/models/search-model';
-
-type UserSearchResult = {
-  id: number;
-  username: string;
-  profile_picture: string;
-};
-
-type PostSearchResult = {
-  id: number;
-  description: string | null;
-  picture: string;
-};
 
 const searchRouter = express.Router();
 

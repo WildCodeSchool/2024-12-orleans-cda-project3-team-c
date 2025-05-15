@@ -1,20 +1,10 @@
+import type { PostSearchResult, UserSearchResult } from '@app/api';
+
 import ApiConnection from './api-connection';
-
-type UserSearchResult = {
-  id: number;
-  username: string;
-  profile_picture: string;
-};
-
-type PostByTagSearchResult = {
-  id: number;
-  description: string | null;
-  picture: string;
-};
 
 type SearchResults = {
   users: UserSearchResult[];
-  posts: PostByTagSearchResult[];
+  posts: PostSearchResult[];
 };
 
 type SearchResponse = {
@@ -49,7 +39,6 @@ class SearchApiConnection extends ApiConnection {
 
       const data = await res.json();
 
-      // Validation et typage des données reçues
       const searchResults: SearchResults = {
         users: data.users ?? [],
         posts: data.posts ?? [],
