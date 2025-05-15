@@ -1,6 +1,7 @@
 import { Link, useLoaderData } from 'react-router-dom';
 
-import type { UserProfile } from '@/api-connection/user-api-connection';
+import type { UserProfile } from '@app/api';
+
 import menu from '@/assets/icons/menu-square-white.svg';
 
 const cdnUrl = import.meta.env.VITE_CDN_URL;

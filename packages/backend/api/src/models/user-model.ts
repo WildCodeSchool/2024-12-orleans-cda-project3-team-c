@@ -117,15 +117,28 @@ export default {
       .where('user.id', '=', userId)
       .executeTakeFirst();
 
-    if (!profile) {
-      return null;
-    }
+    return profile
+      ? {
+          ...profile,
+          followersCount: profile.followersCount ?? 0,
+          followingCount: profile.followingCount ?? 0,
+        }
+      : null;
+  },
 
-    return {
-      ...profile,
-      followersCount: profile.followersCount ?? 0,
-      followingCount: profile.followingCount ?? 0,
-    };
+  async updateUserProfile(
+    userId: number,
+    updates: {
+      username?: string;
+      biography?: string;
+      profile_picture?: string;
+    },
+  ) {
+    await db
+      .updateTable('user')
+      .set(updates)
+      .where('id', '=', userId)
+      .execute();
   },
 
   async getUserSuggestionsForUser(userId: number) {

@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import type { UploadedFile } from 'express-fileupload';
 import fs from 'node:fs/promises';
 import path from 'path';
@@ -15,7 +16,7 @@ export default {
     'pictures',
     'temp',
   ),
-  postsPictureFolderPath: path.join(
+  postPicturesFolderPath: path.join(
     fileURLToPath(import.meta.url),
     '..',
     '..',
@@ -23,6 +24,15 @@ export default {
     'public',
     'pictures',
     'posts',
+  ),
+  userPicturesFolderPath: path.join(
+    fileURLToPath(import.meta.url),
+    '..',
+    '..',
+    '..',
+    'public',
+    'pictures',
+    'users',
   ),
 
   checkFormat(format: string) {
@@ -70,7 +80,7 @@ export default {
     }
   },
 
-  async convertPicture(fileName: string, format: string) {
+  async convertPicture(fileName: string, format: string, type: string) {
     if (await this.checkNeedsConverting(fileName, format)) {
       const newFileName = fileName.split('.')[0] + '.' + format;
 
@@ -80,10 +90,23 @@ export default {
 
       await fs.unlink(path.join(this.tempFolderPath, fileName));
 
-      await fs.rename(
-        path.join(this.tempFolderPath, newFileName),
-        path.join(this.postsPictureFolderPath, newFileName),
-      );
+      switch (type) {
+        case 'post':
+          await fs.rename(
+            path.join(this.tempFolderPath, newFileName),
+            path.join(this.postPicturesFolderPath, newFileName),
+          );
+          break;
+
+        case 'user':
+          await fs.rename(
+            path.join(this.tempFolderPath, newFileName),
+            path.join(this.userPicturesFolderPath, newFileName),
+          );
+          break;
+        default:
+          break;
+      }
 
       return newFileName;
     }
@@ -93,10 +116,37 @@ export default {
   async savePostPicture(fileName: string) {
     try {
       await this.resizePicture(fileName, 1080);
-      const newName = await this.convertPicture(fileName, 'webp');
+      const newName = await this.convertPicture(fileName, 'webp', 'post');
       return newName;
     } catch (error) {
       console.error(error);
+    }
+  },
+
+  async saveUserPicture(fileName: string) {
+    try {
+      await this.resizePicture(fileName, 256);
+
+      const finalFileName = await this.convertPicture(fileName, 'webp', 'user');
+      return finalFileName;
+    } catch (error) {
+      console.error(
+        "Erreur lors de l'upload de la photo de l'utilisateur:",
+        error,
+      );
+      throw new Error("Erreur lors de l'upload de la photo");
+    }
+  },
+
+  async deleteUserPicture(fileName: string) {
+    try {
+      const filePath = path.join(this.userPicturesFolderPath, fileName);
+      await fs.unlink(filePath);
+    } catch (error) {
+      console.error(
+        `Erreur lors de la suppression de l'image utilisateur :`,
+        error,
+      );
     }
   },
 };
