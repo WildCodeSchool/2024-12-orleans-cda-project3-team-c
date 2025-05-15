@@ -3,4 +3,182 @@
  * Please do not edit it manually.
  */
 
-export interface DB {}
+import type { ColumnType } from "kysely";
+
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
+
+export interface AccountStatus {
+  id: Generated<number>;
+  name: string;
+}
+
+export interface Block {
+  blockee_id: number;
+  blocker_id: number;
+  created_at: Generated<Date>;
+}
+
+export interface Comment {
+  created_at: Generated<Date>;
+  id: Generated<number>;
+  post_id: number;
+  responds_to: number | null;
+  text: string;
+  user_id: number;
+}
+
+export interface CommentLike {
+  comment_id: number;
+  created_at: Generated<Date>;
+  user_id: number;
+}
+
+export interface Discussion {
+  id: Generated<number>;
+}
+
+export interface DiscussionParticipant {
+  discussion_id: number;
+  user_id: number;
+}
+
+export interface FollowUp {
+  created_at: Generated<Date>;
+  followee_id: number;
+  follower_id: number;
+}
+
+export interface Message {
+  content: string;
+  created_at: Generated<Date>;
+  discussion_id: number;
+  id: Generated<number>;
+  responds_to: number | null;
+  user_id: number;
+}
+
+export interface MessageLike {
+  created_at: Generated<Date>;
+  message_id: number;
+  user_id: number;
+}
+
+export interface Notification {
+  created_at: Generated<Date>;
+  id: Generated<number>;
+  message: string;
+  read_at: Date | null;
+  recipient_id: number;
+  redirect_to: number | null;
+  type_id: number;
+}
+
+export interface NotificationType {
+  id: Generated<number>;
+  name: string;
+}
+
+export interface Post {
+  created_at: Generated<Date>;
+  description: string | null;
+  id: Generated<number>;
+  picture: string;
+  user_id: number;
+}
+
+export interface PostLike {
+  created_at: Generated<Date>;
+  post_id: number;
+  user_id: number;
+}
+
+export interface PostTag {
+  post_id: number;
+  tag_id: number;
+}
+
+export interface Reaction {
+  created_at: Generated<Date>;
+  emoji: string;
+  post_id: number;
+  user_id: number;
+}
+
+export interface Report {
+  created_at: Generated<Date>;
+  id: Generated<number>;
+  motive: string;
+  reportee_id: number;
+  reporter_id: number;
+  ruled_at: Date | null;
+  status_id: Generated<number>;
+}
+
+export interface ReportStatus {
+  id: Generated<number>;
+  name: string;
+}
+
+export interface Role {
+  id: Generated<number>;
+  name: string;
+}
+
+export interface Status {
+  created_at: Generated<Date>;
+  id: Generated<number>;
+  text: string;
+  user_id: number;
+}
+
+export interface Tag {
+  id: Generated<number>;
+  name: string;
+}
+
+export interface TagSubscription {
+  created_at: Generated<Date>;
+  tag_id: number;
+  user_id: number;
+}
+
+export interface User {
+  account_status_id: Generated<number>;
+  biography: string | null;
+  created_at: Generated<Date>;
+  email: string;
+  id: Generated<number>;
+  notoriety: Generated<number>;
+  password: string;
+  private: Generated<number>;
+  profile_picture: Generated<string>;
+  role_id: Generated<number>;
+  username: string;
+}
+
+export interface DB {
+  account_status: AccountStatus;
+  block: Block;
+  comment: Comment;
+  comment_like: CommentLike;
+  discussion: Discussion;
+  discussion_participant: DiscussionParticipant;
+  follow_up: FollowUp;
+  message: Message;
+  message_like: MessageLike;
+  notification: Notification;
+  notification_type: NotificationType;
+  post: Post;
+  post_like: PostLike;
+  post_tag: PostTag;
+  reaction: Reaction;
+  report: Report;
+  report_status: ReportStatus;
+  role: Role;
+  status: Status;
+  tag: Tag;
+  tag_subscription: TagSubscription;
+  user: User;
+}
