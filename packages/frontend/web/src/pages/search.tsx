@@ -98,9 +98,7 @@ export default function Search() {
               ))}
             </ul>
           </li>
-        ) : (
-          ''
-        )}
+        ) : null}
         <button
           onClick={loadMoreUsers}
           type='button'
@@ -133,13 +131,9 @@ export default function Search() {
                   {'More'}
                 </span>
               </button>
-            ) : (
-              ''
-            )}
+            ) : null}
           </>
-        ) : (
-          ''
-        )}
+        ) : null}
       </ul>
     </section>
   );

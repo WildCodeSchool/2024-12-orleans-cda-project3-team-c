@@ -9,8 +9,8 @@ const searchRouter = express.Router();
 
 searchRouter.get('/', async (req, res) => {
   const searchQuery = req.query.search as string;
-  const userLimit = parseInt(req.query.userLimit as string, 6) || 3;
-  const postByTagLimit = parseInt(req.query.postByTagLimit as string, 6) || 3;
+  const userLimit = parseInt(req.query.userLimit as string, 10) || 3;
+  const postByTagLimit = parseInt(req.query.postByTagLimit as string, 10) || 3;
 
   if (!searchQuery || searchQuery.trim() === '') {
     res.status(400).json({ error: 'Search query is required' });
