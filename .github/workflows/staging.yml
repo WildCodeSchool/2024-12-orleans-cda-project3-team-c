@@ -50,7 +50,7 @@ jobs:
           context: ./
           file: ./packages/backend/migrations/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_MIGRATIONSs_IMAGE_NAME_STAGING }}:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_MIGRATIONS_IMAGE_NAME_STAGING }}:latest
 
       # build an push the newly created image
       - uses: docker/build-push-action@v2
