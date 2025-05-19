@@ -4,6 +4,6 @@ export default class ApiConnection {
 
   constructor(ressource: string) {
     this.ressource = ressource;
-    this.ressourceUrl = `api/${this.ressource}`;
+    this.ressourceUrl = `/api/${this.ressource}`;
   }
 }

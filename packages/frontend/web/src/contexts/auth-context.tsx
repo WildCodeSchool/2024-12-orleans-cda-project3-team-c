@@ -32,7 +32,7 @@ export default function AuthContext({
 
   useEffect(() => {
     async function getConnected() {
-      const response = await fetch(`api/auth/cookie`, {
+      const response = await fetch(`/api/auth/cookie`, {
         credentials: 'include',
       });
 
