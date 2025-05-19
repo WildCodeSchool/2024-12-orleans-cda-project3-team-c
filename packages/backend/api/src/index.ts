@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import path from 'path';
@@ -22,13 +21,6 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET ?? 'secret';
 app.use(cookieParser(COOKIE_SECRET));
 
 app.use(express.json());
-
-app.use(
-  cors({
-    origin: `http://${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}`,
-    credentials: true,
-  }),
-);
 
 app.use(fileUpload());
 app.use(
