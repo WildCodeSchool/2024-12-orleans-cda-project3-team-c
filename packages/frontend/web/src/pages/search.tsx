@@ -18,8 +18,8 @@ export default function Search() {
     users: [],
     posts: [],
   });
-  const [userLimit, setUserLimit] = useState(0);
-  const [postByTagLimit, setPostByTagLimit] = useState(0);
+  const [userLimit, setUserLimit] = useState(3);
+  const [postByTagLimit, setPostByTagLimit] = useState(3);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
@@ -88,26 +88,31 @@ export default function Search() {
           />
         </Link>
       </div>
-      <ul>
+      <ul className='w-[18rem]'>
         {results.users.length > 0 ? (
-          <li>
-            <h3>{'Users:'}</h3>
+          <>
+            <h3>{'Users'}</h3>
             <ul>
               {results.users.slice(0, userLimit).map((user) => (
-                <li key={user.id}>{user.username}</li>
+                <li key={user.id} className='flex items-center'>
+                  <img src={user.profile_picture} alt={user.username} />
+                  {user.username}
+                </li>
               ))}
             </ul>
-          </li>
+
+            <button
+              onClick={loadMoreUsers}
+              type='button'
+              className='border-turquoise-blue-400 mt-2 flex w-12 items-center justify-center rounded border'
+            >
+              <span className='text-turquoise-blue-400 px-3 py-1 text-center text-xs'>
+                {'More'}
+              </span>
+            </button>
+          </>
         ) : null}
-        <button
-          onClick={loadMoreUsers}
-          type='button'
-          className='border-turquoise-blue-400 mt-2 flex w-12 items-center rounded border'
-        >
-          <span className='text-turquoise-blue-400 px-3 py-1 text-center text-xs'>
-            {'More'}
-          </span>
-        </button>
+
         {results.posts.length > 0 ? (
           <>
             <h3>{'Posts:'}</h3>
@@ -121,17 +126,15 @@ export default function Search() {
                 </li>
               ))}
             </ul>
-            {postByTagLimit < results.posts.length ? (
-              <button
-                onClick={loadMorePosts}
-                type='button'
-                className='border-turquoise-blue-400 mt-2 flex items-center rounded border'
-              >
-                <span className='text-turquoise-blue-400 px-3 py-1 text-center text-xs'>
-                  {'More'}
-                </span>
-              </button>
-            ) : null}
+            <button
+              onClick={loadMorePosts}
+              type='button'
+              className='border-turquoise-blue-400 mt-2 flex items-center rounded border'
+            >
+              <span className='text-turquoise-blue-400 px-3 py-1 text-center text-xs'>
+                {'More'}
+              </span>
+            </button>
           </>
         ) : null}
       </ul>
