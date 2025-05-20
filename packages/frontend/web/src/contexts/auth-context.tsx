@@ -21,8 +21,6 @@ const authProviderContext = createContext<AuthProviderState | undefined>(
   undefined,
 );
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 export default function AuthContext({
   children,
   ...props
@@ -34,7 +32,7 @@ export default function AuthContext({
 
   useEffect(() => {
     async function getConnected() {
-      const response = await fetch(`${API_URL}/auth/cookie`, {
+      const response = await fetch(`/api/auth/cookie`, {
         credentials: 'include',
       });
 

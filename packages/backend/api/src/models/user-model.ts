@@ -1,4 +1,5 @@
 import argon2 from 'argon2';
+import { sql } from 'kysely';
 import { jsonArrayFrom } from 'kysely/helpers/mysql';
 
 import { db } from '@app/backend-shared';
@@ -142,35 +143,83 @@ export default {
   },
 
   async getUserSuggestionsForUser(userId: number) {
-    return db
-      .selectFrom('user')
-      .leftJoin('follow_up', (join) =>
-        join.onRef('follow_up.follower_id', '=', 'user.id'),
-      )
-      .select((eb) => [
-        'user.id',
-        'user.username',
-        'user.profile_picture',
+    return await db
+      .with('usersYouDontFollow', (eb) =>
         eb
-          .selectFrom('follow_up')
-          .select(({ fn }) =>
-            fn.count<number>('follow_up.followee_id').as('follower_count'),
+          .selectFrom('user as u')
+          .leftJoin('follow_up as fu', 'fu.follower_id', 'u.id')
+          .where('u.id', '!=', userId)
+          .where('u.id', 'not in', (eb) =>
+            eb
+              .selectFrom('follow_up as fu')
+              .select('fu.followee_id')
+              .where('fu.follower_id', '=', userId),
           )
-          .whereRef('followee_id', '=', 'user.id')
-          .as('follower_count'),
-      ])
-      .where('user.id', '!=', userId)
-      .where((eb) =>
-        eb(
-          'user.id',
-          'not in',
-          eb
-            .selectFrom('follow_up')
-            .select('followee_id')
-            .where('follower_id', '=', userId),
-        ),
+          .orderBy(sql`RAND()`)
+          .limit(5)
+          .select([
+            'u.id',
+            'u.username',
+            'u.profile_picture',
+            eb
+              .selectFrom('follow_up')
+              .select(({ fn }) => fn.countAll<number>().as('follower_count'))
+              .whereRef('follow_up.followee_id', '=', sql.ref('u.id'))
+              .as('follower_count'),
+          ]),
       )
-      .groupBy('user.id')
+      .with('usersYouFollow', (eb) =>
+        eb
+          .selectFrom('user as u')
+          .where('u.id', '!=', userId)
+          .where('u.id', 'in', (eb) =>
+            eb
+              .selectFrom('follow_up as fu')
+              .select('fu.followee_id')
+              .where('fu.follower_id', '=', userId),
+          )
+          .select([
+            'u.id',
+            'u.username',
+            'u.profile_picture',
+            eb
+              .selectFrom('follow_up')
+              .select(({ fn }) => fn.countAll<number>().as('follower_count'))
+              .whereRef('follow_up.followee_id', '=', sql.ref('u.id'))
+              .as('follower_count'),
+          ]),
+      )
+      .with('followeesOfUsersYouFollow', (eb) =>
+        eb
+          .selectFrom('user as u')
+          .where('u.id', '!=', userId)
+          .where('u.id', 'in', (eb) =>
+            eb
+              .selectFrom('follow_up as fu')
+              .select('fu.followee_id')
+              .where('fu.follower_id', 'in', (eb) =>
+                eb.selectFrom('usersYouFollow as uyf').select('uyf.id'),
+              ),
+          )
+          .select([
+            'u.id',
+            'u.username',
+            'u.profile_picture',
+            eb
+              .selectFrom('follow_up')
+              .select(({ fn }) => fn.countAll<number>().as('follower_count'))
+              .whereRef('follow_up.followee_id', '=', sql.ref('u.id'))
+              .as('follower_count'),
+          ]),
+      )
+      .selectFrom((eb) =>
+        eb
+          .selectFrom('followeesOfUsersYouFollow')
+          .selectAll()
+          .union(eb.selectFrom('usersYouDontFollow').selectAll())
+          .as('uydf'),
+      )
+      .selectAll()
       .limit(5)
       .execute();
   },
