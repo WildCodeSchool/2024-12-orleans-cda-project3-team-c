@@ -13,20 +13,28 @@ export default {
   getFeedPage(page: number, userId: number) {
     return db
       .selectFrom('post')
-      .leftJoin('post_like', (join) =>
-        join
-          .onRef('post_like.post_id', '=', 'post.id')
-          .on((eb) => eb('post_like.user_id', '=', userId)),
-      )
-      .leftJoin('comment', 'comment.post_id', 'post.id')
       .select((eb) => [
         'post.id',
         'post.picture',
         'post.description',
         'post.created_at',
-        'post_like.created_at as isLiked',
-        eb.fn.count<number>('post_like.post_id').as('likeCount'),
-        eb.fn.count<number>('comment.id').as('commentCount'),
+        eb
+          .selectFrom('post_like')
+          .select((eb) => [eb.fn.count('post_like.post_id').as('likeCount')])
+          .whereRef('post_like.post_id', '=', 'post.id')
+
+          .as('likeCount'),
+        eb
+          .selectFrom('comment')
+          .select((eb) => [eb.fn.count('comment.post_id').as('commentCount')])
+          .whereRef('comment.post_id', '=', 'post.id')
+          .as('commentCount'),
+        eb
+          .selectFrom('post_like')
+          .select(['post_like.created_at'])
+          .whereRef('post_like.post_id', '=', 'post.id')
+          .where('post_like.user_id', '=', userId)
+          .as('isLiked'),
         jsonObjectFrom(
           eb
             .selectFrom('user')
