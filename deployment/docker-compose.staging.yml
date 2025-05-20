@@ -43,7 +43,7 @@ services:
         condition: service_healthy
   migrations:
     image: teddyagt/mingo-migrations-staging:latest
-    restart: never
+    restart: no
     env_file:
       - ./.env
     depends_on:
@@ -51,7 +51,7 @@ services:
         condition: service_healthy
   web:
     image: teddyagt/mingo-client-staging:latest
-    restart: never
+    restart: no
     volumes:
       - web-client-build:/app
 
