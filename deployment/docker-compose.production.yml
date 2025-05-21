@@ -33,6 +33,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - web-client-build:/web-client-build
+      - ./cdn:/cdn
   api:
     image: teddyagt/mingo-server:latest
     restart: always
@@ -41,6 +42,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    volumes:
+      - ./cdn:/app/public
   migrations:
     image: teddyagt/mingo-migrations:latest
     restart: no

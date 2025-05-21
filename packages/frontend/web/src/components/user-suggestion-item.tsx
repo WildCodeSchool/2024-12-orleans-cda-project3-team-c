@@ -6,8 +6,6 @@ import type { UserSuggestion } from '@app/api';
 import followUpApiConnection from '../api-connection/follow-up-api-connection';
 import FollowButton from './follow-suggestion-button';
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followCount, setFollowCount] = useState(user.follower_count);
@@ -33,7 +31,7 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
         title={`See ${user.username}'s profile`}
       >
         <img
-          src={`${cdnUrl}/pictures/users/${user.profile_picture}`}
+          src={`/cdn/pictures/users/${user.profile_picture}`}
           alt={`${user.username}'s profile`}
           className='mr-1 h-8 w-8 rounded text-center'
         />

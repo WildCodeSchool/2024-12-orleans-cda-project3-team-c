@@ -10,8 +10,6 @@ import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
   const descriptionElements = !!post.description
@@ -49,7 +47,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
         >
           <div className='w-8 overflow-hidden rounded'>
             <img
-              src={`${cdnUrl}/pictures/users/${post.author?.profile_picture}`}
+              src={`/cdn/pictures/users/${post.author?.profile_picture}`}
               alt={`${post.author?.username} profile picture`}
             />
           </div>
@@ -72,7 +70,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
       {/* slideshow container */}
       <div className='mb-1'>
         <div className='slide'>
-          <img src={`${cdnUrl}/pictures/posts/${post.picture}`} alt='' />
+          <img src={`/cdn/pictures/posts/${post.picture}`} alt='' />
         </div>
       </div>
 
