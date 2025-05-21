@@ -3,33 +3,18 @@ import type { UploadedFile } from 'express-fileupload';
 import fs from 'node:fs/promises';
 import path from 'path';
 import sharp from 'sharp';
-import { fileURLToPath } from 'url';
 
 export default {
   imageFormat: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
-  tempFolderPath: path.join(
-    fileURLToPath(import.meta.url),
-    '..',
-    '..',
-    '..',
-    'public',
-    'pictures',
-    'temp',
-  ),
+  tempFolderPath: path.join(process.cwd(), 'public', 'pictures', 'temp'),
   postPicturesFolderPath: path.join(
-    fileURLToPath(import.meta.url),
-    '..',
-    '..',
-    '..',
+    process.cwd(),
     'public',
     'pictures',
     'posts',
   ),
   userPicturesFolderPath: path.join(
-    fileURLToPath(import.meta.url),
-    '..',
-    '..',
-    '..',
+    process.cwd(),
     'public',
     'pictures',
     'users',
