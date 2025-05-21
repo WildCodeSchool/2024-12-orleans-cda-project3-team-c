@@ -6,7 +6,6 @@ import menu from '@/assets/icons/menu-square-white.svg';
 
 export default function ProfilePage() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
-  console.log(profile);
   if (!profile) {
     return (
       <div className='pt-10 text-center text-white'>
