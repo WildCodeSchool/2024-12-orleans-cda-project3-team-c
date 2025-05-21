@@ -1,11 +1,18 @@
+import type { Request } from 'express';
 import express from 'express';
 
 import followUpModel from '@/models/follow-up-model';
 
 const followUpsRouter = express.Router();
-const testUser = 1;
 
-followUpsRouter.post('/', async (req, res) => {
+followUpsRouter.post('/', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+
   const { followeeId } = req.body;
 
   if (typeof followeeId !== 'number') {
@@ -14,7 +21,7 @@ followUpsRouter.post('/', async (req, res) => {
   }
 
   try {
-    const result = await followUpModel.addFollow(testUser, followeeId);
+    const result = await followUpModel.addFollow(userId, followeeId);
     res.status(201).json(result);
     return;
   } catch (error) {
@@ -24,7 +31,14 @@ followUpsRouter.post('/', async (req, res) => {
   }
 });
 
-followUpsRouter.delete('/', async (req, res) => {
+followUpsRouter.delete('/', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+
   const { followeeId } = req.body;
 
   if (typeof followeeId !== 'number') {
@@ -33,7 +47,7 @@ followUpsRouter.delete('/', async (req, res) => {
   }
 
   try {
-    const result = await followUpModel.deleteFollow(testUser, followeeId);
+    const result = await followUpModel.deleteFollow(userId, followeeId);
     res.json(result);
     return;
   } catch (error) {
