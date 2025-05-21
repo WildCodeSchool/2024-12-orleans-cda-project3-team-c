@@ -43,7 +43,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
     <article className='mb-8'>
       <header className='flex items-center justify-between p-2'>
         <Link
-          to={`/profile/${post.author?.username}`}
+          to={`/other-profile/${post.author?.username}`}
           className='flex items-center gap-4'
           title={`See ${post.author?.username}'s profile`}
         >

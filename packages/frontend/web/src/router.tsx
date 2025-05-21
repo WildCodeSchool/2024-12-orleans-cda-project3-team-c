@@ -11,6 +11,7 @@ import EditBio from './pages/edit-bio';
 import EditUsername from './pages/edit-username';
 import Feed from './pages/feed';
 import Login from './pages/login';
+import OtherProfile from './pages/other-profile';
 import Parameters from './pages/parameters';
 import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <ProfilePage />,
+        loader: loaders.userLoaders.getUserProfile,
+      },
+      {
+        path: '/other-profile/:username',
+        element: <OtherProfile />,
         loader: loaders.userLoaders.getUserProfile,
       },
       {
