@@ -7,8 +7,6 @@ import searchApiConnection from '@/api-connection/search-api-connection';
 
 import searchIcon from '../assets/icons/search-white.svg';
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 export default function Search() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<{
@@ -120,7 +118,7 @@ export default function Search() {
               {results.posts.slice(0, postByTagLimit).map((post) => (
                 <li key={post.id}>
                   <img
-                    src={`${cdnUrl}/pictures/posts/${post.picture}`}
+                    src={`/cdn/pictures/posts/${post.picture}`}
                     alt={post.description ?? 'No description'}
                   />
                 </li>
