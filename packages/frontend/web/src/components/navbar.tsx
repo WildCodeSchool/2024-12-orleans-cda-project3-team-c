@@ -14,8 +14,6 @@ type NavItemProps = {
   readonly label: string;
 };
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 function NavItem({ to, icon, label }: NavItemProps) {
   return (
     <li className='h-12 max-w-fit'>
@@ -47,7 +45,7 @@ export default function NavBar() {
     { to: '/notifications', icon: bellIcon, label: 'Notifications' },
     {
       to: '/profile',
-      icon: `${cdnUrl}/pictures/users/${user?.profile_picture}`,
+      icon: `/cdn/pictures/users/${user?.profile_picture}`,
       label: 'Profile',
     },
   ];

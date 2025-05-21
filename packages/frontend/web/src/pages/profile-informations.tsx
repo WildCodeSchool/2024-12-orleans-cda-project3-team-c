@@ -6,16 +6,14 @@ import type { UserProfile } from '@app/api';
 import userApiConnection from '@/api-connection/user-api-connection';
 import arrowLeftIcon from '@/assets/icons/arrow-left-white.svg';
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 export default function ProfileInformations() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
   const [profilePicturePath, setProfilePicturePath] = useState<
     string | undefined
   >(
     profile?.profile_picture
-      ? `${cdnUrl}/pictures/users/${profile.profile_picture}`
-      : `${cdnUrl}/pictures/users/user.png`,
+      ? `/cdn/pictures/users/${profile.profile_picture}`
+      : `/cdn/pictures/users/user.png`,
   );
 
   const handleProfilePictureChange = async (

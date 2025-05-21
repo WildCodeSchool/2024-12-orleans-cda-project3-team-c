@@ -4,8 +4,6 @@ import type { UserProfile } from '@app/api';
 
 import menu from '@/assets/icons/menu-square-white.svg';
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 export default function ProfilePage() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
 
@@ -22,7 +20,7 @@ export default function ProfilePage() {
       <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
         <img
           className='size-16 rounded md:size-40'
-          src={`${cdnUrl}/pictures/users/${profile.profile_picture}`}
+          src={`/cdn/pictures/users/${profile.profile_picture}`}
           alt='User'
         />
         <div className='ml-4 w-full'>
@@ -80,7 +78,7 @@ export default function ProfilePage() {
               className='size-40 sm:size-56 md:size-81'
               src={
                 post.picture
-                  ? `${cdnUrl}/pictures/posts/${post.picture}`
+                  ? `/cdn/pictures/posts/${post.picture}`
                   : '/user-mock.png'
               }
               alt={`Post ${index + 1}`}
