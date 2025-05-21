@@ -101,7 +101,7 @@ export default typescriptPlugin.config([
           selector: 'variable',
           types: ['boolean'],
           format: ['PascalCase'],
-          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+          prefix: ['is', 'should', 'has', 'can', 'did', 'will', 'IS'],
         },
         {
           selector: [
