@@ -53,7 +53,7 @@ export default function NavBar() {
   ];
   return (
     <>
-      <nav className='fixed hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
+      <nav className='fixed top-0 hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
         <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
         <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
