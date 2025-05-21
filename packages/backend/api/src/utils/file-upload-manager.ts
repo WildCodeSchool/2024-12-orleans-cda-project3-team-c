@@ -58,7 +58,7 @@ export default {
   },
 
   async resizePicture(fileName: string, width: number) {
-    if (await this.checkNeedsResizing(fileName, 1080)) {
+    if (await this.checkNeedsResizing(fileName, width)) {
       await sharp(path.join(this.tempFolderPath, fileName))
         .resize(width)
         .toFile(path.join(this.tempFolderPath, fileName));
