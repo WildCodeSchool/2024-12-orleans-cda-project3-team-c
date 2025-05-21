@@ -7,6 +7,7 @@ const FRONTEND_HOST = process.env.FRONTEND_HOST ?? '';
 
 env();
 
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const accessTokenSecret = new TextEncoder().encode(ACCESS_TOKEN_SECRET);
 
@@ -66,8 +67,9 @@ export default async function authMiddleware(
       res.cookie('accessToken', accessToken, {
         httpOnly: true,
         signed: true,
-        // secure: true,
-        // sameSite: 'strict',
+        secure: IS_PRODUCTION,
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24 * 7 * 1000,
       });
 
       req.isAuthenticated = true;

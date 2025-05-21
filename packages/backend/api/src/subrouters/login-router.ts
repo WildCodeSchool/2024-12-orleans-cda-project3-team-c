@@ -11,6 +11,8 @@ env();
 
 const loginRouter = express.Router();
 
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?? '';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -60,8 +62,9 @@ loginRouter.post('/', async function (req: Request, res: Response) {
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       signed: true,
-      // secure: true,
-      // sameSite: 'strict',
+      secure: IS_PRODUCTION,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7 * 1000,
     });
 
     //Refresh token
@@ -79,8 +82,9 @@ loginRouter.post('/', async function (req: Request, res: Response) {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       signed: true,
-      // secure: true,
-      // sameSite: 'strict',
+      secure: IS_PRODUCTION,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24 * 7 * 1000,
     });
 
     res.json({
