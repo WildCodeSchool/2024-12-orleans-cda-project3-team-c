@@ -14,6 +14,7 @@ import Login from './pages/login';
 import Parameters from './pages/parameters';
 import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
+import Search from './pages/search';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/create',
         element: <CreatePostPage />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
       {
         path: 'parameters',
