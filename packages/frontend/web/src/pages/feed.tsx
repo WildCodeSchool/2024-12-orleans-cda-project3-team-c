@@ -47,8 +47,9 @@ export default function Feed() {
 
   return (
     // feed section
-    <>
-      <section className='mx-auto max-w-[460px] pb-16 md:pt-8'>
+
+    <section className='flex'>
+      <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
         <header
           id='feed-header'
           className='flex items-center justify-between p-4 md:hidden'
@@ -63,8 +64,10 @@ export default function Feed() {
           return <Post post={post} key={post.id} />;
         })}
         <div ref={infiniteScrollTrigger} />
-      </section>
-      <UserSuggestionContainer />
-    </>
+      </div>
+      <aside>
+        <UserSuggestionContainer />
+      </aside>
+    </section>
   );
 }
