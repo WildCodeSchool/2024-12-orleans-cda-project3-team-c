@@ -1,9 +1,6 @@
 import express from 'express';
 
-import {
-  checkIfCredentialsAlreadyExists,
-  userRegister,
-} from '@/models/user-model';
+import userModel from '@/models/user-model';
 
 const registerRouter = express.Router();
 
@@ -41,10 +38,8 @@ registerRouter.post('/', async function (req, res) {
       errors.password = 'Password should be at least 8 characters long';
     }
 
-    const checkIfAlreadyExists = await checkIfCredentialsAlreadyExists(
-      email,
-      username,
-    );
+    const checkIfAlreadyExists =
+      await userModel.checkIfCredentialsAlreadyExists(email, username);
 
     if (!(typeof checkIfAlreadyExists === 'boolean')) {
       if (checkIfAlreadyExists.email !== undefined) {
@@ -60,7 +55,7 @@ registerRouter.post('/', async function (req, res) {
       return;
     }
 
-    await userRegister(email, username, password);
+    await userModel.userRegister(email, username, password);
     res.status(201).json({});
   } catch (error) {
     console.error(error);

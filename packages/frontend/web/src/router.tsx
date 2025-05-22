@@ -21,6 +21,13 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: '/',
+        element: <Feed />,
+        loader: () => {
+          return loaders.postLoaders.getFeedPage();
+        },
+      },
+      {
         path: '/feed',
         element: <Feed />,
         loader: () => {

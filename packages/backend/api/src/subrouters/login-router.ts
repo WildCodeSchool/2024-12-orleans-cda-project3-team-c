@@ -5,7 +5,7 @@ import * as jose from 'jose';
 
 import { env } from '@app/shared';
 
-import { userLogin } from '@/models/user-model';
+import userModel from '@/models/user-model';
 
 env();
 
@@ -32,7 +32,7 @@ loginRouter.post('/', async function (req: Request, res: Response) {
       return;
     }
 
-    const userAccess = await userLogin(email);
+    const userAccess = await userModel.userLogin(email);
     if (!userAccess) {
       res.status(401).json({ message: 'Invalid email or password' });
       return;
