@@ -23,7 +23,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
     likeCount: post.likeCount,
   });
   const [isFollowing, setIsFollowing] = useState(!!post.author?.isFollowing);
-  console.log(post.author);
+
   const togglePostLike = async () => {
     // Vérifier l'atat de postIsLiked
     let newState: PostLike;
