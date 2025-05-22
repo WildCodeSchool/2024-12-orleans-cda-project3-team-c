@@ -2,7 +2,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
-// Charger les loaders mis à jour
 import ForgottenPassword from './components/forgotten-password';
 import Register from './components/register';
 import loaders from './loaders';
