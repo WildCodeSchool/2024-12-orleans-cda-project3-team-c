@@ -5,7 +5,6 @@ type AuthProviderContextProps = PropsWithChildren<object>;
 
 export type User = {
   id: number;
-  email: string;
   profile_picture: string;
 };
 

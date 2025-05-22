@@ -1,5 +1,5 @@
-import express from 'express';
 import type { Request } from 'express';
+import express from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
 import userModel from '@/models/user-model';

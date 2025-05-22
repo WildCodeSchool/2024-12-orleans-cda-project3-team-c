@@ -20,16 +20,23 @@ class UserApiConnection extends ApiConnection {
     return data;
   }
 
-  async updateProfilePicture(file: File): Promise<void> {
+  async updateProfilePicture(file: File) {
     const formData = new FormData();
     formData.append('picture', file);
-    const res = await fetch(`${this.ressourceUrl}/profile-picture`, {
+    const response = await fetch(`${this.ressourceUrl}/profile-picture`, {
       method: 'PUT',
       body: formData,
       credentials: 'include',
     });
 
-    if (!res.ok) throw new Error('Failed to upload profile picture');
+    if (response.ok) {
+      const data = (await response.json()) as {
+        message: string;
+        filename: string;
+      };
+      return data;
+    }
+    throw new Error('Failed to upload profile picture');
   }
 
   async updateUsername(username: string): Promise<void> {

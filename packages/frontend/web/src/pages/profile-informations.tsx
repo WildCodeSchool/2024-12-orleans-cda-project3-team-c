@@ -5,8 +5,10 @@ import type { UserProfile } from '@app/api';
 
 import userApiConnection from '@/api-connection/user-api-connection';
 import arrowLeftIcon from '@/assets/icons/arrow-left-white.svg';
+import { useLoginContext } from '@/contexts/auth-context';
 
 export default function ProfileInformations() {
+  const context = useLoginContext();
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
   const [profilePicturePath, setProfilePicturePath] = useState<
     string | undefined
@@ -23,9 +25,16 @@ export default function ProfileInformations() {
     if (!file) return;
 
     try {
-      await userApiConnection.updateProfilePicture(file);
+      const response = await userApiConnection.updateProfilePicture(file);
       const newPictureUrl = URL.createObjectURL(file);
       setProfilePicturePath(newPictureUrl);
+
+      if (context?.user !== null) {
+        context?.setUser({
+          id: context.user.id,
+          profile_picture: response.filename,
+        });
+      }
     } catch (error) {
       console.error('Error while updating the profile picture:', error);
     }
