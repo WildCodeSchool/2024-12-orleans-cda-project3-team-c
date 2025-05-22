@@ -28,9 +28,9 @@ export default function ProfileInformations() {
       const response = await userApiConnection.updateProfilePicture(file);
       const newPictureUrl = URL.createObjectURL(file);
       setProfilePicturePath(newPictureUrl);
-      // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
-      if (context !== undefined && context.user !== null) {
-        context.setUser({
+
+      if (context?.user !== null) {
+        context?.setUser({
           id: context.user.id,
           profile_picture: response.filename,
         });
