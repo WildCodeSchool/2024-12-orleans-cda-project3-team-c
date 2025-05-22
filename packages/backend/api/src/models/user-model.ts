@@ -69,7 +69,7 @@ export default {
   },
 
   async getUserSuggestionsForUser(userId: number) {
-    const request = db
+    return await db
       .with('usersYouDontFollow', (eb) =>
         eb
           .selectFrom('user as u')
@@ -146,10 +146,8 @@ export default {
           .as('uydf'),
       )
       .selectAll()
-      .limit(5);
-
-    console.log(request.compile().sql);
-    return await request.execute();
+      .limit(5)
+      .execute();
   },
 
   async userLogin(credential: string) {
