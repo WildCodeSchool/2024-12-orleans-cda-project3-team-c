@@ -46,11 +46,17 @@ export default {
                   .onRef('follow_up.followee_id', '=', 'user.id')
                   .on((eb) => eb('follow_up.follower_id', '=', userId)),
               )
+              .innerJoin(
+                'account_status',
+                'account_status.id',
+                'user.account_status_id',
+              )
               .select([
-                'id',
+                'user.id',
                 'username',
                 'profile_picture',
                 'follow_up.created_at as isFollowing',
+                'account_status.name as status',
               ])
               .whereRef('user.id', '=', 'post.user_id'),
           ),
