@@ -36,7 +36,7 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
           className='mr-1 h-8 w-8 rounded text-center'
         />
         <div className='flex flex-col'>
-          <h2 className='font-title text-center text-sm'>{user.username}</h2>
+          <h2 className='font-title text-sm'>{user.username}</h2>
           <p className='text-[8px] opacity-60'>
             {followCount}{' '}
             {`follower${followCount && followCount > 1 ? 's' : ''}`}
