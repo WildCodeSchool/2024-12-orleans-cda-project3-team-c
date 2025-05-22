@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 
 import type { FeedPost, PostLike } from '@app/api';
 
+import followUpApiConnection from '@/api-connection/follow-up-api-connection';
 import postLikeApiConnection from '@/api-connection/post-like-api-connection';
 import { getDescriptionElements, getTimeAgo } from '@/utils/text-formating';
 
 import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
+import FollowButton from './follow-suggestion-button';
 
 export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
@@ -19,6 +21,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
     isLiked: !!post.isLiked,
     likeCount: post.likeCount,
   });
+  const [isFollowing, setIsFollowing] = useState(!!post.author?.isFollowing);
 
   const togglePostLike = async () => {
     // Vérifier l'atat de postIsLiked
@@ -33,6 +36,18 @@ export default function Post({ post }: { readonly post: FeedPost }) {
         isLiked: newState.isLiked,
         likeCount: newState.likeCount ?? 0,
       });
+    }
+  };
+
+  const handleFollowClick = async () => {
+    let newState;
+    if (isFollowing) {
+      newState = await followUpApiConnection.unfollowUser(post.author.id);
+    } else {
+      newState = await followUpApiConnection.followUser(post.author.id);
+    }
+    if (newState !== null) {
+      setIsFollowing(newState.isFollowing);
     }
   };
 
@@ -57,13 +72,11 @@ export default function Post({ post }: { readonly post: FeedPost }) {
           </h2>
         </Link>
         {!post.author?.isFollowing && (
-          <button
-            title={`Follow ${post.author?.username}`}
-            type='button'
-            className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
-          >
-            {'Follow'}
-          </button>
+          <FollowButton
+            isFollowing={isFollowing}
+            username={post.author.username}
+            handleFollowClick={handleFollowClick}
+          />
         )}
       </header>
 
