@@ -18,7 +18,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className='mx-4 flex flex-col pt-4 sm:mx-16 sm:pt-16'>
+    <section className='mx-4 flex w-250 flex-col pt-4 sm:mx-16 sm:pt-16 md:m-auto'>
       <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
         <img
           className='size-16 rounded md:size-40'

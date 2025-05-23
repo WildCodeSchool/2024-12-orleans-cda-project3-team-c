@@ -127,6 +127,54 @@ export default {
       : null;
   },
 
+  async getUserProfileByUsername(username: string) {
+    const profile = await db
+      .selectFrom('user')
+      .select((eb) => [
+        'user.id',
+        'user.username',
+        'user.profile_picture',
+        'user.biography',
+        'user.notoriety',
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) => fn.countAll<number>().as('followersCount'))
+          .whereRef('follow_up.followee_id', '=', 'user.id')
+          .as('followersCount'),
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) => fn.countAll<number>().as('followingCount'))
+          .whereRef('follow_up.follower_id', '=', 'user.id')
+          .as('followingCount'),
+        jsonArrayFrom(
+          eb
+            .selectFrom('post')
+            .leftJoin('post_like', 'post_like.post_id', 'post.id')
+            .leftJoin('comment', 'comment.post_id', 'post.id')
+            .select((eb2) => [
+              'post.id',
+              'post.picture',
+              eb2.fn.count<number>('post_like.user_id').as('likeCount'),
+              eb2.fn.count<number>('comment.id').as('commentCount'),
+            ])
+            .whereRef('post.user_id', '=', 'user.id')
+            .groupBy('post.id')
+            .orderBy('post.created_at', 'desc')
+            .limit(8),
+        ).as('posts'),
+      ])
+      .where('user.username', '=', username)
+      .executeTakeFirst();
+
+    return profile
+      ? {
+          ...profile,
+          followersCount: profile.followersCount ?? 0,
+          followingCount: profile.followingCount ?? 0,
+        }
+      : null;
+  },
+
   async updateUserProfile(
     userId: number,
     updates: {

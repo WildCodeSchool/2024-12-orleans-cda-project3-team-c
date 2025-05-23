@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import type { UserProfile } from '@app/api';
+
+import followUpApiConnection from '@/api-connection/follow-up-api-connection';
+import FollowButton from '@/components/follow-suggestion-button';
 
 import menuDotsBlue from '../assets/icons/menu-dots-blue.svg';
 
@@ -8,6 +12,8 @@ const cdnUrl = import.meta.env.VITE_CDN_URL;
 
 export default function OtherProfile() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followCount, setFollowCount] = useState(profile?.followersCount ?? 0);
 
   if (!profile) {
     return (
@@ -16,6 +22,20 @@ export default function OtherProfile() {
       </div>
     );
   }
+
+  const handleFollowClick = async () => {
+    let newState;
+    if (isFollowing) {
+      newState = await followUpApiConnection.unfollowUser(profile.id);
+    } else {
+      newState = await followUpApiConnection.followUser(profile.id);
+      console.log(profile.id);
+    }
+    if (newState !== null) {
+      setIsFollowing(newState.isFollowing);
+      setFollowCount(newState.followerCount ?? 0);
+    }
+  };
 
   return (
     <section className='mx-4 flex h-full flex-col pt-4 md:mx-auto md:w-[954px]'>
@@ -42,9 +62,7 @@ export default function OtherProfile() {
               <span>{'posts'}</span>
             </li>
             <li className='flex items-center gap-1'>
-              <span className='text-turquoise-blue-400'>
-                {profile.followersCount}
-              </span>
+              <span className='text-turquoise-blue-400'>{followCount}</span>
               <span>{'followers'}</span>
             </li>
             <li className='flex items-center gap-1'>
@@ -71,7 +89,11 @@ export default function OtherProfile() {
         }
       </p>
       <div className='mb-2 flex gap-4'>
-        {/* <FollowButton /> */}
+        <FollowButton
+          isFollowing={isFollowing}
+          handleFollowClick={handleFollowClick}
+          username={profile.username}
+        />
 
         <button
           type='button'
@@ -82,7 +104,7 @@ export default function OtherProfile() {
         <img src={menuDotsBlue} alt='' className='w-6' />
       </div>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
-      <section className='grid h-90 grid-cols-2 gap-2 md:grid-cols-3 md:gap-4'>
+      <section className='grid h-82 grid-cols-2 gap-2 md:grid-cols-3 md:gap-4'>
         {profile.posts.map((post, index) => (
           <div key={post.id} className='h-full overflow-hidden rounded-lg'>
             <img

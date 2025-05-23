@@ -34,9 +34,9 @@ const router = createBrowserRouter([
         loader: loaders.userLoaders.getUserProfile,
       },
       {
-        path: '/other-profile/:username',
+        path: '/profile/:username',
         element: <OtherProfile />,
-        loader: loaders.userLoaders.getUserProfile,
+        loader: loaders.userLoaders.getUserProfileByUsername,
       },
       {
         path: '/create',
