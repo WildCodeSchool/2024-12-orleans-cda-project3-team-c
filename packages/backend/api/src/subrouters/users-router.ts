@@ -33,6 +33,29 @@ usersRouter.get('/profile', async (req: Request, res) => {
   }
 });
 
+usersRouter.get('/profile/:userId', async (req: Request, res) => {
+  const userId = req.params.userId;
+  let profile;
+
+  try {
+    if (+userId) {
+      profile = await userModel.getUserProfileById(+userId);
+    } else {
+      profile = await userModel.getUserProfileByUsername(userId);
+    }
+
+    if (!profile) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error('Error /profile:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 usersRouter.put('/username', async (req: Request, res) => {
   const userId = req.userId;
   const { username } = req.body;

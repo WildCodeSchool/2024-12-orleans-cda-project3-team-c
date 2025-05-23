@@ -24,7 +24,7 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
   };
 
   return (
-    <div className='mb-2 flex h-8 items-center justify-center text-sm'>
+    <div className='mb-2 flex h-8 items-center justify-between text-sm'>
       <Link
         to={`/profile/${user.id}`}
         className='flex items-center'
