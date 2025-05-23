@@ -1,14 +1,21 @@
 import express from 'express';
+import type { Request } from 'express';
 
 import userModel from '@/models/user-model';
 
 const suggestionsRouter = express.Router();
 
-suggestionsRouter.get('/users', async (req, res) => {
-  const testUser = 1;
+suggestionsRouter.get('/users', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json('Unauthorized: user not authenticated');
+    return;
+  }
+
   try {
     const usersWithFollowers =
-      await userModel.getUserSuggestionsForUser(testUser);
+      await userModel.getUserSuggestionsForUser(userId);
     res.json(usersWithFollowers);
     return;
   } catch (error) {
