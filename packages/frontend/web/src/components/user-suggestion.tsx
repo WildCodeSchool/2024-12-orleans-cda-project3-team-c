@@ -21,7 +21,7 @@ function UserSuggestionContainer() {
   }, []);
 
   return (
-    <div className='mt-40 mr-8 hidden w-64 text-white md:hidden lg:flex lg:flex-col'>
+    <div className='mt-40 mr-8 hidden w-72 text-white md:hidden lg:flex lg:flex-col'>
       <div className='mb-6 text-base'>
         <h1>{'Suggestions'}</h1>
       </div>
