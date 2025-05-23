@@ -8,6 +8,7 @@ import followUpApiConnection from '@/api-connection/follow-up-api-connection';
 import postLikeApiConnection from '@/api-connection/post-like-api-connection';
 import { getDescriptionElements, getTimeAgo } from '@/utils/text-formating';
 
+import certificationIcon from '../assets/icons/certification-pink.png';
 import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
@@ -80,9 +81,16 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                 alt={`${post.author.username} profile picture`}
               />
             </div>
-            <h2 className='font-title text-sm md:text-base'>
+            <h2 className='font-title flex gap-1 text-sm md:text-base'>
               {'@'}
               {post.author.username}
+              {post.author.status === 'certified' ? (
+                <img
+                  src={certificationIcon}
+                  alt='certification'
+                  className='size-3 md:size-4'
+                />
+              ) : null}
             </h2>
           </Link>
           {!post.author.isFollowing && (

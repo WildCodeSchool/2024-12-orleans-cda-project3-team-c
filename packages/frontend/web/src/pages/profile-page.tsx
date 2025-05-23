@@ -2,6 +2,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 
 import type { UserProfile } from '@app/api';
 
+import certificationIcon from '@/assets/icons/certification-pink.png';
 import menu from '@/assets/icons/menu-square-white.svg';
 
 export default function ProfilePage() {
@@ -26,9 +27,16 @@ export default function ProfilePage() {
           <div className='flex flex-col'>
             <div className='flex items-center justify-between'>
               <div className='flex items-center gap-2'>
-                <p className='font-title text-sm sm:text-2xl'>
+                <h1 className='font-title flex gap-2 text-sm sm:text-2xl'>
                   {profile.username}
-                </p>
+                  {profile.status === 'certified' ? (
+                    <img
+                      src={certificationIcon}
+                      alt='certification'
+                      className='size-4 md:size-5'
+                    />
+                  ) : null}
+                </h1>
                 <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
                   {profile.notoriety}
                 </p>
