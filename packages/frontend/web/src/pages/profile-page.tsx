@@ -38,7 +38,8 @@ export default function ProfilePage() {
                   ) : null}
                 </h1>
                 <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
-                  {profile.notoriety}
+                  {profile.likeCount}
+                  {` like${profile.likeCount !== null && profile.likeCount > 1 ? 's' : ''}`}
                 </p>
               </div>
               <Link to='/parameters'>
