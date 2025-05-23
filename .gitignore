@@ -58,4 +58,6 @@ deployment/db/
 *-mock.*
 test.js
 **/*.tsbuildinfo
-b25f2fca-43a3-4ac9-8ab6-1f355823665b.webp
+public/
+!public/*/.gitkeep
+!public/*/user.png

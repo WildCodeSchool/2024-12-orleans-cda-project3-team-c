@@ -8,12 +8,18 @@ export default {
   async getUserProfileById(userId: number) {
     const profile = await db
       .selectFrom('user')
+      .innerJoin(
+        'account_status',
+        'account_status.id',
+        'user.account_status_id',
+      )
       .select((eb) => [
         'user.id',
         'user.username',
         'user.profile_picture',
         'user.biography',
         'user.notoriety',
+        'account_status.name as status',
         eb
           .selectFrom('follow_up')
           .select(({ fn }) => fn.countAll<number>().as('followersCount'))
