@@ -205,7 +205,7 @@ function GoBackModal({
         <button
           title='Next step'
           type='button'
-          className={`text-title border-turquoise-blue-400 text-turquoise-blue-400 rounded border px-2 py-0.5 text-xs`}
+          className='text-title border-turquoise-blue-400 text-turquoise-blue-400 rounded border px-2 py-0.5 text-xs'
           onClick={() => {
             setIsModalVisible(false);
           }}
