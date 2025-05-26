@@ -7,13 +7,10 @@ class CommentApiConnection extends ApiConnection {
     super(ressource);
   }
 
-  async getPostComments(postId: number, signal: AbortSignal, page = 1) {
+  async getPostComments(postId: number, page = 1) {
     try {
       const response = await fetch(
         `${this.ressourceUrl}?postId=${postId}&page=${page}`,
-        {
-          signal,
-        },
       );
 
       if (response.ok) {

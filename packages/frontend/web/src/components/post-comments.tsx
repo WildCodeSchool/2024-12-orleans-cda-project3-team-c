@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import type { PostComment } from '@app/api';
 
 import commentApiConnection from '@/api-connection/comment-api-connection';
+import postCommentApiConnection from '@/api-connection/post-comment-api-connection';
 
 import backIcon from '../assets/icons/arrow-left-white.svg';
+import sendIcon from '../assets/icons/send-white.svg';
 import Comment from './comment';
 
 export default function PostComments({
@@ -15,28 +17,42 @@ export default function PostComments({
   readonly postId: number;
 }) {
   const [comments, setComments] = useState<PostComment[]>([]);
+  const [commentText, setCommentText] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const infiniteScrollTrigger = useRef(null);
-  let page = 1;
+  let page = 0;
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
+  async function getComments() {
+    const newComments = await commentApiConnection.getPostComments(
+      postId,
+      page,
+    );
 
-    (async function getComments() {
-      const newComments = await commentApiConnection.getPostComments(
-        postId,
-        signal,
-        page,
-      );
+    setComments((currentComments) => {
+      return [...currentComments, ...newComments];
+    });
+  }
 
+  const handleSubmitCommentForm = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (commentText === '') {
+      setErrorMessage('Your comment cannot be empty');
+      return;
+    }
+
+    const response = await postCommentApiConnection.postComment(
+      postId,
+      commentText,
+    );
+    if (response.ok && response.comment !== undefined) {
+      // @ts-expect-error "ilugmumug"
       setComments((currentComments) => {
-        return [...currentComments, ...newComments];
+        return [...currentComments, response.comment];
       });
-    })();
-    return () => {
-      controller.abort();
-    };
-  }, [page]);
+    } else if (response.message) {
+      setErrorMessage(response.message);
+    }
+  };
 
   useEffect(() => {
     let infiniteScrollObserver: IntersectionObserver;
@@ -52,18 +68,15 @@ export default function PostComments({
     };
   }, [infiniteScrollTrigger]);
 
-  function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
+  async function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
     if (observers[0].isIntersecting) {
       page++;
-      console.log('trigger !');
-      // await fetchNewPosts();
+      await getComments();
     }
   }
 
   return (
-    <section
-      className={`fixed bottom-0 left-0 z-10 h-screen w-dvw bg-purple-950`}
-    >
+    <section className='fixed bottom-0 left-0 z-10 h-screen w-dvw border border-red-500 bg-purple-950'>
       <header className='p-4'>
         <button
           type='button'
@@ -81,26 +94,38 @@ export default function PostComments({
           {'Comments'}
         </button>
       </header>
-      <div className='h-[calc(100vh - 150px)] border border-green-500 px-4 pb-4'>
-        <div className='border-danger overflow-y-auto border'>
+      <div className='border border-green-500 px-4 pb-4'>
+        <div className='border-danger h-[calc(100vh_-_116px)] overflow-y-auto border'>
           {comments.map((comment) => {
             return <Comment key={comment.id} comment={comment} />;
           })}
-          <div ref={infiniteScrollTrigger} className='h-2 bg-green-500' />
+          <div ref={infiniteScrollTrigger} />
         </div>
-        <div className='user-input-section'>
-          <form>
+        <div className='h-fit border border-pink-500'>
+          <p>{errorMessage}</p>
+          <form onSubmit={handleSubmitCommentForm}>
             <label htmlFor='text' className='hidden'>
               {'Your comment'}
             </label>
-            <div>
+            <div className='relative'>
               <textarea
                 name='text'
                 id='text'
                 placeholder='Write a comment'
-                className='w-full'
+                className='w-full resize-none rounded border border-white p-2 text-xs'
+                value={commentText}
+                onChange={(event) => {
+                  setCommentText(event.target.value);
+                }}
               />
-              <button type='submit' />
+              <button
+                type='submit'
+                aria-label='Send'
+                title='Send'
+                className='absolute top-[50%] right-0 flex -translate-y-1/2 justify-center border border-blue-500 p-2'
+              >
+                <img src={sendIcon} aria-hidden alt='' className='w-4' />
+              </button>
             </div>
           </form>
         </div>

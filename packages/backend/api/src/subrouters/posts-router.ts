@@ -1,7 +1,8 @@
-import express from 'express';
 import type { Request } from 'express';
+import express from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
+import commentModel from '@/models/comment-model';
 import type { PostTagInsertionList } from '@/models/model-types';
 import postLikeModel from '@/models/post-like-model';
 import postModel from '@/models/post-model';
@@ -125,6 +126,34 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
     res.status(500).json({ error: 'Something went wrong while liking post' });
     return;
   }
+});
+
+postsRouter.post('/:postId/comment', async function (req: Request, res) {
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+
+  const postId = +req.params.postId;
+
+  if (!postId) {
+    res
+      .status(400)
+      .json({ error: 'Bad request, you should provide a valid post id' });
+    return;
+  }
+
+  const { text, respondsTo } = req.body;
+
+  if (text === '') {
+    res.status(400).json({ message: 'Your comment cannot be empty' });
+    return;
+  }
+
+  const data = await commentModel.postComment(postId, userId, text, respondsTo);
+  res.json({ ok: true, comment: data });
+  return;
 });
 
 // UPDATE **************************************************
