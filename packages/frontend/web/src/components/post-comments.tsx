@@ -19,7 +19,6 @@ export default function PostComments({
   let page = 1;
 
   useEffect(() => {
-    console.log('1', page);
     const controller = new AbortController();
     const signal = controller.signal;
 
@@ -29,7 +28,6 @@ export default function PostComments({
         signal,
         page,
       );
-      console.log(newComments);
 
       setComments((currentComments) => {
         return [...currentComments, ...newComments];
@@ -64,9 +62,9 @@ export default function PostComments({
 
   return (
     <section
-      className={`fixed bottom-0 left-0 z-10 h-dvh h-screen w-dvw bg-purple-950`}
+      className={`fixed bottom-0 left-0 z-10 h-screen w-dvw bg-purple-950`}
     >
-      <header className='mb-4 p-4'>
+      <header className='p-4'>
         <button
           type='button'
           className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
@@ -83,8 +81,8 @@ export default function PostComments({
           {'Comments'}
         </button>
       </header>
-      <div className='px-4 pb-4'>
-        <div className='border-danger h-80 overflow-y-auto border'>
+      <div className='h-[calc(100vh - 150px)] border border-green-500 px-4 pb-4'>
+        <div className='border-danger overflow-y-auto border'>
           {comments.map((comment) => {
             return <Comment key={comment.id} comment={comment} />;
           })}
@@ -96,7 +94,12 @@ export default function PostComments({
               {'Your comment'}
             </label>
             <div>
-              <textarea name='text' id='text' placeholder='' />
+              <textarea
+                name='text'
+                id='text'
+                placeholder='Write a comment'
+                className='w-full'
+              />
               <button type='submit' />
             </div>
           </form>
