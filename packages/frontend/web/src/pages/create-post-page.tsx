@@ -12,6 +12,7 @@ export default function CreatePostPage() {
   const [picturePath, setPicturePath] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleSelectPicture = (event: React.ChangeEvent) => {
@@ -34,6 +35,8 @@ export default function CreatePostPage() {
 
   const handleSubmitForm = async (event: FormEvent) => {
     event.preventDefault();
+    if (isSending) return;
+    setIsSending(true);
 
     const postData = new FormData(event.target as HTMLFormElement);
 
@@ -47,6 +50,7 @@ export default function CreatePostPage() {
     } catch (error) {
       console.error(error);
     }
+    setIsSending(false);
   };
 
   return (
@@ -162,7 +166,8 @@ export default function CreatePostPage() {
                 <button
                   title='Next step'
                   type='submit'
-                  className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
+                  className={`text-title rounded border px-2 py-0.5 text-xs ${isSending ? 'border-placeholder text-placeholder' : 'border-turquoise-blue-400 text-turquoise-blue-400'}`}
+                  disabled={isSending}
                 >
                   {'Post'}
                 </button>
@@ -200,7 +205,7 @@ function GoBackModal({
         <button
           title='Next step'
           type='button'
-          className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
+          className={`text-title border-turquoise-blue-400 text-turquoise-blue-400 rounded border px-2 py-0.5 text-xs`}
           onClick={() => {
             setIsModalVisible(false);
           }}
