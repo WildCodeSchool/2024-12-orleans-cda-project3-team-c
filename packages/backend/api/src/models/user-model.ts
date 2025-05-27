@@ -79,48 +79,52 @@ export async function getLoggedInUser(userId: number) {
 }
 
 function userProfilRequest() {
-  return db.selectFrom('user').select((eb) => [
-    'user.id',
-    'user.username',
-    'user.profile_picture',
-    'user.biography',
-    'user.notoriety',
-    eb
-      .selectFrom('follow_up')
-      .select(({ fn }) => fn.countAll<number>().as('followersCount'))
-      .whereRef('follow_up.followee_id', '=', 'user.id')
-      .as('followersCount'),
-    eb
-      .selectFrom('follow_up')
-      .select(({ fn }) => fn.countAll<number>().as('followingCount'))
-      .whereRef('follow_up.follower_id', '=', 'user.id')
-      .as('followingCount'),
-    jsonArrayFrom(
+  return db
+    .selectFrom('user')
+    .innerJoin('account_status', 'account_status.id', 'user.account_status_id')
+    .select((eb) => [
+      'user.id',
+      'user.username',
+      'user.profile_picture',
+      'user.biography',
+      'user.notoriety',
+      'account_status.name as status',
       eb
-        .selectFrom('post')
-        .leftJoin('post_like', 'post_like.post_id', 'post.id')
-        .leftJoin('comment', 'comment.post_id', 'post.id')
-        .select((eb2) => [
-          'post.id',
-          'post.picture',
-          eb2.fn.count<number>('post_like.user_id').as('likeCount'),
-          eb2.fn.count<number>('comment.id').as('commentCount'),
+        .selectFrom('follow_up')
+        .select(({ fn }) => fn.countAll<number>().as('followersCount'))
+        .whereRef('follow_up.followee_id', '=', 'user.id')
+        .as('followersCount'),
+      eb
+        .selectFrom('follow_up')
+        .select(({ fn }) => fn.countAll<number>().as('followingCount'))
+        .whereRef('follow_up.follower_id', '=', 'user.id')
+        .as('followingCount'),
+      jsonArrayFrom(
+        eb
+          .selectFrom('post')
+          .leftJoin('post_like', 'post_like.post_id', 'post.id')
+          .leftJoin('comment', 'comment.post_id', 'post.id')
+          .select((eb2) => [
+            'post.id',
+            'post.picture',
+            eb2.fn.count<number>('post_like.user_id').as('likeCount'),
+            eb2.fn.count<number>('comment.id').as('commentCount'),
+          ])
+          .whereRef('post.user_id', '=', 'user.id')
+          .groupBy('post.id')
+          .orderBy('post.created_at', 'desc')
+          .limit(8),
+      ).as('posts'),
+      eb
+        .selectFrom('post_like')
+        .innerJoin('post', 'post.id', 'post_like.post_id')
+        .innerJoin('user', 'user.id', 'post.user_id')
+        .select((eb) => [
+          eb.fn.count<number>('post_like.post_id').as('likeCount'),
         ])
         .whereRef('post.user_id', '=', 'user.id')
-        .groupBy('post.id')
-        .orderBy('post.created_at', 'desc')
-        .limit(8),
-    ).as('posts'),
-    eb
-      .selectFrom('post_like')
-      .innerJoin('post', 'post.id', 'post_like.post_id')
-      .innerJoin('user', 'user.id', 'post.user_id')
-      .select((eb) => [
-        eb.fn.count<number>('post_like.post_id').as('likeCount'),
-      ])
-      .whereRef('post.user_id', '=', 'user.id')
-      .as('likeCount'),
-  ]);
+        .as('likeCount'),
+    ]);
 }
 
 export default {

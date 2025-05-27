@@ -108,13 +108,12 @@ export default function Post({ post }: { readonly post: FeedPost }) {
           </div>
         </div>
 
-
-      {/* post content */}
-      <div className='p-2'>
-        <div className='flex items-center gap-2'>
-          <div className='flex items-center gap-1'>
-            {/* like btn */}
-     <button
+        {/* post content */}
+        <div className='p-2'>
+          <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-1'>
+              {/* like btn */}
+              <button
                 type='button'
                 aria-label={`${postLike.isLiked ? 'Like' : 'Unlike'} this post`}
                 title={`${postLike.isLiked ? 'Like' : 'Unlike'} this post`}

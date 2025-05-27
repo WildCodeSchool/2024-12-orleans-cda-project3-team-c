@@ -1,5 +1,7 @@
 import type { UserProfile } from '@app/api';
 
+import certificationIcon from '@/assets/icons/certification-pink.png';
+
 type UserProfileProps = {
   readonly profile: UserProfile | null;
   readonly followersCountOverride?: number;
@@ -27,7 +29,16 @@ export default function UserProfilePage({
 
         <div className='ml-4 flex w-full flex-col'>
           <div className='my-2 flex items-center gap-2'>
-            <p className='font-title text-sm sm:text-2xl'>{profile.username}</p>
+            <h1 className='font-title flex gap-2 text-sm sm:text-2xl'>
+              {profile.username}
+            </h1>
+            {profile.status === 'certified' ? (
+              <img
+                src={certificationIcon}
+                alt='certification'
+                className='size-4 md:size-5'
+              />
+            ) : null}
             <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
               {profile.likeCount}
               {` like${profile.likeCount !== null && profile.likeCount > 1 ? 's' : ''}`}
