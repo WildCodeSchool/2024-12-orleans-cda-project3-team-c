@@ -46,6 +46,15 @@ export default {
             .orderBy('post.created_at', 'desc')
             .limit(8),
         ).as('posts'),
+        eb
+          .selectFrom('post_like')
+          .innerJoin('post', 'post.id', 'post_like.post_id')
+          .innerJoin('user', 'user.id', 'post.user_id')
+          .select((eb) => [
+            eb.fn.count<number>('post_like.post_id').as('likeCount'),
+          ])
+          .where('post.user_id', '=', userId)
+          .as('likeCount'),
       ])
       .where('user.id', '=', userId)
       .executeTakeFirst();

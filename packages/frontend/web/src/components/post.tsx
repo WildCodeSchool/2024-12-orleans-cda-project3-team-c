@@ -75,7 +75,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
             className='flex items-center gap-4'
             title={`Visit ${post.author?.username}'s profile`}
           >
-            <div className='w-8 overflow-hidden rounded'>
+            <div className='size-8 overflow-hidden rounded'>
               <img
                 src={`/cdn/pictures/users/${post.author.profile_picture}`}
                 alt={`${post.author.username} profile picture`}
