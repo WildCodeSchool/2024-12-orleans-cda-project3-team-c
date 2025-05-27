@@ -4,6 +4,7 @@ import {
   Router,
   useLoaderData,
   useLocation,
+  useNavigate,
   useRouteLoaderData,
   useSearchParams,
 } from 'react-router-dom';
@@ -20,6 +21,7 @@ export default function Posts() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
+  const navigate = useNavigate();
   const path = useLocation().pathname;
   const username = path.split('/')[2];
   console.log(posts);
@@ -51,7 +53,6 @@ export default function Posts() {
 
   async function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
     if (observers[0].isIntersecting) {
-      console.log('trigger');
       await fetchNewPosts();
     }
   }
@@ -62,6 +63,9 @@ export default function Posts() {
           <button
             type='button'
             className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
+            onClick={async () => {
+              await navigate(-1);
+            }}
           >
             <img
               src={backIcon}
