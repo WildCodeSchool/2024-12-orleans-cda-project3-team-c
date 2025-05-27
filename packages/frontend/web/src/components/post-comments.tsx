@@ -45,10 +45,11 @@ export default function PostComments({
       commentText,
     );
     if (response.ok && response.comment !== undefined) {
-      // @ts-expect-error "ilugmumug"
+      // @ts-expect-error "ts fail to correctly type response"
       setComments((currentComments) => {
         return [...currentComments, response.comment];
       });
+      setCommentText('');
     } else if (response.message) {
       setErrorMessage(response.message);
     }
@@ -76,7 +77,7 @@ export default function PostComments({
   }
 
   return (
-    <section className='fixed bottom-0 left-0 z-10 h-screen w-dvw border border-red-500 bg-purple-950'>
+    <section className='fixed bottom-0 left-0 z-10 h-screen w-dvw bg-purple-950'>
       <header className='p-4'>
         <button
           type='button'
@@ -94,14 +95,14 @@ export default function PostComments({
           {'Comments'}
         </button>
       </header>
-      <div className='border border-green-500 px-4 pb-4'>
-        <div className='border-danger h-[calc(100vh_-_116px)] overflow-y-auto border'>
+      <div className='px-4 pb-4'>
+        <div className='h-[calc(100vh_-_116px)] overflow-y-auto'>
           {comments.map((comment) => {
             return <Comment key={comment.id} comment={comment} />;
           })}
           <div ref={infiniteScrollTrigger} />
         </div>
-        <div className='h-fit border border-pink-500'>
+        <div className='h-fit'>
           <p>{errorMessage}</p>
           <form onSubmit={handleSubmitCommentForm}>
             <label htmlFor='text' className='hidden'>
@@ -122,7 +123,7 @@ export default function PostComments({
                 type='submit'
                 aria-label='Send'
                 title='Send'
-                className='absolute top-[50%] right-0 flex -translate-y-1/2 justify-center border border-blue-500 p-2'
+                className='absolute top-[50%] right-0 flex -translate-y-1/2 justify-center p-2'
               >
                 <img src={sendIcon} aria-hidden alt='' className='w-4' />
               </button>

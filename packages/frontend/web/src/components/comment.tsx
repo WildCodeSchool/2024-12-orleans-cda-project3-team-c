@@ -38,11 +38,12 @@ export default function Comment({
   };
 
   return (
-    <article>
-      <header>
+    <article className='border-b-placeholder mb-4 border-b pb-4'>
+      <header className='mb-1 flex items-center gap-2'>
         <Link
           to={`/profile/${comment.author.username}`}
           title={`Visit ${comment.author.username}'s profile`}
+          className='flex items-center gap-1'
         >
           <div className='w-4 overflow-hidden rounded'>
             <img
@@ -55,10 +56,10 @@ export default function Comment({
             {comment.author.username}
           </h2>
         </Link>
-        <p className='text-placeholder text-[10px]'>{timeAgo}</p>
+        <p className='text-placeholder mt-1 text-[10px]'>{timeAgo}</p>
       </header>
-      <div>
-        <p>{...commentElements}</p>
+      <div className='ml-auto flex items-start'>
+        <p className='ml-5 w-full text-sm'>{...commentElements}</p>
         <div className='like-container'>
           <div className='flex items-center gap-1'>
             {/* like btn */}
@@ -67,6 +68,7 @@ export default function Comment({
               aria-label={`${commentLike.isLiked ? 'Like' : 'Unlike'} this post`}
               title={`${commentLike.isLiked ? 'Like' : 'Unlike'} this post`}
               onClick={toggleCommentLike}
+              className='w-4'
             >
               <img
                 src={commentLike.isLiked ? likedIcon : likeIcon}
