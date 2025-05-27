@@ -4,6 +4,7 @@ import type { PostComment } from '@app/api';
 
 import commentApiConnection from '@/api-connection/comment-api-connection';
 import postCommentApiConnection from '@/api-connection/post-comment-api-connection';
+import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
 import backIcon from '../assets/icons/arrow-left-white.svg';
 import sendIcon from '../assets/icons/send-white.svg';
@@ -20,6 +21,9 @@ export default function PostComments({
   const [commentText, setCommentText] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const infiniteScrollTrigger = useRef(null);
+
+  useInfiniteScroll(infiniteScrollTrigger, observeInfiniteScroll);
+
   let page = 0;
 
   async function getComments() {
@@ -54,20 +58,6 @@ export default function PostComments({
       setErrorMessage(response.message);
     }
   };
-
-  useEffect(() => {
-    let infiniteScrollObserver: IntersectionObserver;
-    if (infiniteScrollTrigger.current) {
-      infiniteScrollObserver = new IntersectionObserver(observeInfiniteScroll);
-      infiniteScrollObserver.observe(infiniteScrollTrigger.current);
-    }
-
-    return () => {
-      if (infiniteScrollTrigger.current) {
-        infiniteScrollObserver.unobserve(infiniteScrollTrigger.current);
-      }
-    };
-  }, [infiniteScrollTrigger]);
 
   async function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
     if (observers[0].isIntersecting) {

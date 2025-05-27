@@ -1,19 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import {
+  Route,
+  Router,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useRouteLoaderData,
+  useSearchParams,
+} from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
 import postApiConnection from '@/api-connection/post-api-connection';
+import userApiConnection from '@/api-connection/user-api-connection';
 import Post from '@/components/post';
-import UserSuggestionContainer from '@/components/user-suggestion';
 import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
-import bellIcon from '../assets/icons/bell-white.svg';
+import backIcon from '../assets/icons/arrow-left-white.svg';
 
-export default function Feed() {
+export default function Posts() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
+  const navigate = useNavigate();
+  const path = useLocation().pathname;
+  const username = path.split('/')[2];
 
   useInfiniteScroll(infiniteScrollTrigger, observeInfiniteScroll);
 
@@ -21,7 +32,7 @@ export default function Feed() {
 
   async function fetchNewPosts() {
     page++;
-    const newPosts = await postApiConnection.getPage(page);
+    const newPosts = await userApiConnection.getUserFeedPage(username, page);
 
     setPosts((currentPosts) => {
       return [...currentPosts, ...newPosts];
@@ -33,30 +44,31 @@ export default function Feed() {
       await fetchNewPosts();
     }
   }
-
   return (
-    // feed section
-
-    <section className='flex'>
+    <section className='min-h-screen w-full border border-red-500'>
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
-        <header
-          id='feed-header'
-          className='flex items-center justify-between p-4 md:hidden'
-        >
-          <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
-          <Link to={'/notifications'}>
-            <img src={bellIcon} alt='' className='w-8' />
-          </Link>
+        <header className='p-4'>
+          <button
+            type='button'
+            className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
+            onClick={async () => {
+              await navigate(-1);
+            }}
+          >
+            <img
+              src={backIcon}
+              aria-hidden='true'
+              alt=''
+              className='absolute top-0 left-0 w-8'
+            />
+            {'Posts'}
+          </button>
         </header>
-
         {posts.map((post: FeedPost) => {
           return <Post post={post} key={post.id} />;
         })}
         <div ref={infiniteScrollTrigger} />
       </div>
-      <aside>
-        <UserSuggestionContainer />
-      </aside>
     </section>
   );
 }

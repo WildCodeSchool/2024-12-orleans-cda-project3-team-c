@@ -67,7 +67,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   // tsx **************************************************
   return (
     <>
-      <article className='mb-8'>
+      <article className='mb-8' id={post.id}>
         <header className='flex items-center justify-between p-2'>
           <Link
             to={`/profile/${post.author.username}`}
