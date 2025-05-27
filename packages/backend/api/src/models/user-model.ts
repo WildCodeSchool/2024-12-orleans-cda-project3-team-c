@@ -160,6 +160,12 @@ export default {
           .union(eb.selectFrom('usersYouDontFollow').selectAll())
           .as('uydf'),
       )
+      .where('uydf.id', 'not in', (eb) =>
+        eb
+          .selectFrom('follow_up as fu')
+          .select('fu.followee_id')
+          .where('fu.follower_id', '=', userId),
+      )
       .selectAll()
       .limit(5)
       .execute();

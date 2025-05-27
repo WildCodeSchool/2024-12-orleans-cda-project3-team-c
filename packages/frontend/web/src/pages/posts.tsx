@@ -14,6 +14,7 @@ import type { FeedPost } from '@app/api';
 import postApiConnection from '@/api-connection/post-api-connection';
 import userApiConnection from '@/api-connection/user-api-connection';
 import Post from '@/components/post';
+import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
 import backIcon from '../assets/icons/arrow-left-white.svg';
 
@@ -24,23 +25,10 @@ export default function Posts() {
   const navigate = useNavigate();
   const path = useLocation().pathname;
   const username = path.split('/')[2];
-  console.log(posts);
+
+  useInfiniteScroll(infiniteScrollTrigger, observeInfiniteScroll);
 
   let page = 1;
-
-  useEffect(() => {
-    let infiniteScrollObserver: IntersectionObserver;
-    if (infiniteScrollTrigger.current) {
-      infiniteScrollObserver = new IntersectionObserver(observeInfiniteScroll);
-      infiniteScrollObserver.observe(infiniteScrollTrigger.current);
-    }
-
-    return () => {
-      if (infiniteScrollTrigger.current) {
-        infiniteScrollObserver.unobserve(infiniteScrollTrigger.current);
-      }
-    };
-  }, [infiniteScrollTrigger]);
 
   async function fetchNewPosts() {
     page++;

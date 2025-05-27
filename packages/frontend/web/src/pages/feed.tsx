@@ -6,6 +6,7 @@ import type { FeedPost } from '@app/api';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
 import UserSuggestionContainer from '@/components/user-suggestion';
+import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
 import bellIcon from '../assets/icons/bell-white.svg';
 
@@ -14,21 +15,9 @@ export default function Feed() {
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
 
+  useInfiniteScroll(infiniteScrollTrigger, observeInfiniteScroll);
+
   let page = 1;
-
-  useEffect(() => {
-    let infiniteScrollObserver: IntersectionObserver;
-    if (infiniteScrollTrigger.current) {
-      infiniteScrollObserver = new IntersectionObserver(observeInfiniteScroll);
-      infiniteScrollObserver.observe(infiniteScrollTrigger.current);
-    }
-
-    return () => {
-      if (infiniteScrollTrigger.current) {
-        infiniteScrollObserver.unobserve(infiniteScrollTrigger.current);
-      }
-    };
-  }, [infiniteScrollTrigger]);
 
   async function fetchNewPosts() {
     page++;
