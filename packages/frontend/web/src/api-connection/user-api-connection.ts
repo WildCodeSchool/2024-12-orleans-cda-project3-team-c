@@ -64,6 +64,16 @@ class UserApiConnection extends ApiConnection {
 
     if (!res.ok) throw new Error('Failed to update biography');
   }
+
+  async getUserPage(username: string, page: number) {
+    try {
+      const response = await fetch(
+        `${this.ressourceUrl}/${username}/posts?page=${page}`,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export default new UserApiConnection();
