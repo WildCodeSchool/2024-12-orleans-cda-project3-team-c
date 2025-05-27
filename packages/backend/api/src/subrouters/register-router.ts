@@ -32,7 +32,7 @@ registerRouter.post('/', async function (req, res) {
       errors.username = 'Username should contain at least one letter';
     } else if (/^[a-zA-Z1-9.\-_();]/.test(username)) {
       errors.username =
-        'Username can only contains letters, numbers, and .-_();';
+        'Username can only contain letters, numbers, and .-_();';
     }
 
     if (password === '') {
