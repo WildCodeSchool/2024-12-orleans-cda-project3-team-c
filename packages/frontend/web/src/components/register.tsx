@@ -49,6 +49,9 @@ export default function Register() {
         'Username should be between 3 and 30 characters';
     } else if (!/[a-zA-Z]/.test(username)) {
       newErrorMessages.username = 'Username should contain at least one letter';
+    } else if (/^[a-zA-Z1-9.\-_();]/.test(username)) {
+      newErrorMessages.username =
+        'Username can only contain letters, numbers, and .-_();';
     }
 
     if (password === '') {
