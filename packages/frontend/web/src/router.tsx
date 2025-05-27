@@ -60,7 +60,7 @@ const router = createBrowserRouter([
           if (username === undefined) {
             return redirect('/feed');
           }
-          // return loaders.postLoaders.getUserFeed(username);
+          return loaders.postLoaders.getUserFeed(username);
         },
       },
       {

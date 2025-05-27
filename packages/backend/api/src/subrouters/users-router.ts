@@ -2,6 +2,7 @@ import type { Request } from 'express';
 import express from 'express';
 import type { UploadedFile } from 'express-fileupload';
 
+import postModel from '@/models/post-model';
 import userModel from '@/models/user-model';
 import fileUploadManager from '@/utils/file-upload-manager';
 
@@ -11,6 +12,7 @@ type PictureUploadedFile = {
   mimetype: string;
 } & UploadedFile;
 
+// GET **************************************************
 usersRouter.get('/profile', async (req: Request, res) => {
   const userId = req.userId;
   if (userId === undefined) {
@@ -33,6 +35,41 @@ usersRouter.get('/profile', async (req: Request, res) => {
   }
 });
 
+usersRouter.get('/:username/posts', async (req: Request, res) => {
+  let page = 1;
+  if (req.query.page !== '' && req.query.page !== undefined) {
+    page = +req.query.page;
+
+    if (!page) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provid a valid page number' });
+      return;
+    }
+  }
+
+  const username = req.params.username;
+
+  if (!username) {
+    res
+      .status(400)
+      .json({ error: 'Bad request, uou should provide a valid username' });
+    return;
+  }
+
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
+  const data = await postModel.getFeedPageByUser(username, page, userId);
+  res.json(data);
+  return;
+});
+
+// PUT **************************************************
 usersRouter.put('/username', async (req: Request, res) => {
   const userId = req.userId;
   const { username } = req.body;
