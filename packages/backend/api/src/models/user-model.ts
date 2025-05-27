@@ -239,4 +239,71 @@ export default {
       .limit(5)
       .execute();
   },
+
+  async userLogin(credential: string) {
+    return db
+      .selectFrom('user')
+      .select(['user.id', 'user.password', 'user.email'])
+      .where((eb) =>
+        eb.or([eb('email', '=', credential), eb('username', '=', credential)]),
+      )
+      .executeTakeFirst();
+  },
+
+  async userRegister(email: string, username: string, password: string) {
+    try {
+      // Hachage du mot de passe
+      const hashPassword = await argon2.hash(password, {
+        memoryCost: 19456,
+        timeCost: 2,
+        parallelism: 1,
+      });
+
+      // Insert de l'utilisateur dans la base de données
+      await db
+        .insertInto('user')
+        .values({ email, username, password: hashPassword })
+        .executeTakeFirst();
+
+      return true;
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw new Error(
+        error instanceof Error ? error.message : 'Failed to create user',
+      );
+    }
+  },
+
+  async checkIfCredentialsAlreadyExists(email: string, username: string) {
+    const messages: { email?: string; username?: string } = {};
+
+    const results = await db
+      .selectFrom('user')
+      .select(['email', 'username'])
+      .where((eb) =>
+        eb.or([eb('email', '=', email), eb('username', '=', username)]),
+      )
+      .execute();
+
+    if (results.length) {
+      results.forEach((result) => {
+        if (result.email === email) {
+          messages.email = 'This email address is already in use';
+        }
+        if (result.username === username) {
+          messages.username = 'This username is not available';
+        }
+      });
+      return messages;
+    }
+    return false;
+  },
+
+  async getLoggedInUser(userId: number) {
+    return db
+      .selectFrom('user')
+      .select(['id', 'profile_picture'])
+      .where('user.id', '=', userId)
+      .executeTakeFirst();
+  },
 };

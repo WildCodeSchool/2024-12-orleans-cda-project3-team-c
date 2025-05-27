@@ -2,7 +2,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './app';
-// Charger les loaders mis à jour
 import ForgottenPassword from './components/forgotten-password';
 import Register from './components/register';
 import loaders from './loaders';
@@ -15,12 +14,20 @@ import OtherProfile from './pages/other-profile';
 import Parameters from './pages/parameters';
 import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
+import Search from './pages/search';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      {
+        path: '/',
+        element: <Feed />,
+        loader: () => {
+          return loaders.postLoaders.getFeedPage();
+        },
+      },
       {
         path: '/feed',
         element: <Feed />,
@@ -41,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: '/create',
         element: <CreatePostPage />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
       {
         path: 'parameters',

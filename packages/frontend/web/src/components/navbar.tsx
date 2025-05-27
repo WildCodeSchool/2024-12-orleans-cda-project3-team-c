@@ -14,8 +14,6 @@ type NavItemProps = {
   readonly label: string;
 };
 
-const cdnUrl = import.meta.env.VITE_CDN_URL;
-
 function NavItem({ to, icon, label }: NavItemProps) {
   return (
     <li className='h-12 max-w-fit'>
@@ -47,13 +45,13 @@ export default function NavBar() {
     { to: '/notifications', icon: bellIcon, label: 'Notifications' },
     {
       to: '/profile',
-      icon: `${cdnUrl}/pictures/users/${user?.profile_picture}`,
+      icon: `/cdn/pictures/users/${user?.profile_picture}`,
       label: 'Profile',
     },
   ];
   return (
     <>
-      <nav className='fixed hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
+      <nav className='fixed top-0 hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
         <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
         <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
@@ -63,7 +61,7 @@ export default function NavBar() {
       </nav>
 
       <nav className='fixed bottom-0 h-16 bg-purple-950 md:hidden'>
-        <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:left-[10%] after:w-[80%] after:border-t'>
+        <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:w-[80%] after:border-t'>
           {navItems
             .filter((item) => item.label !== 'Notifications')
             .map((item) => (

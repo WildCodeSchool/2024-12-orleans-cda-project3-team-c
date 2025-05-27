@@ -1,7 +1,7 @@
 import type { Request } from 'express';
 import express from 'express';
 
-import { getLoggedInUser } from '@/models/user-model';
+import userModel from '@/models/user-model';
 
 const cookieRouter = express.Router();
 
@@ -14,7 +14,7 @@ cookieRouter.get('/', async function (req: Request, res) {
       return;
     }
 
-    const user = await getLoggedInUser(userId);
+    const user = await userModel.getLoggedInUser(userId);
 
     if (!user) {
       res.json({ ok: false });

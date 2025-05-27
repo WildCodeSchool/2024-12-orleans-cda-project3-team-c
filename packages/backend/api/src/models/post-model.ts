@@ -2,6 +2,8 @@ import { jsonObjectFrom } from 'kysely/helpers/mysql';
 
 import { db } from '@app/backend-shared';
 
+import notNull from '@/utils/not-null';
+
 export default {
   create(picture: string, description: string, author: number) {
     return db
@@ -35,20 +37,29 @@ export default {
           .whereRef('post_like.post_id', '=', 'post.id')
           .where('post_like.user_id', '=', userId)
           .as('isLiked'),
-        jsonObjectFrom(
-          eb
-            .selectFrom('user')
-            .leftJoin('follow_up', (join) =>
-              join
-                .onRef('follow_up.followee_id', '=', 'user.id')
-                .on((eb) => eb('follow_up.follower_id', '=', userId)),
-            )
-            .select([
-              'username',
-              'profile_picture',
-              'follow_up.created_at as isFollowing',
-            ])
-            .whereRef('user.id', '=', 'post.user_id'),
+        notNull(
+          jsonObjectFrom(
+            eb
+              .selectFrom('user')
+              .leftJoin('follow_up', (join) =>
+                join
+                  .onRef('follow_up.followee_id', '=', 'user.id')
+                  .on((eb) => eb('follow_up.follower_id', '=', userId)),
+              )
+              .innerJoin(
+                'account_status',
+                'account_status.id',
+                'user.account_status_id',
+              )
+              .select([
+                'user.id',
+                'username',
+                'profile_picture',
+                'follow_up.created_at as isFollowing',
+                'account_status.name as status',
+              ])
+              .whereRef('user.id', '=', 'post.user_id'),
+          ),
         ).as('author'),
       ])
       .where('post.user_id', '!=', userId)

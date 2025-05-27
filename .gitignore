@@ -58,3 +58,6 @@ deployment/db/
 *-mock.*
 test.js
 **/*.tsbuildinfo
+public/
+!public/*/.gitkeep
+!public/*/user.png

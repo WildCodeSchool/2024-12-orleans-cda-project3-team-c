@@ -5,17 +5,17 @@ import type { UserProfile } from '@app/api';
 
 import userApiConnection from '@/api-connection/user-api-connection';
 import arrowLeftIcon from '@/assets/icons/arrow-left-white.svg';
-
-const cdnUrl = import.meta.env.VITE_CDN_URL;
+import { useLoginContext } from '@/contexts/auth-context';
 
 export default function ProfileInformations() {
+  const context = useLoginContext();
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
   const [profilePicturePath, setProfilePicturePath] = useState<
     string | undefined
   >(
     profile?.profile_picture
-      ? `${cdnUrl}/pictures/users/${profile.profile_picture}`
-      : `${cdnUrl}/pictures/users/user.png`,
+      ? `/cdn/pictures/users/${profile.profile_picture}`
+      : `/cdn/pictures/users/user.png`,
   );
 
   const handleProfilePictureChange = async (
@@ -25,9 +25,16 @@ export default function ProfileInformations() {
     if (!file) return;
 
     try {
-      await userApiConnection.updateProfilePicture(file);
+      const response = await userApiConnection.updateProfilePicture(file);
       const newPictureUrl = URL.createObjectURL(file);
       setProfilePicturePath(newPictureUrl);
+
+      if (context?.user !== null) {
+        context?.setUser({
+          id: context.user.id,
+          profile_picture: response.filename,
+        });
+      }
     } catch (error) {
       console.error('Error while updating the profile picture:', error);
     }

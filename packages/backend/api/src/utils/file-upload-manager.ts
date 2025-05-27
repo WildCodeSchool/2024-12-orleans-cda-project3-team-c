@@ -3,33 +3,18 @@ import type { UploadedFile } from 'express-fileupload';
 import fs from 'node:fs/promises';
 import path from 'path';
 import sharp from 'sharp';
-import { fileURLToPath } from 'url';
 
 export default {
   imageFormat: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
-  tempFolderPath: path.join(
-    fileURLToPath(import.meta.url),
-    '..',
-    '..',
-    '..',
-    'public',
-    'pictures',
-    'temp',
-  ),
+  tempFolderPath: path.join(process.cwd(), 'public', 'pictures', 'temp'),
   postPicturesFolderPath: path.join(
-    fileURLToPath(import.meta.url),
-    '..',
-    '..',
-    '..',
+    process.cwd(),
     'public',
     'pictures',
     'posts',
   ),
   userPicturesFolderPath: path.join(
-    fileURLToPath(import.meta.url),
-    '..',
-    '..',
-    '..',
+    process.cwd(),
     'public',
     'pictures',
     'users',
@@ -73,11 +58,18 @@ export default {
   },
 
   async resizePicture(fileName: string, width: number) {
-    if (await this.checkNeedsResizing(fileName, 1080)) {
+    if (await this.checkNeedsResizing(fileName, width)) {
+      const newName = this.renameFile(`image/${fileName.split('.')[1]}`);
+
       await sharp(path.join(this.tempFolderPath, fileName))
         .resize(width)
-        .toFile(path.join(this.tempFolderPath, fileName));
+        .toFile(path.join(this.tempFolderPath, newName));
+
+      await fs.unlink(path.join(this.tempFolderPath, fileName));
+
+      return newName;
     }
+    return fileName;
   },
 
   async convertPicture(fileName: string, format: string, type: string) {
@@ -115,8 +107,10 @@ export default {
 
   async savePostPicture(fileName: string) {
     try {
-      await this.resizePicture(fileName, 1080);
-      const newName = await this.convertPicture(fileName, 'webp', 'post');
+      let newName: string;
+      newName = await this.resizePicture(fileName, 1080);
+      newName = await this.convertPicture(newName, 'webp', 'post');
+
       return newName;
     } catch (error) {
       console.error(error);
@@ -125,10 +119,11 @@ export default {
 
   async saveUserPicture(fileName: string) {
     try {
-      await this.resizePicture(fileName, 256);
+      let newName: string;
+      newName = await this.resizePicture(fileName, 256);
+      newName = await this.convertPicture(newName, 'webp', 'user');
 
-      const finalFileName = await this.convertPicture(fileName, 'webp', 'user');
-      return finalFileName;
+      return newName;
     } catch (error) {
       console.error(
         "Erreur lors de l'upload de la photo de l'utilisateur:",
@@ -144,7 +139,7 @@ export default {
       await fs.unlink(filePath);
     } catch (error) {
       console.error(
-        `Erreur lors de la suppression de l'image utilisateur :`,
+        "Erreur lors de la suppression de l'image utilisateur :",
         error,
       );
     }

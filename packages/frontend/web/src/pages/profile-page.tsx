@@ -2,12 +2,13 @@ import { Link, useLoaderData } from 'react-router-dom';
 
 import type { UserProfile } from '@app/api';
 
+import certificationIcon from '@/assets/icons/certification-pink.png';
 import menu from '@/assets/icons/menu-square-white.svg';
 import UserProfilePage from '@/components/user-profile-page';
 
+
 export default function ProfilePage() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
-
   if (!profile) {
     return (
       <div className='pt-10 text-center text-white'>
@@ -22,7 +23,7 @@ export default function ProfilePage() {
         <UserProfilePage profile={profile} />
         <Link to='/parameters' className='size-6 pt-4 md:size-8'>
           <img src={menu} alt='Menu' />
-        </Link>
+        </Link>  
       </div>
       <p> {profile.biography} </p>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />

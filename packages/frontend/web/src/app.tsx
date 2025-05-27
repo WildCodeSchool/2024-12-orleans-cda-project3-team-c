@@ -21,7 +21,7 @@ export default function App() {
   return (
     <div className='relative h-dvh w-full'>
       <NavBar />
-      <main className='h-full w-full'>
+      <main className='h-full md:ml-56'>
         <Outlet />
       </main>
     </div>

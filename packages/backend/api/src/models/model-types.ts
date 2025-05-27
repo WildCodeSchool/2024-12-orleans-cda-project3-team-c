@@ -1,6 +1,10 @@
 import type followModel from './follow-up-model';
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
+import type {
+  getPostsInfoInTagBySearch,
+  getUsersInfoBySearch,
+} from './search-model';
 import type userModel from './user-model';
 
 // Posts **************************************************
@@ -45,4 +49,12 @@ export type FollowAction = Awaited<
 
 export type UserSuggestion = Awaited<
   ReturnType<typeof userModel.getUserSuggestionsForUser>
+>[number];
+
+export type UserSearchResult = Awaited<
+  ReturnType<typeof getUsersInfoBySearch>
+>[number];
+
+export type PostSearchResult = Awaited<
+  ReturnType<typeof getPostsInfoInTagBySearch>
 >[number];

@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 
 import type { FeedPost, PostLike } from '@app/api';
 
+import followUpApiConnection from '@/api-connection/follow-up-api-connection';
 import postLikeApiConnection from '@/api-connection/post-like-api-connection';
 import { getDescriptionElements, getTimeAgo } from '@/utils/text-formating';
 
+import certificationIcon from '../assets/icons/certification-pink.png';
 import commentIcon from '../assets/icons/comment-white.svg';
 import likedIcon from '../assets/icons/flame-pink.svg';
 import likeIcon from '../assets/icons/flame-white.svg';
-
-const cdnUrl = import.meta.env.VITE_CDN_URL;
+import FollowButton from './follow-suggestion-button';
 
 export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
@@ -21,6 +22,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
     isLiked: !!post.isLiked,
     likeCount: post.likeCount,
   });
+  const [isFollowing, setIsFollowing] = useState(!!post.author?.isFollowing);
 
   const togglePostLike = async () => {
     // Vérifier l'atat de postIsLiked
@@ -38,6 +40,18 @@ export default function Post({ post }: { readonly post: FeedPost }) {
     }
   };
 
+  const handleFollowClick = async () => {
+    let newState;
+    if (isFollowing) {
+      newState = await followUpApiConnection.unfollowUser(post.author.id);
+    } else {
+      newState = await followUpApiConnection.followUser(post.author.id);
+    }
+    if (newState !== null) {
+      setIsFollowing(newState.isFollowing);
+    }
+  };
+
   // tsx **************************************************
   return (
     <article className='mb-8'>
@@ -47,32 +61,37 @@ export default function Post({ post }: { readonly post: FeedPost }) {
           className='flex items-center gap-4'
           title={`See ${post.author?.username}'s profile`}
         >
-          <div className='w-8 overflow-hidden rounded'>
+          <div className='size-8 overflow-hidden rounded'>
             <img
-              src={`${cdnUrl}/pictures/users/${post.author?.profile_picture}`}
+              src={`/cdn/pictures/users/${post.author?.profile_picture}`}
               alt={`${post.author?.username} profile picture`}
             />
           </div>
-          <h2 className='font-title text-sm md:text-base'>
+          <h2 className='font-title flex gap-1 text-sm md:text-base'>
             {'@'}
-            {post.author?.username}
+            {post.author.username}
+            {post.author.status === 'certified' ? (
+              <img
+                src={certificationIcon}
+                alt='certification'
+                className='size-3 md:size-4'
+              />
+            ) : null}
           </h2>
         </Link>
         {!post.author?.isFollowing && (
-          <button
-            title={`Follow ${post.author?.username}`}
-            type='button'
-            className='border-turquoise-blue-400 text-turquoise-blue-400 text-title rounded border px-2 py-0.5 text-xs'
-          >
-            {'Follow'}
-          </button>
+          <FollowButton
+            isFollowing={isFollowing}
+            username={post.author.username}
+            handleFollowClick={handleFollowClick}
+          />
         )}
       </header>
 
       {/* slideshow container */}
       <div className='mb-1'>
         <div className='slide'>
-          <img src={`${cdnUrl}/pictures/posts/${post.picture}`} alt='' />
+          <img src={`/cdn/pictures/posts/${post.picture}`} alt='' />
         </div>
       </div>
 
