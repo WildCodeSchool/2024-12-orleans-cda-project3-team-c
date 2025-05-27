@@ -1,3 +1,5 @@
+import type commentLikeModel from './comment-like-model';
+import type commentModel from './comment-model';
 import type followModel from './follow-up-model';
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
@@ -31,6 +33,13 @@ export type PostLike = Awaited<
   >
 >;
 
+export type CommentLike = Awaited<
+  ReturnType<
+    | typeof commentLikeModel.addCommentLike
+    | typeof commentLikeModel.deleteCommentLike
+  >
+>;
+
 export type PostTagInsertionList = {
   tag_id: number;
   post_id: number;
@@ -57,4 +66,8 @@ export type UserSearchResult = Awaited<
 
 export type PostSearchResult = Awaited<
   ReturnType<typeof getPostsInfoInTagBySearch>
+>[number];
+
+export type PostComment = Awaited<
+  ReturnType<typeof commentModel.getCommentsByPostId>
 >[number];
