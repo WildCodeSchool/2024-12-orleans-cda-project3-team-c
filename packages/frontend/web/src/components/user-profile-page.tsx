@@ -24,11 +24,13 @@ export default function UserProfilePage({
           }
           alt={profile.username}
         />
+
         <div className='ml-4 flex w-full flex-col'>
           <div className='my-2 flex items-center gap-2'>
             <p className='font-title text-sm sm:text-2xl'>{profile.username}</p>
             <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
-              {profile.notoriety}
+              {profile.likeCount}
+              {` like${profile.likeCount !== null && profile.likeCount > 1 ? 's' : ''}`}
             </p>
           </div>
           <ul className='my-2 flex gap-4 text-xs sm:text-base'>
