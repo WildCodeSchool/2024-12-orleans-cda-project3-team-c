@@ -28,7 +28,7 @@ export default {
       .executeTakeFirst();
   },
 
-  // POST ****************************************
+  // POST **************************************************
   async addPostLike(postId: number, userId: number) {
     try {
       await db
@@ -48,7 +48,7 @@ export default {
         return { isLiked: true, likeCount: postLikesCount?.like_count };
       }
 
-      console.error('Something went wrong while liking the post');
+      console.error('Something went wrong while liking the post', error);
     }
   },
   // DELETE **************************************************
@@ -59,6 +59,7 @@ export default {
         .where('post_id', '=', postId)
         .where('user_id', '=', userId)
         .execute();
+
       const postLikesCount = await this.getPostsLikesCountByPost(postId);
       return { isLiked: false, likeCount: postLikesCount?.like_count };
     } catch (error) {
