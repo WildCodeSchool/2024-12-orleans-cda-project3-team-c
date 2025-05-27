@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 
 import type { FeedPost, PostLike } from '@app/api';
