@@ -3,8 +3,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 import type { UserProfile } from '@app/api';
 
 import menu from '@/assets/icons/menu-square-white.svg';
-
-const cdnUrl = import.meta.env.VITE_CDN_URL;
+import UserProfilePage from '@/components/user-profile-page';
 
 export default function ProfilePage() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
@@ -18,72 +17,26 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className='mx-4 flex w-250 flex-col pt-4 sm:mx-16 sm:pt-16 md:m-auto'>
-      <div className='md:border-turquoise-blue-400 flex items-start border-0 pb-4 md:border-b-2 md:pb-8'>
-        <img
-          className='size-16 rounded md:size-40'
-          src={`${cdnUrl}/pictures/users/${profile.profile_picture}`}
-          alt='User'
-        />
-        <div className='ml-4 w-full'>
-          <div className='flex flex-col'>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center gap-2'>
-                <p className='font-title text-sm sm:text-2xl'>
-                  {profile.username}
-                </p>
-                <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
-                  {profile.notoriety}
-                </p>
-              </div>
-              <Link to='/parameters'>
-                <img className='size-6 md:size-8' src={menu} alt='Menu' />
-              </Link>
-            </div>
-
-            <ul className='mb-2 flex gap-4 text-xs sm:text-base'>
-              <li className='flex items-center gap-1'>
-                <span className='text-turquoise-blue-400'>
-                  {profile.posts.length}
-                </span>
-                <span>{'posts'}</span>
-              </li>
-              <li className='flex items-center gap-1'>
-                <span className='text-turquoise-blue-400'>
-                  {profile.followersCount}
-                </span>
-                <span>{'followers'}</span>
-              </li>
-              <li className='flex items-center gap-1'>
-                <span className='text-turquoise-blue-400'>
-                  {profile.followingCount}
-                </span>
-                <span>{'following'}</span>
-              </li>
-            </ul>
-
-            <p className='hidden max-w-lg text-base md:block'>
-              {profile.biography}
-            </p>
-          </div>
-        </div>
+    <section className='mx-4 flex h-full flex-col pt-4 md:mx-auto md:w-[954px]'>
+      <div className='flex justify-between'>
+        <UserProfilePage profile={profile} />
+        <Link to='/parameters' className='size-6 pt-4 md:size-8'>
+          <img src={menu} alt='Menu' />
+        </Link>
       </div>
-
-      <p className='border-turquoise-blue-400 max-w-lg border-b-2 pb-4 text-sm md:hidden'>
-        {profile.biography}
-      </p>
-
-      <section className='flex flex-wrap justify-center gap-2 pt-2'>
-        {profile.posts.map((post, index) => (
-          <div key={post.id} className='post'>
+      <p> {profile.biography} </p>
+      <div className='border-turquoise-blue-400 border-t-2 pt-2' />
+      <section className='grid h-82 grid-cols-2 gap-2 md:grid-cols-3 md:gap-4'>
+        {profile.posts.map((post) => (
+          <div key={post.id}>
             <img
               className='size-40 sm:size-56 md:size-81'
               src={
                 post.picture
-                  ? `${cdnUrl}/pictures/posts/${post.picture}`
+                  ? `/cdn/pictures/posts/${post.picture}`
                   : '/user-mock.png'
               }
-              alt={`Post ${index + 1}`}
+              alt={`Post ${post.id}`}
             />
           </div>
         ))}
