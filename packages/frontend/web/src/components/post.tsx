@@ -5,6 +5,7 @@ import type { FeedPost, PostLike } from '@app/api';
 
 import followUpApiConnection from '@/api-connection/follow-up-api-connection';
 import postLikeApiConnection from '@/api-connection/post-like-api-connection';
+import { useLoginContext } from '@/contexts/auth-context';
 import { getDescriptionElements, getTimeAgo } from '@/utils/text-formating';
 
 import certificationIcon from '../assets/icons/certification-pink.png';
@@ -27,8 +28,13 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const [isFollowing, setIsFollowing] = useState(!!post.author.isFollowing);
   const [areCommentsVisible, setAreCommentsVisible] = useState(false);
 
+  const context = useLoginContext();
+  let user;
+  if (context !== undefined) {
+    user = context.user;
+  }
+
   const togglePostLike = async () => {
-    // Vérifier l'atat de postIsLiked
     let newState: PostLike;
     if (postLike.isLiked) {
       newState = await postLikeApiConnection.unlikePost(post.id);
@@ -99,6 +105,11 @@ export default function Post({ post }: { readonly post: FeedPost }) {
               handleFollowClick={handleFollowClick}
             />
           )}
+          {post.author.id === user?.id ? (
+            <button type='button'>
+              <img src='' alt='' />
+            </button>
+          ) : null}
         </header>
 
         {/* slideshow container */}
