@@ -64,7 +64,15 @@ usersRouter.get('/profile/:parameter', async (req: Request, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 usersRouter.get('/:username/posts', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
   let page = 1;
   if (req.query.page !== '' && req.query.page !== undefined) {
     page = +req.query.page;
@@ -76,8 +84,8 @@ usersRouter.get('/:username/posts', async (req: Request, res) => {
       return;
     }
   }
-  const username = req.params.username;
 
+  const username = req.params.username;
   if (!username) {
     res
       .status(400)
@@ -85,14 +93,39 @@ usersRouter.get('/:username/posts', async (req: Request, res) => {
     return;
   }
 
-  const userId = req.userId;
+  const data = await postModel.getFeedPageByUser(username, page, userId);
+  res.json(data);
+  return;
+});
 
-  if (userId === undefined) {
+usersRouter.get('/:userId/previews', async (req: Request, res) => {
+  const authenticatedUser = req.userId;
+  if (authenticatedUser === undefined) {
     res.status(401).json({ error: 'Unauthorized: user not authenticated' });
     return;
   }
 
-  const data = await postModel.getFeedPageByUser(username, page, userId);
+  let page = 1;
+  if (req.query.page !== '' && req.query.page !== undefined) {
+    page = +req.query.page;
+
+    if (!page) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provid a valid page number' });
+      return;
+    }
+  }
+
+  const userId = +req.params.userId;
+  if (!userId) {
+    res
+      .status(400)
+      .json({ error: 'Bad request, uou should provide a valid username' });
+    return;
+  }
+
+  const data = await postModel.getUserPostPreviews(userId, page);
   res.json(data);
   return;
 });

@@ -136,4 +136,16 @@ export default {
       .where('post.user_id', '=', userId)
       .executeTakeFirst();
   },
+
+  getUserPostPreviews(userId: number, page: number) {
+    return db
+      .selectFrom('post')
+      .select(['post.id', 'post.picture'])
+      .where('post.user_id', '=', userId)
+      .groupBy('post.id')
+      .orderBy('post.created_at', 'desc')
+      .limit(8)
+      .offset(page * 8 - 8)
+      .execute();
+  },
 };

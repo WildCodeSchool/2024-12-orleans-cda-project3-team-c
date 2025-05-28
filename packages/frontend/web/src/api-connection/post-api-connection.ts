@@ -9,9 +9,8 @@ class PostApiConnection extends ApiConnection {
 
   async getPage(page = 1): Promise<FeedPost[]> {
     try {
-      const response = await fetch(`${this.ressourceUrl}?page=${page}`, {
-        credentials: 'include',
-      });
+      const response = await fetch(`${this.ressourceUrl}?page=${page}`);
+
       if (response.ok) {
         return (await response.json()) as FeedPost[];
       } else {

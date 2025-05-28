@@ -102,8 +102,6 @@ function userProfilRequest(userId: number) {
       jsonArrayFrom(
         eb
           .selectFrom('post')
-          .leftJoin('post_like', 'post_like.post_id', 'post.id')
-          .leftJoin('comment', 'comment.post_id', 'post.id')
           .select(['post.id', 'post.picture'])
           .whereRef('post.user_id', '=', 'u.id')
           .groupBy('post.id')

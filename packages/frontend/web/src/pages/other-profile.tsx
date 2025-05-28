@@ -39,7 +39,7 @@ export default function OtherProfile() {
   };
 
   return (
-    <section className='mx-4 flex h-full flex-col pt-4 md:mx-auto md:w-[954px]'>
+    <section className='mx-4 flex flex-col pt-4 pb-16 md:mx-auto md:w-[954px]'>
       <UserProfiles profile={profile} followersCountOverride={followCount} />
       <div className='mb-4 flex items-center gap-2 pt-4 md:gap-4'>
         <FollowButton
@@ -56,7 +56,11 @@ export default function OtherProfile() {
         <img src={menuDotsBlue} alt='' className='w-6' />
       </div>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
-      <UserProfilesPosts profile={profile} />
+      <UserProfilesPosts
+        basePosts={profile.posts}
+        userId={profile.id}
+        username={profile.username}
+      />
     </section>
   );
 }
