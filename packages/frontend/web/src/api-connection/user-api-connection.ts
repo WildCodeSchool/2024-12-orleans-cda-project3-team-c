@@ -1,4 +1,4 @@
-import type { UserProfile } from '@app/api';
+import type { FeedPost, UserProfile } from '@app/api';
 
 import ApiConnection from './api-connection';
 
@@ -76,6 +76,22 @@ class UserApiConnection extends ApiConnection {
 
     const data = (await res.json()) as UserProfile;
     return data;
+
+  async getUserFeedPage(username: string, page: number): Promise<FeedPost[]> {
+    try {
+      const response = await fetch(
+        `${this.ressourceUrl}/${username}/posts?page=${page}`,
+      );
+
+      if (response.ok) {
+        return (await response.json()) as FeedPost[];
+      } else {
+        throw new Error('Error while fetching user posts');
+      }
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   }
 }
 

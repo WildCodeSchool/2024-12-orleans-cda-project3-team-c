@@ -1,5 +1,5 @@
 // router.ts
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 
 import App from './app';
 import ForgottenPassword from './components/forgotten-password';
@@ -12,6 +12,7 @@ import Feed from './pages/feed';
 import Login from './pages/login';
 import OtherProfile from './pages/other-profile';
 import Parameters from './pages/parameters';
+import Posts from './pages/posts';
 import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
 import Search from './pages/search';
@@ -56,6 +57,17 @@ const router = createBrowserRouter([
       {
         path: 'parameters',
         element: <Parameters />,
+      },
+      {
+        path: '/posts/:username',
+        element: <Posts />,
+        loader: (route) => {
+          const username = route.params.username;
+          if (username === undefined) {
+            return redirect('/feed');
+          }
+          return loaders.postLoaders.getUserFeed(username);
+        },
       },
       {
         path: '/profile-informations',
