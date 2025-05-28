@@ -41,13 +41,14 @@ export default function Feed() {
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
         <header
           id='feed-header'
-          className='flex items-center justify-between p-4 md:hidden'
+          className='flex items-center justify-between px-2 pt-2 pb-8 md:hidden md:p-4'
         >
           <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
           <Link to={'/notifications'}>
             <img src={bellIcon} alt='' className='w-8' />
           </Link>
         </header>
+        <UserSuggestionContainer className='mx-auto flex flex-col px-2 lg:hidden' />
 
         {posts.map((post: FeedPost) => {
           return <Post post={post} key={post.id} />;
@@ -55,7 +56,7 @@ export default function Feed() {
         <div ref={infiniteScrollTrigger} />
       </div>
       <aside>
-        <UserSuggestionContainer />
+        <UserSuggestionContainer className='mt-40 mr-8 hidden w-[298px] md:hidden lg:flex lg:flex-col' />
       </aside>
     </section>
   );

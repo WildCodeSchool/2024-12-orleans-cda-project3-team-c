@@ -230,6 +230,7 @@ export default {
                 eb.selectFrom('usersYouFollow as uyf').select('uyf.id'),
               ),
           )
+          .orderBy(sql`RAND()`)
           .select([
             'u.id',
             'u.username',

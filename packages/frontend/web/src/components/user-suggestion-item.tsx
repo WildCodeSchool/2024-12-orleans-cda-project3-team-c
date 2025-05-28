@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { UserSuggestion } from '@app/api';
@@ -9,6 +9,18 @@ import FollowButton from './follow-suggestion-button';
 function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followCount, setFollowCount] = useState(user.follower_count);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 320);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 320);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleFollowClick = async () => {
     let newState;
@@ -21,6 +33,13 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
       setIsFollowing(newState.isFollowing);
       setFollowCount(newState.followerCount ?? 0);
     }
+  };
+
+  const truncateText = (text: string, maxLength: number): string => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
   };
 
   return (
@@ -36,7 +55,9 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
           className='mr-1 h-8 w-8 rounded text-center'
         />
         <div className='flex flex-col'>
-          <h2 className='font-title text-sm'>{user.username}</h2>
+          <h2 className='font-title text-sm'>
+            {isMobile ? truncateText(user.username, 20) : user.username}
+          </h2>
           <p className='text-[8px] opacity-60'>
             {followCount}{' '}
             {`follower${followCount && followCount > 1 ? 's' : ''}`}
