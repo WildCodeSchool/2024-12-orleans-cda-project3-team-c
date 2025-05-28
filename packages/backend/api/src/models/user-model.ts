@@ -80,24 +80,24 @@ export async function getLoggedInUser(userId: number) {
 
 function userProfilRequest() {
   return db
-    .selectFrom('user')
-    .innerJoin('account_status', 'account_status.id', 'user.account_status_id')
+    .selectFrom('user as u')
+    .innerJoin('account_status', 'account_status.id', 'u.account_status_id')
     .select((eb) => [
-      'user.id',
-      'user.username',
-      'user.profile_picture',
-      'user.biography',
-      'user.notoriety',
+      'u.id',
+      'u.username',
+      'u.profile_picture',
+      'u.biography',
+      'u.notoriety',
       'account_status.name as status',
       eb
         .selectFrom('follow_up')
         .select(({ fn }) => fn.countAll<number>().as('followersCount'))
-        .whereRef('follow_up.followee_id', '=', 'user.id')
+        .whereRef('follow_up.followee_id', '=', 'u.id')
         .as('followersCount'),
       eb
         .selectFrom('follow_up')
         .select(({ fn }) => fn.countAll<number>().as('followingCount'))
-        .whereRef('follow_up.follower_id', '=', 'user.id')
+        .whereRef('follow_up.follower_id', '=', 'u.id')
         .as('followingCount'),
       jsonArrayFrom(
         eb
@@ -110,7 +110,7 @@ function userProfilRequest() {
             eb2.fn.count<number>('post_like.user_id').as('likeCount'),
             eb2.fn.count<number>('comment.id').as('commentCount'),
           ])
-          .whereRef('post.user_id', '=', 'user.id')
+          .whereRef('post.user_id', '=', 'u.id')
           .groupBy('post.id')
           .orderBy('post.created_at', 'desc')
           .limit(8),
@@ -122,7 +122,7 @@ function userProfilRequest() {
         .select((eb) => [
           eb.fn.count<number>('post_like.post_id').as('likeCount'),
         ])
-        .whereRef('post.user_id', '=', 'user.id')
+        .whereRef('post.user_id', '=', 'u.id')
         .as('likeCount'),
     ]);
 }
@@ -130,7 +130,7 @@ function userProfilRequest() {
 export default {
   async getUserProfileById(userId: number) {
     const profile = await userProfilRequest()
-      .where('user.id', '=', userId)
+      .where('u.id', '=', userId)
       .executeTakeFirst();
 
     return profile
@@ -144,7 +144,7 @@ export default {
 
   async getUserProfileByUsername(username: string) {
     const profile = await userProfilRequest()
-      .where('user.username', '=', username)
+      .where('u.username', '=', username)
       .executeTakeFirst();
 
     return profile
