@@ -136,4 +136,12 @@ export default {
       .where('post.user_id', '=', userId)
       .executeTakeFirst();
   },
+
+  getPostAuthorId(postId: number) {
+    return db
+      .selectFrom('post')
+      .select(['user_id'])
+      .where('post.id', '=', postId)
+      .executeTakeFirst();
+  },
 };

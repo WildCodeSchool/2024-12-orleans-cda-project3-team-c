@@ -36,7 +36,7 @@ export default function Posts() {
     }
   }
   return (
-    <section className='min-h-screen w-full border'>
+    <section className='min-h-screen w-full'>
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
         <header className='p-4'>
           <button
