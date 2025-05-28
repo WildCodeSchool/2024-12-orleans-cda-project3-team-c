@@ -185,7 +185,11 @@ export default function Post({ post }: { readonly post: FeedPost }) {
         {/* slideshow container */}
         <div className='mb-1'>
           <div className='slide'>
-            <img src={`/cdn/pictures/posts/${post.picture}`} alt='' />
+            <img
+              src={`/cdn/pictures/posts/${post.picture}`}
+              alt=''
+              className='w-full'
+            />
           </div>
         </div>
 
