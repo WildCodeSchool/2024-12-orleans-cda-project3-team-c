@@ -65,6 +65,19 @@ class UserApiConnection extends ApiConnection {
     if (!res.ok) throw new Error('Failed to update biography');
   }
 
+  async getProfileByUsername(username: string): Promise<UserProfile> {
+    const res = await fetch(`${this.ressourceUrl}/profile/${username}`, {
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch profile by username');
+    }
+
+    const data = (await res.json()) as UserProfile;
+    return data;
+  }
+
   async getUserFeedPage(username: string, page: number): Promise<FeedPost[]> {
     try {
       const response = await fetch(
