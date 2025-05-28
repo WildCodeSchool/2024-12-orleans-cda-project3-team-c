@@ -32,14 +32,12 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const [areCommentsVisible, setAreCommentsVisible] = useState(false);
   const [areOptionsVisible, setAreOptionsVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [deleteErrorMessage, setDeleteErrorMessage] = useState(false);
-  const [deleteSuccessMessage, setDeleteSuccessMessage] = useState(false);
+  const [isSetDeleteErrorMessage, setIsSetDeleteErrorMessage] = useState(false);
+  const [isSetDeleteSuccessMessage, setIsSetDeleteSuccessMessage] =
+    useState(false);
 
   const context = useLoginContext();
-  let user;
-  if (context !== undefined) {
-    user = context.user;
-  }
+  const user = context?.user;
 
   const togglePostLike = async () => {
     let newState: PostLike;
@@ -84,17 +82,17 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const handleClickOptionsOverlay = () => {
     setAreOptionsVisible(false);
     setIsDeleteModalVisible(false);
-    setDeleteSuccessMessage(false);
+    setIsSetDeleteSuccessMessage(false);
   };
 
   const handleClickConfirmDelete = async () => {
-    setDeleteErrorMessage(false);
+    setIsSetDeleteErrorMessage(false);
     const response = await postApiConnection.delete(post.id);
     if (response.ok) {
       setIsDeleteModalVisible(false);
-      setDeleteSuccessMessage(true);
+      setIsSetDeleteSuccessMessage(true);
     } else {
-      setDeleteErrorMessage(true);
+      setIsSetDeleteErrorMessage(true);
     }
   };
 
@@ -294,7 +292,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                     {'Confirm'}
                   </button>
                 </div>
-                {deleteErrorMessage ? (
+                {isSetDeleteErrorMessage ? (
                   <p className='text-danger text-xs'>
                     {
                       "Something went wrong, your post hasn't been deleted, please retry later"
@@ -303,7 +301,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                 ) : null}
               </article>
             ) : null}
-            {deleteSuccessMessage ? (
+            {isSetDeleteSuccessMessage ? (
               <article className='fixed top-1/2 left-1/2 z-11 flex w-64 -translate-1/2 flex-col items-center rounded-lg bg-purple-950 p-4 shadow-2xl'>
                 <p className='text-turquoise-blue-400 text-center text-base'>
                   {'Your post has been successfully deleted'}
