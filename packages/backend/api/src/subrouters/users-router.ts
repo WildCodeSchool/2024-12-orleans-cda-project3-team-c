@@ -20,7 +20,7 @@ usersRouter.get('/profile', async (req: Request, res) => {
     return;
   }
   try {
-    const profile = await userModel.getUserProfileById(userId);
+    const profile = await userModel.getUserProfileById(userId, userId);
 
     if (!profile) {
       res.status(404).json({ error: 'User not found' });
@@ -35,15 +35,22 @@ usersRouter.get('/profile', async (req: Request, res) => {
   }
 });
 
-usersRouter.get('/profile/:userId', async (req: Request, res) => {
-  const userId = req.params.userId;
+usersRouter.get('/profile/:parameter', async (req: Request, res) => {
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).json('Unauthorized: user not authenticated');
+    return;
+  }
+
+  const parameter = req.params.parameter;
+
   let profile;
 
   try {
-    if (+userId) {
-      profile = await userModel.getUserProfileById(+userId);
+    if (+parameter) {
+      profile = await userModel.getUserProfileById(+parameter, userId);
     } else {
-      profile = await userModel.getUserProfileByUsername(userId);
+      profile = await userModel.getUserProfileByUsername(parameter, userId);
     }
 
     if (!profile) {
@@ -162,8 +169,8 @@ usersRouter.put('/profile-picture', async (req: Request, res) => {
     await fileUploadManager.saveTemporary(picture);
     const pictureName = await fileUploadManager.saveUserPicture(picture.name);
 
-    const existingProfile = await userModel.getUserProfileById(userId);
-    const previousPicture = existingProfile?.profile_picture;
+    const currentPicture = await userModel.getUserProfilePicture(userId);
+    const previousPicture = currentPicture?.profile_picture;
 
     await userModel.updateUserProfile(userId, {
       profile_picture: pictureName,

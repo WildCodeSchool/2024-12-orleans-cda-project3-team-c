@@ -12,7 +12,9 @@ import menuDotsBlue from '../assets/icons/menu-dots-blue.svg';
 
 export default function OtherProfile() {
   const { profile } = useLoaderData<{ profile: UserProfile | null }>();
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(
+    profile?.isFollowing !== null ? true : false,
+  );
   const [followCount, setFollowCount] = useState(profile?.followersCount ?? 0);
 
   if (!profile) {

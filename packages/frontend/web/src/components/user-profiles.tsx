@@ -47,7 +47,7 @@ export default function UserProfiles({
           <ul className='my-2 flex gap-4 text-xs sm:text-base'>
             <li className='flex items-center gap-1'>
               <span className='text-turquoise-blue-400'>
-                {profile.posts.length}
+                {profile.postCount}
               </span>
               <span>{'posts'}</span>
             </li>
