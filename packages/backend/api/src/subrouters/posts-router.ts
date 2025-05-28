@@ -180,10 +180,8 @@ postsRouter.delete('/:postId', async function (req: Request, res) {
   const authorId = await postModel.getPostAuthorId(postId);
 
   if (authorId?.user_id === userId) {
-    // supprimer les likes
-    // supprimer les likes de commentaire
-    // supprimer les commentaires
     const response = await postModel.delete(postId);
+    res.json(response);
   } else {
     res.status(401).json({ error: 'Unauthorized' });
     return;

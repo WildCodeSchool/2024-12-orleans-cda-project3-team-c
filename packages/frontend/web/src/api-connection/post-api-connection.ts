@@ -40,18 +40,18 @@ class PostApiConnection extends ApiConnection {
 
   async delete(postId: number) {
     try {
-      const response = await fetch(`${this.ressourceUrl}/postId`, {
+      const response = await fetch(`${this.ressourceUrl}/${postId}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        return true;
+        return (await response.json()) as { ok: boolean };
       } else {
-        return false;
+        return { ok: false };
       }
     } catch (error) {
       console.error(error);
-      return false;
+      return { ok: false };
     }
   }
 }

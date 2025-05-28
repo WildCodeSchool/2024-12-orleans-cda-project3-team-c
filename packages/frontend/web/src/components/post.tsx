@@ -19,8 +19,6 @@ import BodyPortal from './body-portal';
 import FollowButton from './follow-suggestion-button';
 import PostComments from './post-comments';
 
-const FRONTEND_HOST = import.meta.env.FRONTEND_HOST;
-
 export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
   const descriptionElements = !!post.description
@@ -34,6 +32,8 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const [areCommentsVisible, setAreCommentsVisible] = useState(false);
   const [areOptionsVisible, setAreOptionsVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [deleteErrorMessage, setDeleteErrorMessage] = useState(false);
+  const [deleteSuccessMessage, setDeleteSuccessMessage] = useState(false);
 
   const context = useLoginContext();
   let user;
@@ -84,10 +84,18 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const handleClickOptionsOverlay = () => {
     setAreOptionsVisible(false);
     setIsDeleteModalVisible(false);
+    setDeleteSuccessMessage(false);
   };
 
   const handleClickConfirmDelete = async () => {
+    setDeleteErrorMessage(false);
     const response = await postApiConnection.delete(post.id);
+    if (response.ok) {
+      setIsDeleteModalVisible(false);
+      setDeleteSuccessMessage(true);
+    } else {
+      setDeleteErrorMessage(true);
+    }
   };
 
   // tsx **************************************************
@@ -164,7 +172,6 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                     className='px-2 py-1 transition-[background-color_0.2s_ease-out] hover:bg-purple-700'
                     onClick={() => {
                       setIsDeleteModalVisible(true);
-                      // setAreOptionsVisible(false);
                     }}
                   >
                     {'delete'}
@@ -278,11 +285,25 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                     title='Delete the post'
                     type='button'
                     className='border-danger text-danger text-title rounded border px-2 py-0.5 text-xs'
-                    onClick={deletePost}
+                    onClick={handleClickConfirmDelete}
                   >
                     {'Confirm'}
                   </button>
                 </div>
+                {deleteErrorMessage ? (
+                  <p className='text-danger text-xs'>
+                    {
+                      "Something went wrong, your post hasn't been deleted, please retry later"
+                    }
+                  </p>
+                ) : null}
+              </article>
+            ) : null}
+            {deleteSuccessMessage ? (
+              <article className='fixed top-1/2 left-1/2 z-11 flex w-64 -translate-1/2 flex-col items-center rounded-lg bg-purple-950 p-4 shadow-2xl'>
+                <p className='text-turquoise-blue-400 text-center text-base'>
+                  {'Your post has been successfully deleted'}
+                </p>
               </article>
             ) : null}
           </>
