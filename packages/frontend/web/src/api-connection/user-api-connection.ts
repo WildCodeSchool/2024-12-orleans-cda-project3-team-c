@@ -76,6 +76,7 @@ class UserApiConnection extends ApiConnection {
 
     const data = (await res.json()) as UserProfile;
     return data;
+  }
 
   async getUserFeedPage(username: string, page: number): Promise<FeedPost[]> {
     try {
