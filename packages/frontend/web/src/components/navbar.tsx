@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { useLoginContext } from '@/contexts/auth-context';
 
@@ -32,10 +33,20 @@ function NavItem({ to, icon, label }: NavItemProps) {
 
 export default function NavBar() {
   const context = useLoginContext();
+  const location = useLocation();
   let user;
   if (context !== undefined) {
     user = context.user;
   }
+
+  useEffect(() => {
+    if (location.pathname === '/feed') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, [location]);
 
   const navItems: NavItemProps[] = [
     { to: '/feed', icon: homeIcon, label: 'Home' },
