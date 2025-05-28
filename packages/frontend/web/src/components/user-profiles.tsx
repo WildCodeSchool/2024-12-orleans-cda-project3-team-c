@@ -64,9 +64,9 @@ export default function UserProfiles({
               <span>{'following'}</span>
             </li>
           </ul>
+          <p className='pb-2 text-sm'>{profile.biography}</p>
         </div>
       </div>
-      <p className='pb-2 text-sm md:hidden'>{profile.biography}</p>
     </section>
   );
 }
