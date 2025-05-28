@@ -7,7 +7,7 @@ type UserProfileProps = {
   readonly followersCountOverride?: number;
 };
 
-export default function UserProfilePage({
+export default function UserProfiles({
   profile,
   followersCountOverride,
 }: UserProfileProps) {
