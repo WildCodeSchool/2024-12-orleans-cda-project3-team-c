@@ -148,4 +148,51 @@ export default {
       .offset(page * 8 - 8)
       .execute();
   },
+
+  getPostAuthorId(postId: number) {
+    return db
+      .selectFrom('post')
+      .select(['user_id'])
+      .where('post.id', '=', postId)
+      .executeTakeFirst();
+  },
+
+  async delete(postId: number) {
+    const trx = await db.startTransaction().execute();
+
+    try {
+      await trx
+        .deleteFrom('post_like')
+        .where('post_like.post_id', '=', postId)
+        .execute();
+
+      await trx
+        .deleteFrom('comment_like')
+        .where((eb) =>
+          eb(
+            'comment_like.comment_id',
+            'in',
+            eb
+              .selectFrom('comment')
+              .select('comment.id')
+              .where('comment.post_id', '=', postId),
+          ),
+        )
+        .execute();
+
+      await trx
+        .deleteFrom('comment')
+        .where('comment.post_id', '=', postId)
+        .execute();
+
+      await trx.deleteFrom('post').where('post.id', '=', postId).execute();
+
+      await trx.commit().execute();
+      return { ok: true };
+    } catch (error) {
+      console.error(error);
+      await trx.rollback().execute();
+      return { ok: false };
+    }
+  },
 };
