@@ -17,7 +17,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className='mx-4 flex h-full flex-col pt-4 md:mx-auto md:w-[954px]'>
+    <section className='mx-4 flex flex-col pt-4 pb-16 md:mx-auto md:w-[954px]'>
       <div className='flex justify-between'>
         <UserProfiles profile={profile} />
         <Link to='/parameters' className='size-6 pt-4 md:size-8'>
@@ -25,7 +25,11 @@ export default function ProfilePage() {
         </Link>
       </div>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
-      <UserProfilesPosts profile={profile} />
+      <UserProfilesPosts
+        basePosts={profile.posts}
+        userId={profile.id}
+        username={profile.username}
+      />
     </section>
   );
 }

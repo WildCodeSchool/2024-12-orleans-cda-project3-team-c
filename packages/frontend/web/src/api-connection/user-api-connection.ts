@@ -1,4 +1,4 @@
-import type { FeedPost, UserProfile } from '@app/api';
+import type { FeedPost, PostPreview, UserProfile } from '@app/api';
 
 import ApiConnection from './api-connection';
 
@@ -88,6 +88,23 @@ class UserApiConnection extends ApiConnection {
         return (await response.json()) as FeedPost[];
       } else {
         throw new Error('Error while fetching user posts');
+      }
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  async getUserPreviewsPage(userId: number, page: number) {
+    try {
+      const response = await fetch(
+        `${this.ressourceUrl}/${userId}/previews?page=${page}`,
+      );
+
+      if (response.ok) {
+        return (await response.json()) as PostPreview[];
+      } else {
+        throw new Error('Error while fetching user post previews');
       }
     } catch (error) {
       console.error(error);

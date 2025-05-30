@@ -71,3 +71,7 @@ export type PostSearchResult = Awaited<
 export type PostComment = Awaited<
   ReturnType<typeof commentModel.getCommentsByPostId>
 >[number];
+
+export type PostPreview = Awaited<
+  ReturnType<typeof postModel.getUserPostPreviews>
+>[number];
