@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import path from 'path';
+import { Server as SocketServer } from 'socket.io';
 import { fileURLToPath } from 'url';
 
 import { env } from '@app/shared';
@@ -30,12 +31,21 @@ app.use(
   ),
 );
 
-app.use('/api', router);
-
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Server is listening on http://${HOST}:${PORT}`);
 });
+
+const io = new SocketServer({
+  path: '/socket',
+});
+
+io.on('connection', (socket) => {
+  console.log('New connection');
+  socket.emit('message', 'New connection successful');
+});
+
+app.use('/api', router);
 
 export type * from './models/model-types';
 export default app;
