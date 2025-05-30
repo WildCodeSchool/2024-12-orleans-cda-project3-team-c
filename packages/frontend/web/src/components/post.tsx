@@ -193,7 +193,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
 
         {/* post content */}
         <div className='p-2'>
-          <div className='post-action-container flex items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <div className='flex items-center gap-1'>
               {/* like btn */}
               <button
@@ -215,6 +215,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
             </div>
 
             {/* comment btn */}
+
             <button
               type='button'
               className='flex items-center gap-1'

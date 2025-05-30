@@ -20,7 +20,7 @@ usersRouter.get('/profile', async (req: Request, res) => {
     return;
   }
   try {
-    const profile = await userModel.getUserProfileById(userId);
+    const profile = await userModel.getUserProfileById(userId, userId);
 
     if (!profile) {
       res.status(404).json({ error: 'User not found' });
@@ -35,7 +35,44 @@ usersRouter.get('/profile', async (req: Request, res) => {
   }
 });
 
+usersRouter.get('/profile/:parameter', async (req: Request, res) => {
+  const userId = req.userId;
+  if (userId === undefined) {
+    res.status(401).json('Unauthorized: user not authenticated');
+    return;
+  }
+
+  const parameter = req.params.parameter;
+
+  let profile;
+
+  try {
+    if (+parameter) {
+      profile = await userModel.getUserProfileById(+parameter, userId);
+    } else {
+      profile = await userModel.getUserProfileByUsername(parameter, userId);
+    }
+
+    if (!profile) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error('Error /profile:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 usersRouter.get('/:username/posts', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
   let page = 1;
   if (req.query.page !== '' && req.query.page !== undefined) {
     page = +req.query.page;
@@ -49,7 +86,6 @@ usersRouter.get('/:username/posts', async (req: Request, res) => {
   }
 
   const username = req.params.username;
-
   if (!username) {
     res
       .status(400)
@@ -57,14 +93,39 @@ usersRouter.get('/:username/posts', async (req: Request, res) => {
     return;
   }
 
-  const userId = req.userId;
+  const data = await postModel.getFeedPageByUser(username, page, userId);
+  res.json(data);
+  return;
+});
 
-  if (userId === undefined) {
+usersRouter.get('/:userId/previews', async (req: Request, res) => {
+  const authenticatedUser = req.userId;
+  if (authenticatedUser === undefined) {
     res.status(401).json({ error: 'Unauthorized: user not authenticated' });
     return;
   }
 
-  const data = await postModel.getFeedPageByUser(username, page, userId);
+  let page = 1;
+  if (req.query.page !== '' && req.query.page !== undefined) {
+    page = +req.query.page;
+
+    if (!page) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provid a valid page number' });
+      return;
+    }
+  }
+
+  const userId = +req.params.userId;
+  if (!userId) {
+    res
+      .status(400)
+      .json({ error: 'Bad request, uou should provide a valid username' });
+    return;
+  }
+
+  const data = await postModel.getUserPostPreviews(userId, page);
   res.json(data);
   return;
 });
@@ -141,8 +202,8 @@ usersRouter.put('/profile-picture', async (req: Request, res) => {
     await fileUploadManager.saveTemporary(picture);
     const pictureName = await fileUploadManager.saveUserPicture(picture.name);
 
-    const existingProfile = await userModel.getUserProfileById(userId);
-    const previousPicture = existingProfile?.profile_picture;
+    const currentPicture = await userModel.getUserProfilePicture(userId);
+    const previousPicture = currentPicture?.profile_picture;
 
     await userModel.updateUserProfile(userId, {
       profile_picture: pictureName,

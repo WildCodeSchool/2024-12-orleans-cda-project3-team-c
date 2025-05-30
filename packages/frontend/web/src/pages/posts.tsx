@@ -35,6 +35,7 @@ export default function Posts() {
       await fetchNewPosts();
     }
   }
+
   return (
     <section className='min-h-screen w-full'>
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
