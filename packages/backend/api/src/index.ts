@@ -2,6 +2,7 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import fileUpload from 'express-fileupload';
+import { createServer } from 'node:http';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
 import { fileURLToPath } from 'url';
@@ -30,13 +31,14 @@ app.use(
     path.join(fileURLToPath(import.meta.url), '..', '..', 'public'),
   ),
 );
+const httpServer = createServer(app);
 
-const server = app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Server is listening on http://${HOST}:${PORT}`);
 });
 
-const io = new SocketServer({
+const io = new SocketServer(httpServer, {
   path: '/socket',
 });
 

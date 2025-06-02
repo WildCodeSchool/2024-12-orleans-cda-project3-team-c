@@ -6,7 +6,7 @@ import { useLoginContext } from '@/contexts/auth-context';
 
 import NavBar from './components/navbar';
 
-const socket = io('/socket');
+const socket = io({ path: '/socket' });
 socket.on('connect', () => {
   console.log('front end connection ok');
 });
