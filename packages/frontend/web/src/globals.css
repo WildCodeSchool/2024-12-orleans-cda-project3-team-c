@@ -3,7 +3,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --breakpoint-xs: 19.688rem;
+  --breakpoint-xs: 20rem;
   --color-purple-50: #f1f3fc;
   --color-purple-100: #e5eafa;
   --color-purple-200: #d0d6f5;
