@@ -159,6 +159,35 @@ postsRouter.post('/:postId/comment', async function (req: Request, res) {
 // UPDATE **************************************************
 
 // DELETE **************************************************
+postsRouter.delete('/:postId', async function (req: Request, res) {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+
+  const postId = +req.params.postId;
+
+  if (!postId) {
+    res
+      .status(400)
+      .json({ error: 'Bad request, you should provide a valid post id' });
+    return;
+  }
+
+  // vérifier si l'autheur est bien l'utilisateur connecté
+  const authorId = await postModel.getPostAuthorId(postId);
+
+  if (authorId?.user_id === userId) {
+    const response = await postModel.delete(postId);
+    res.json(response);
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+});
+
 postsRouter.delete('/:postId/like', async function (req: Request, res) {
   const userId = req.userId;
 

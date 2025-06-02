@@ -1,45 +1,68 @@
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-type Post = {
-  id: number | string;
-  picture?: string;
-};
+import type { PostPreview } from '@app/api';
 
-type UserProfile = {
-  username: string;
-  posts?: Post[];
-};
+import userApiConnection from '@/api-connection/user-api-connection';
+import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
 type UserProfilesPostsProps = {
-  readonly profile: UserProfile;
+  readonly basePosts: PostPreview[];
+  readonly userId: number;
+  readonly username: string;
 };
 
-export default function UserProfilesPosts({ profile }: UserProfilesPostsProps) {
-  if (!profile.posts || profile.posts.length === 0) {
-    return (
-      <div className='py-8 text-center text-white'>
-        {'Aucun post à afficher.'}
-      </div>
+export default function UserProfilesPosts({
+  basePosts,
+  userId,
+  username,
+}: UserProfilesPostsProps) {
+  const [previews, setPreviews] = useState(basePosts);
+  const infiniteScrollTrigger = useRef(null);
+  useInfiniteScroll(infiniteScrollTrigger, observeInfiniteScroll);
+
+  let page = 1;
+
+  async function fetchNewPosts() {
+    page++;
+    const newPreviews = await userApiConnection.getUserPreviewsPage(
+      userId,
+      page,
     );
+
+    setPreviews((currentPreviews) => {
+      return [...currentPreviews, ...newPreviews];
+    });
+  }
+
+  async function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
+    if (observers[0].isIntersecting) {
+      await fetchNewPosts();
+    }
+  }
+
+  if (!basePosts || basePosts.length === 0) {
+    return <div className='py-8 text-center text-white'>{'No post yet.'}</div>;
   }
 
   return (
     <section className='grid h-82 grid-cols-2 gap-2 md:grid-cols-3 md:gap-4'>
-      {profile.posts.map((post) => (
-        <div key={post.id}>
-          <Link to={`/posts/${profile.username}#${post.id}`}>
+      {previews.map((preview) => (
+        <div key={preview.id}>
+          <Link to={`/posts/${username}#${preview.id}`}>
             <img
               className='size-40 sm:size-56 md:size-81'
               src={
-                post.picture
-                  ? `/cdn/pictures/posts/${post.picture}`
+                preview.picture
+                  ? `/cdn/pictures/posts/${preview.picture}`
                   : '/user-mock.png'
               }
-              alt={`Post ${post.id}`}
+              alt={`Post ${preview.id}`}
             />
           </Link>
         </div>
       ))}
+      <div ref={infiniteScrollTrigger} />
     </section>
   );
 }

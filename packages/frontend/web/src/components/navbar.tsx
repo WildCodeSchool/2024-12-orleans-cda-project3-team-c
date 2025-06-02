@@ -62,7 +62,7 @@ export default function NavBar() {
   ];
   return (
     <>
-      <nav className='fixed top-0 hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
+      <nav className='fixed top-0 z-5 hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
         <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
         <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
@@ -71,7 +71,7 @@ export default function NavBar() {
         </ul>
       </nav>
 
-      <nav className='fixed bottom-0 h-16 bg-purple-950 md:hidden'>
+      <nav className='fixed bottom-0 z-5 h-16 bg-purple-950 md:hidden'>
         <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:w-[80%] after:border-t'>
           {navItems
             .filter((item) => item.label !== 'Notifications')

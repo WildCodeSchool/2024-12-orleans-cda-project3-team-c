@@ -78,7 +78,7 @@ export async function getLoggedInUser(userId: number) {
     .executeTakeFirst();
 }
 
-function userProfilRequest() {
+function userProfilRequest(userId: number) {
   return db
     .selectFrom('user as u')
     .innerJoin('account_status', 'account_status.id', 'u.account_status_id')
@@ -102,19 +102,17 @@ function userProfilRequest() {
       jsonArrayFrom(
         eb
           .selectFrom('post')
-          .leftJoin('post_like', 'post_like.post_id', 'post.id')
-          .leftJoin('comment', 'comment.post_id', 'post.id')
-          .select((eb2) => [
-            'post.id',
-            'post.picture',
-            eb2.fn.count<number>('post_like.user_id').as('likeCount'),
-            eb2.fn.count<number>('comment.id').as('commentCount'),
-          ])
+          .select(['post.id', 'post.picture'])
           .whereRef('post.user_id', '=', 'u.id')
           .groupBy('post.id')
           .orderBy('post.created_at', 'desc')
           .limit(8),
       ).as('posts'),
+      eb
+        .selectFrom('post')
+        .select((eb) => [eb.fn.count<number>('post.id').as('postCount')])
+        .whereRef('post.user_id', '=', 'u.id')
+        .as('postCount'),
       eb
         .selectFrom('post_like')
         .innerJoin('post', 'post.id', 'post_like.post_id')
@@ -124,12 +122,18 @@ function userProfilRequest() {
         ])
         .whereRef('post.user_id', '=', 'u.id')
         .as('likeCount'),
+      eb
+        .selectFrom('follow_up')
+        .select('follow_up.created_at as isFollowing')
+        .where('follow_up.follower_id', '=', userId)
+        .whereRef('follow_up.followee_id', '=', 'u.id')
+        .as('isFollowing'),
     ]);
 }
 
 export default {
-  async getUserProfileById(userId: number) {
-    const profile = await userProfilRequest()
+  async getUserProfileById(userId: number, authenticatedUser: number) {
+    const profile = await userProfilRequest(authenticatedUser)
       .where('u.id', '=', userId)
       .executeTakeFirst();
 
@@ -142,8 +146,8 @@ export default {
       : null;
   },
 
-  async getUserProfileByUsername(username: string) {
-    const profile = await userProfilRequest()
+  async getUserProfileByUsername(username: string, authenticatedUser: number) {
+    const profile = await userProfilRequest(authenticatedUser)
       .where('u.username', '=', username)
       .executeTakeFirst();
 
@@ -323,6 +327,14 @@ export default {
       .selectFrom('user')
       .select(['id', 'profile_picture'])
       .where('user.id', '=', userId)
+      .executeTakeFirst();
+  },
+
+  async getUserProfilePicture(userId: number) {
+    return db
+      .selectFrom('user')
+      .select('profile_picture')
+      .where('id', '=', userId)
       .executeTakeFirst();
   },
 };

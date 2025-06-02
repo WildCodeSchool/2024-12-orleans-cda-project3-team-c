@@ -9,9 +9,8 @@ class PostApiConnection extends ApiConnection {
 
   async getPage(page = 1): Promise<FeedPost[]> {
     try {
-      const response = await fetch(`${this.ressourceUrl}?page=${page}`, {
-        credentials: 'include',
-      });
+      const response = await fetch(`${this.ressourceUrl}?page=${page}`);
+
       if (response.ok) {
         return (await response.json()) as FeedPost[];
       } else {
@@ -26,7 +25,6 @@ class PostApiConnection extends ApiConnection {
   async create(body: FormData) {
     try {
       const response = await fetch(this.ressourceUrl, {
-        credentials: 'include',
         method: 'POST',
         body,
       });
@@ -36,6 +34,23 @@ class PostApiConnection extends ApiConnection {
       }
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  async delete(postId: number) {
+    try {
+      const response = await fetch(`${this.ressourceUrl}/${postId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        return (await response.json()) as { ok: boolean };
+      } else {
+        return { ok: false };
+      }
+    } catch (error) {
+      console.error(error);
+      return { ok: false };
     }
   }
 }
