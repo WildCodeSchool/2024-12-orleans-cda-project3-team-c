@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
+import { parse, serialize } from 'cookie';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import { createServer } from 'node:http';
 import path from 'path';
+import connectionHandler from 'socket-handlers/connection-handler';
+import type { DefaultEventsMap, Socket } from 'socket.io';
 import { Server as SocketServer } from 'socket.io';
 import { fileURLToPath } from 'url';
 
 import { env } from '@app/shared';
 
-import router from './router';
+import socketAuthMiddleaxre from './middlewares/auth.middleware.socket';
+import getRouter from './router';
 
 env();
 
@@ -42,12 +46,32 @@ const io = new SocketServer(httpServer, {
   path: '/socket',
 });
 
-io.on('connection', (socket) => {
-  console.log('New connection');
-  socket.emit('message', 'New connection successful');
-});
+function onSocketConnection(socket: Socket) {
+  connectionHandler(io, socket);
+}
 
-app.use('/api', router);
+io.use(socketAuthMiddleaxre);
+// io.use(cookieParser(COOKIE_SECRET));
+
+io.on(
+  'connection',
+  onSocketConnection,
+  //   (socket) => {
+  //   console.log('New connection');
+  //   // console.log(socket);
+  //   // const cookies = parse(socket.handshake.headers.cookie);
+
+  //   // console.log(cookies);
+  //   socket.emit('message', 'New connection successful');
+
+  //   socket.on('create:room', (socket) => {
+  //     console.log('create:room');
+  //   });
+  // }
+);
+
+// app.use('/api', router);
+app.use('/api', getRouter(io));
 
 export type * from './models/model-types';
 export default app;
