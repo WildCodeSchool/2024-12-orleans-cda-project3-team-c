@@ -1,8 +1,17 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 import { useLoginContext } from '@/contexts/auth-context';
 
 import NavBar from './components/navbar';
+
+const socket = io({ path: '/socket' });
+socket.on('connect', () => {
+  console.log('front end connection ok');
+});
+
+socket.emit('connection');
 
 export default function App() {
   const loginAuth = useLoginContext();
