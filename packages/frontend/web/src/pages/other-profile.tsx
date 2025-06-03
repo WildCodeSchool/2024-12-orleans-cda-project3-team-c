@@ -54,7 +54,11 @@ export default function OtherProfile() {
         <img src={menuDotsBlue} alt='' className='w-6' />
       </div>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
-      <UserProfilesPosts profile={profile} />
+      <UserProfilesPosts
+        basePosts={profile.posts}
+        userId={profile.id}
+        username={profile.username}
+      />
     </section>
   );
 }
