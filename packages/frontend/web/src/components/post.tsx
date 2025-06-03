@@ -18,6 +18,7 @@ import warningIcon from '../assets/icons/warning-red.svg';
 import BodyPortal from './body-portal';
 import FollowButton from './follow-suggestion-button';
 import PostComments from './post-comments';
+import PostLikes from './post-likes';
 
 export default function Post({ post }: { readonly post: FeedPost }) {
   const timeAgo = getTimeAgo(post.created_at);
@@ -30,6 +31,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   });
   const [isFollowing, setIsFollowing] = useState(!!post.author.isFollowing);
   const [areCommentsVisible, setAreCommentsVisible] = useState(false);
+  const [areLikesVisible, setAreLikesVisible] = useState(false);
   const [areOptionsVisible, setAreOptionsVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isSetDeleteErrorMessage, setIsSetDeleteErrorMessage] = useState(false);
@@ -68,6 +70,15 @@ export default function Post({ post }: { readonly post: FeedPost }) {
 
   const displayCommentsModal = (isVisible: boolean) => {
     setAreCommentsVisible(isVisible);
+    if (isVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  };
+
+  const displayLikesModal = (isVisible: boolean) => {
+    setAreLikesVisible(isVisible);
     if (isVisible) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -209,13 +220,19 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                   aria-hidden='true'
                 />
               </button>
-              <p className='text-title text-xs'>
+              <button
+                type='button'
+                className='text-title p-1 text-xs'
+                title='Show the likes'
+                onClick={() => {
+                  displayLikesModal(true);
+                }}
+              >
                 {!!postLike.likeCount ? postLike.likeCount : ''}
-              </p>
+              </button>
             </div>
 
             {/* comment btn */}
-
             <button
               type='button'
               className='flex items-center gap-1'
@@ -231,7 +248,9 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                 className='w-8'
                 aria-hidden='true'
               />
-              <span className='text-title text-xs'>{post.commentCount}</span>
+              <span className='text-title p-1 text-xs'>
+                {post.commentCount}
+              </span>
             </button>
           </div>
 
@@ -255,6 +274,13 @@ export default function Post({ post }: { readonly post: FeedPost }) {
             displayCommentsModal={displayCommentsModal}
             postId={post.id}
           />
+        </BodyPortal>
+      ) : null}
+
+      {/* likes modal */}
+      {areLikesVisible ? (
+        <BodyPortal>
+          <PostLikes displayLikesModal={displayLikesModal} postId={post.id} />
         </BodyPortal>
       ) : null}
 
