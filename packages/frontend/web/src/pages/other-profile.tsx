@@ -39,7 +39,7 @@ export default function OtherProfile() {
   return (
     <section className='flex h-full flex-col pt-4 md:mx-auto md:w-[954px]'>
       <UserProfiles profile={profile} followersCountOverride={followCount} />
-      <div className='mb-4 flex items-center gap-2 px-4 pt-4 md:gap-4'>
+      <div className='mb-4 flex items-center gap-2 px-2 pt-4 sm:px-4 md:gap-4'>
         <FollowButton
           isFollowing={isFollowing}
           handleFollowClick={handleFollowClick}
