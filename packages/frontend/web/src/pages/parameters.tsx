@@ -1,11 +1,29 @@
 import { Link } from 'react-router-dom';
 
+import logoutApiConnection from '@/api-connection/logout-api-connection';
+import { useLoginContext } from '@/contexts/auth-context';
+
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 import gearIcon from '../assets/icons/gear-white.svg';
 import logoutIcon from '../assets/icons/logout-white.svg';
 import userIcon from '../assets/icons/user-white.svg';
 
 export default function Parameters() {
+  const loginAuth = useLoginContext();
+
+  const logout = async () => {
+    try {
+      const data = await logoutApiConnection.logout();
+      if (data.ok) {
+        loginAuth?.setIsUserLogged(false);
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout', error);
+    }
+  };
+
   return (
     <section className='item-start flex h-full flex-col pt-4 pl-4 sm:items-center sm:pt-40 sm:pl-0'>
       <div className='flex items-center'>
@@ -46,9 +64,10 @@ export default function Parameters() {
 
         <div className='mb-8 flex h-full items-end sm:items-start'>
           <li>
-            <Link
+            <button
+              onClick={logout}
+              type='button'
               className='flex h-12 flex-row items-center text-center'
-              to='/logout'
             >
               <img
                 className='mr-4 h-8 w-8'
@@ -56,7 +75,7 @@ export default function Parameters() {
                 alt='logout icon'
               />
               {'Log Out'}
-            </Link>
+            </button>
           </li>
         </div>
       </ul>

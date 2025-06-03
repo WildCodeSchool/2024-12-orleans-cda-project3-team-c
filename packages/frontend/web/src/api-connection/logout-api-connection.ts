@@ -14,11 +14,13 @@ class LoginApiConnection extends ApiConnection {
 
       if (!response.ok) {
         console.error('Error during logout');
+        return { ok: false };
       }
 
       return (await response.json()) as { ok: boolean };
     } catch (error) {
       console.error('Error during logout', error);
+      return { ok: false };
     }
   }
 }
