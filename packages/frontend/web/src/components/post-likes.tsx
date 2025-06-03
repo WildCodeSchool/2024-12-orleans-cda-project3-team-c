@@ -29,7 +29,7 @@ export default function PostLikes({
       return [...currentLikes, ...newLikes];
     });
   }
-  console.log(likes);
+
   async function observeInfiniteScroll(observers: IntersectionObserverEntry[]) {
     if (observers[0].isIntersecting) {
       page++;
