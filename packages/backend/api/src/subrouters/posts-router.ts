@@ -41,6 +41,42 @@ postsRouter.get('', async function (req: Request, res) {
   res.json(data);
 });
 
+postsRouter.get('/:postId/likes', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
+  let page = 1;
+  if (req.query.page !== '' && req.query.page !== undefined) {
+    page = +req.query.page;
+    if (!page) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provide a valid page number' });
+      return;
+    }
+  }
+
+  let postId: number;
+  if (req.params.postId !== '' && req.params.postId !== undefined) {
+    postId = +req.params.postId;
+    if (!postId) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provide a valid post id' });
+      return;
+    } else {
+      const data = await postLikeModel.getLikesByPost(postId, userId, page);
+      res.json(data);
+    }
+  }
+
+  return;
+});
+
 // POST **************************************************
 postsRouter.post('', async function (req: Request, res) {
   const picture = req.files?.picture as PictureUploadedFile;
