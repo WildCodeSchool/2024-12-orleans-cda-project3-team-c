@@ -6,16 +6,6 @@ import { useLoginContext } from '@/contexts/auth-context';
 import NavBar from './components/navbar';
 import socket from './socket';
 
-// socket.on('connect', () => {
-//   console.log('front end connection ok 2');
-//   console.log(socket);
-//   socket.emit('join:rooms', { message: 'create room', room: 'teddy' });
-// });
-
-// socket.connect();
-
-// socket.emit('connection');
-
 export default function App() {
   const loginAuth = useLoginContext();
 
@@ -35,6 +25,11 @@ export default function App() {
     socket.on('connect', onConnect);
 
     socket.connect();
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.disconnect();
+    };
   }, [user?.id]);
 
   if (isLoading === true) {
