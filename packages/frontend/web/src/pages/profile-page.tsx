@@ -17,10 +17,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className='mx-4 flex flex-col pt-4 pb-16 md:mx-auto md:w-[954px]'>
+    <section className='flex flex-col pt-4 pb-16 md:w-[954px]'>
       <div className='flex justify-between'>
         <UserProfiles profile={profile} />
-        <Link to='/parameters' className='size-6 pt-4 md:size-8'>
+        <Link to='/parameters' className='mr-2 size-6 pt-4 sm:mr-4 md:size-8'>
           <img src={menu} alt='Menu' />
         </Link>
       </div>
