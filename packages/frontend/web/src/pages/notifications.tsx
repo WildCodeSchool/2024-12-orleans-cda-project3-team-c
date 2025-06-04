@@ -5,6 +5,7 @@ import { useNotificationContext } from '@/contexts/notification-context';
 import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
 import backIcon from '../assets/icons/arrow-left-white.svg';
+import NotificationItem from '../components/notification-item';
 
 export default function Notifications() {
   const notificationContext = useNotificationContext();
@@ -58,7 +59,7 @@ export default function Notifications() {
       <div className='px-4 pb-4'>
         <ul>
           {notificationContext?.notifications.map((notification) => {
-            return <h1 key={notification?.recipient_id}>{'notif'}</h1>;
+            return <NotificationItem key={notification?.id} />;
           })}
         </ul>
         <div ref={infiniteScrollTrigger} />

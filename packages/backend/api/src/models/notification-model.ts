@@ -28,7 +28,7 @@ export default {
   getNotification(notificationId: number) {
     return db
       .selectFrom('notification')
-      .select(['recipient_id', 'message', 'created_at', 'redirect_to'])
+      .select(['id', 'recipient_id', 'message', 'created_at', 'redirect_to'])
       .where('id', '=', notificationId)
       .executeTakeFirst();
   },
@@ -36,7 +36,7 @@ export default {
   getNotifications(userId: number, page: number) {
     return db
       .selectFrom('notification')
-      .select(['recipient_id', 'message', 'created_at', 'redirect_to'])
+      .select(['id', 'recipient_id', 'message', 'created_at', 'redirect_to'])
       .where('recipient_id', '=', userId)
       .orderBy('read_at', 'asc')
       .orderBy('created_at', 'desc')
