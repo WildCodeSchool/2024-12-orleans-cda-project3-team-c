@@ -82,5 +82,5 @@ export type PostPreview = Awaited<
 >[number];
 
 export type Notification = Awaited<
-  ReturnType<typeof notificationModel.getNotification>
->;
+  ReturnType<typeof notificationModel.getNotifications>
+>[number];

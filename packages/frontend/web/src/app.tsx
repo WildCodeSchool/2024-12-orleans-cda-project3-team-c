@@ -20,7 +20,7 @@ export default function App() {
   if (isLoading === true) {
     return;
   }
-  console.log('app: ', notificationContext);
+
   if (isUserLogged === false) {
     return <Navigate to={'/login'} />;
   }

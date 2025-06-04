@@ -59,7 +59,12 @@ export default function Notifications() {
       <div className='px-4 pb-4'>
         <ul>
           {notificationContext?.notifications.map((notification) => {
-            return <NotificationItem key={notification?.id} />;
+            return (
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+              />
+            );
           })}
         </ul>
         <div ref={infiniteScrollTrigger} />
