@@ -41,6 +41,29 @@ postsRouter.get('', async function (req: Request, res) {
   res.json(data);
 });
 
+postsRouter.get('/:postId', async function (req: Request, res) {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
+  let postId: number;
+  if (req.params.postId !== '' && req.params.postId !== undefined) {
+    postId = +req.params.postId;
+    if (!postId) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provide a valid post id' });
+      return;
+    } else {
+      const data = await postModel.getPost(postId, userId);
+      res.json(data);
+    }
+  }
+});
+
 postsRouter.get('/:postId/likes', async (req: Request, res) => {
   const userId = req.userId;
 

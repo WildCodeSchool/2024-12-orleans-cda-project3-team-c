@@ -22,6 +22,21 @@ class PostApiConnection extends ApiConnection {
     }
   }
 
+  async getPost(postId: number) {
+    try {
+      const response = await fetch(`${this.ressourceUrl}/${postId}`);
+
+      if (response.ok) {
+        return (await response.json()) as FeedPost;
+      } else {
+        throw new Error(`Error while fetching post ${postId}`);
+      }
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
+  }
+
   async create(body: FormData) {
     try {
       const response = await fetch(this.ressourceUrl, {
