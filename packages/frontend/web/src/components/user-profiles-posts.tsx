@@ -46,12 +46,12 @@ export default function UserProfilesPosts({
   }
 
   return (
-    <section className='grid h-82 grid-cols-2 gap-2 md:grid-cols-3 md:gap-4'>
+    <section className='grid grid-cols-2 gap-2 sm:px-4 lg:grid-cols-3'>
       {previews.map((preview) => (
-        <div key={preview.id}>
+        <div className='aspect-square w-full last:mb-20' key={preview.id}>
           <Link to={`/posts/${username}#${preview.id}`}>
             <img
-              className='size-40 sm:size-56 md:size-81'
+              className='h-full w-full object-cover'
               src={
                 preview.picture
                   ? `/cdn/pictures/posts/${preview.picture}`

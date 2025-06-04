@@ -73,6 +73,10 @@ export type PostComment = Awaited<
   ReturnType<typeof commentModel.getCommentsByPostId>
 >[number];
 
+export type PostLikeItem = Awaited<
+  ReturnType<typeof postLikeModel.getLikesByPost>
+>[number];
+
 export type PostPreview = Awaited<
   ReturnType<typeof postModel.getUserPostPreviews>
 >[number];

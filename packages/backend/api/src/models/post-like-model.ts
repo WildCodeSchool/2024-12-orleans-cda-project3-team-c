@@ -28,6 +28,34 @@ export default {
       .executeTakeFirst();
   },
 
+  getLikesByPost(postId: number, userId: number, page: number) {
+    return db
+      .selectFrom('post_like')
+      .innerJoin('user', 'user.id', 'post_like.user_id')
+      .innerJoin(
+        'account_status',
+        'user.account_status_id',
+        'account_status.id',
+      )
+      .select((eb) => [
+        'user.id as id',
+        'user.username',
+        'user.profile_picture',
+        'account_status.name as status',
+        eb
+          .selectFrom('follow_up')
+          .select('follow_up.created_at as isFollowing')
+          .where('follow_up.follower_id', '=', userId)
+          .whereRef('follow_up.followee_id', '=', 'user.id')
+          .as('isFollowing'),
+      ])
+      .where('post_like.post_id', '=', postId)
+      .orderBy('post_like.created_at')
+      .limit(100)
+      .offset(page * 100 - 100)
+      .execute();
+  },
+
   // POST **************************************************
   async addPostLike(postId: number, userId: number) {
     try {
