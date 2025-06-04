@@ -38,30 +38,32 @@ export default function PostLikes({
   }
 
   return (
-    <section className='fixed bottom-0 left-0 z-10 h-screen w-dvw bg-purple-950'>
-      <header className='p-4'>
-        <button
-          type='button'
-          className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
-          onClick={() => {
-            displayLikesModal(false);
-          }}
-        >
-          <img
-            src={backIcon}
-            aria-hidden='true'
-            alt=''
-            className='absolute top-0 left-0 w-8'
-          />
-          {'Likes'}
-        </button>
-      </header>
-      <ul className='px-4 pb-4'>
-        {likes.map((like) => {
-          return <PostLikesLikeItem key={like.id} like={like} />;
-        })}
-      </ul>
-      <div ref={infiniteScrollTrigger} />
-    </section>
+    <div className='fixed inset-0 z-50 flex items-center justify-center md:bg-black/75'>
+      <section className='fixed bottom-0 left-0 z-10 h-screen w-full bg-purple-950 md:relative md:mr-0 md:mb-0 md:ml-[224px] md:h-[685px] md:w-[400px] md:overflow-y-scroll lg:mr-[106px] lg:ml-0'>
+        <header className='p-4'>
+          <button
+            type='button'
+            className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
+            onClick={() => {
+              displayLikesModal(false);
+            }}
+          >
+            <img
+              src={backIcon}
+              aria-hidden='true'
+              alt=''
+              className='absolute top-0 left-0 w-8'
+            />
+            {'Likes'}
+          </button>
+        </header>
+        <ul className='px-4 pb-4'>
+          {likes.map((like) => {
+            return <PostLikesLikeItem key={like.id} like={like} />;
+          })}
+        </ul>
+        <div ref={infiniteScrollTrigger} />
+      </section>
+    </div>
   );
 }
