@@ -16,6 +16,7 @@ import Posts from './pages/posts';
 import ProfileInformations from './pages/profile-informations';
 import ProfilePage from './pages/profile-page';
 import Search from './pages/search';
+import SinglePostPage from './pages/single-post-page';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,17 @@ const router = createBrowserRouter([
         element: <Feed />,
         loader: () => {
           return loaders.postLoaders.getFeedPage();
+        },
+      },
+      {
+        path: '/post/:postId',
+        element: <SinglePostPage />,
+        loader: (route) => {
+          const postId = Number(route.params.postId);
+          if (isNaN(postId)) {
+            return redirect('/feed');
+          }
+          return loaders.postLoaders.getPost(postId);
         },
       },
       {
