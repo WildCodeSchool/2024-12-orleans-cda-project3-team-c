@@ -1,6 +1,7 @@
 import type commentLikeModel from './comment-like-model';
 import type commentModel from './comment-model';
 import type followModel from './follow-up-model';
+import type notificationModel from './notification-model';
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
 import type {
@@ -75,3 +76,7 @@ export type PostComment = Awaited<
 export type PostPreview = Awaited<
   ReturnType<typeof postModel.getUserPostPreviews>
 >[number];
+
+export type Notification = Awaited<
+  ReturnType<typeof notificationModel.getNotification>
+>;

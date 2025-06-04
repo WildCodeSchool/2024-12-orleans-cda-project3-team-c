@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { parse, serialize } from 'cookie';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import fileUpload from 'express-fileupload';
 import { createServer } from 'node:http';
 import path from 'path';
-import connectionHandler from 'socket-handlers/connection-handler';
 import type { DefaultEventsMap, Socket } from 'socket.io';
 import { Server as SocketServer } from 'socket.io';
 import { fileURLToPath } from 'url';
@@ -13,7 +11,9 @@ import { fileURLToPath } from 'url';
 import { env } from '@app/shared';
 
 import socketAuthMiddleaxre from './middlewares/auth.middleware.socket';
-import getRouter from './router';
+import router from './router';
+import connectionHandler from './socket-handlers/connection-handler';
+import NotificationManager from './utils/notification-manager';
 
 env();
 
@@ -51,27 +51,13 @@ function onSocketConnection(socket: Socket) {
 }
 
 io.use(socketAuthMiddleaxre);
-// io.use(cookieParser(COOKIE_SECRET));
 
-io.on(
-  'connection',
-  onSocketConnection,
-  //   (socket) => {
-  //   console.log('New connection');
-  //   // console.log(socket);
-  //   // const cookies = parse(socket.handshake.headers.cookie);
-
-  //   // console.log(cookies);
-  //   socket.emit('message', 'New connection successful');
-
-  //   socket.on('create:room', (socket) => {
-  //     console.log('create:room');
-  //   });
-  // }
-);
+io.on('connection', onSocketConnection);
 
 // app.use('/api', router);
-app.use('/api', getRouter(io));
+app.use('/api', router);
+
+export const notificationManager = new NotificationManager(io);
 
 export type * from './models/model-types';
 export default app;

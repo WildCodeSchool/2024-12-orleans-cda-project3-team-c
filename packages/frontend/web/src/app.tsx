@@ -1,51 +1,44 @@
-import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { useLoginContext } from '@/contexts/auth-context';
 
+import BodyPortal from './components/body-portal';
 import NavBar from './components/navbar';
-import socket from './socket';
+import { useNotificationContext } from './contexts/notification-context';
+import useSocket from './hooks/use-socket';
+import Notifications from './pages/notifications';
 
 export default function App() {
   const loginAuth = useLoginContext();
 
   const isUserLogged = loginAuth?.isUserLogged;
   const isLoading = loginAuth?.isLoading;
-  const user = loginAuth?.user;
+  const socket = useSocket();
 
-  useEffect(() => {
-    const onConnect = () => {
-      console.log('connection front OK');
-      if (user?.id !== undefined) {
-        console.log(user.id);
-        socket.emit('join:rooms', { userId: user.id, foo: 'bar' });
-      }
-    };
-
-    socket.on('connect', onConnect);
-
-    socket.connect();
-
-    return () => {
-      socket.off('connect', onConnect);
-      socket.disconnect();
-    };
-  }, [user?.id]);
+  const notificationContext = useNotificationContext();
 
   if (isLoading === true) {
     return;
   }
-
+  console.log('app: ', notificationContext);
   if (isUserLogged === false) {
     return <Navigate to={'/login'} />;
   }
 
   return (
-    <div className='relative h-dvh w-full' id='app'>
-      <NavBar />
-      <main className='h-full md:ml-56'>
-        <Outlet />
-      </main>
-    </div>
+    <>
+      <div className='relative h-dvh w-full' id='app'>
+        <NavBar />
+        <main className='h-full md:ml-56'>
+          <Outlet />
+        </main>
+      </div>
+      {notificationContext?.areNotificationsVisible !== undefined &&
+      notificationContext.areNotificationsVisible ? (
+        <BodyPortal>
+          <Notifications />
+        </BodyPortal>
+      ) : null}
+    </>
   );
 }

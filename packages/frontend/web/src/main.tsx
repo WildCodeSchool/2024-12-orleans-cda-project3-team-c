@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 
 import AuthContext from './contexts/auth-context';
+import NotificationContext from './contexts/notification-context';
 import './globals.css';
 import router from './router';
 
@@ -12,7 +13,9 @@ if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <AuthContext>
-        <RouterProvider router={router} />
+        <NotificationContext>
+          <RouterProvider router={router} />
+        </NotificationContext>
       </AuthContext>
     </React.StrictMode>,
   );

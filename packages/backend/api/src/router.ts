@@ -5,6 +5,7 @@ import authMiddleware from './middlewares/auth.middleware';
 import authRouter from './subrouters/auth-router';
 import commentsRouter from './subrouters/comments-router';
 import followUpsRouter from './subrouters/follow-ups-router';
+import notificationsRouter from './subrouters/notifications-router';
 import postsRouter from './subrouters/posts-router';
 import searchRouter from './subrouters/search-router';
 import suggestionRouter from './subrouters/suggestions-router';
@@ -13,27 +14,26 @@ import usersRouter from './subrouters/users-router';
 
 // export default router;
 
-export default function getRouter(socketServer) {
-  const router = express.Router();
+const router = express.Router();
 
-  // Middleware to check if the user is authenticated
-  router.use(authMiddleware);
+// Middleware to check if the user is authenticated
+router.use(authMiddleware);
 
-  router.use('/auth', authRouter);
+router.use('/auth', authRouter);
 
-  //login guards il faudra mettre mettre toutes les routes qui necessitent d'etre authentifié
-  router.use(authGuards);
-  router.use('/comments', commentsRouter);
-  router.use('/follows', followUpsRouter);
-  router.use('/posts', postsRouter);
-  router.use('/search', searchRouter);
-  router.use('/suggestion', suggestionRouter);
-  router.use('/tags', tagsRouter);
-  router.use('/users', usersRouter);
+//login guards il faudra mettre mettre toutes les routes qui necessitent d'etre authentifié
+router.use(authGuards);
+router.use('/comments', commentsRouter);
+router.use('/follows', followUpsRouter);
+router.use('/notifications', notificationsRouter);
+router.use('/posts', postsRouter);
+router.use('/search', searchRouter);
+router.use('/suggestion', suggestionRouter);
+router.use('/tags', tagsRouter);
+router.use('/users', usersRouter);
 
-  router.use('*', (req, res) => {
-    res.status(404).json({ message: `Resource ${req.path} not found` });
-  });
+router.use('*', (req, res) => {
+  res.status(404).json({ message: `Resource ${req.path} not found` });
+});
 
-  return router;
-}
+export default router;

@@ -9,13 +9,16 @@ import postModel from '@/models/post-model';
 import postTagModel from '@/models/post-tag-model';
 import tagModel from '@/models/tag-model';
 import fileUploadManager from '@/utils/file-upload-manager';
+// import notificationManager from '@/utils/notification-manager';
 import textParsers from '@/utils/text-parsers';
 
-const postsRouter = express.Router();
+import { notificationManager } from '..';
 
 type PictureUploadedFile = {
   mimetype: string;
 } & UploadedFile;
+
+const postsRouter = express.Router();
 
 // GET **************************************************
 postsRouter.get('', async function (req: Request, res) {
@@ -23,9 +26,9 @@ postsRouter.get('', async function (req: Request, res) {
   if (req.query.page !== '' && req.query.page !== undefined) {
     page = +req.query.page;
     if (!page) {
-      res
-        .status(400)
-        .json({ error: 'Bad request, you should provide a valid page number' });
+      res.status(400).json({
+        error: 'Bad request, you should provide a valid page number',
+      });
       return;
     }
   }
@@ -122,6 +125,11 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
   const data = await postLikeModel.addPostLike(postId, userId);
   if (data) {
     res.json(data);
+
+    if (data.isLiked) {
+      await notificationManager.newLike(postId, userId);
+    }
+    return;
   } else {
     res.status(500).json({ error: 'Something went wrong while liking post' });
     return;

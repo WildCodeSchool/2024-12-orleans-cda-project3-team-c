@@ -1,9 +1,7 @@
 import { log } from 'console';
 import { parse } from 'cookie';
-import cookieParser from 'cookie-parser';
-import type { NextFunction } from 'express';
 import * as jose from 'jose';
-import type { DefaultEventsMap, Socket } from 'socket.io';
+import type { DefaultEventsMap, ExtendedError, Socket } from 'socket.io';
 
 import { env } from '@app/shared';
 
@@ -19,7 +17,7 @@ const refreshTokenSecret = new TextEncoder().encode(REFRESH_TOKEN_SECRET);
 
 export default async function socketAuthMiddleaxre(
   socket: Socket<DefaultEventsMap, DefaultEventsMap>,
-  next: NextFunction,
+  next: (err?: ExtendedError) => void,
 ) {
   let accessToken = '';
   if (socket.handshake.headers.cookie !== undefined) {

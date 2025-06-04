@@ -6,4 +6,8 @@ const socket = io({
   transports: ['websocket'],
 });
 
+socket.on('notification:new', (notification) => {
+  console.log(notification);
+});
+
 export default socket;

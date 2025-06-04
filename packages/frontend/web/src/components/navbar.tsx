@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useLoginContext } from '@/contexts/auth-context';
+import { useNotificationContext } from '@/contexts/notification-context';
 
 import addIcon from '../assets/icons/add-white.svg';
 import bellIcon from '../assets/icons/bell-white.svg';
@@ -34,6 +35,9 @@ function NavItem({ to, icon, label }: NavItemProps) {
 export default function NavBar() {
   const context = useLoginContext();
   const location = useLocation();
+
+  const notificationContext = useNotificationContext();
+
   let user;
   if (context !== undefined) {
     user = context.user;
@@ -48,12 +52,17 @@ export default function NavBar() {
     }
   }, [location]);
 
+  const showNotifications = () => {
+    if (notificationContext?.setAreNotificationsVisible !== undefined) {
+      notificationContext.setAreNotificationsVisible(true);
+    }
+  };
+
   const navItems: NavItemProps[] = [
     { to: '/feed', icon: homeIcon, label: 'Home' },
     { to: '/search', icon: searchIcon, label: 'Search' },
     { to: '/create', icon: addIcon, label: 'Create a post' },
     { to: '/chat', icon: chatIcon, label: 'Chat' },
-    { to: '/notifications', icon: bellIcon, label: 'Notifications' },
     {
       to: '/profile',
       icon: `/cdn/pictures/users/${user?.profile_picture}`,
@@ -68,25 +77,39 @@ export default function NavBar() {
           {navItems.map((item) => (
             <NavItem key={item.to} {...item} />
           ))}
+          <li className='h-12 max-w-fit'>
+            <button
+              type='button'
+              className='flex flex-row items-center'
+              title='Show notifications'
+              onClick={showNotifications}
+            >
+              <img
+                className='mr-4 size-8'
+                src={bellIcon}
+                alt=''
+                aria-hidden='true'
+              />
+              <span className='hidden sm:inline'>{'Notifications'}</span>
+            </button>
+          </li>
         </ul>
       </nav>
 
       <nav className='fixed bottom-0 z-5 h-16 bg-purple-950 md:hidden'>
         <ul className='relative flex w-dvw justify-around pt-4 pb-4 after:absolute after:top-0 after:w-[80%] after:border-t'>
-          {navItems
-            .filter((item) => item.label !== 'Notifications')
-            .map((item) => (
-              <li key={item.to}>
-                <Link to={item.to} aria-label={item.label}>
-                  <img
-                    className={`size-8 ${item.to === '/profile' ? 'rounded' : ''}`}
-                    src={item.icon}
-                    alt=''
-                    aria-hidden='true'
-                  />
-                </Link>
-              </li>
-            ))}
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <Link to={item.to} aria-label={item.label}>
+                <img
+                  className={`size-8 ${item.to === '/profile' ? 'rounded' : ''}`}
+                  src={item.icon}
+                  alt=''
+                  aria-hidden='true'
+                />
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </>

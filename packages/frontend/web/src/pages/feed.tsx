@@ -6,6 +6,7 @@ import type { FeedPost } from '@app/api';
 import postApiConnection from '@/api-connection/post-api-connection';
 import Post from '@/components/post';
 import UserSuggestionContainer from '@/components/user-suggestion';
+import { useNotificationContext } from '@/contexts/notification-context';
 import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
 import bellIcon from '../assets/icons/bell-white.svg';
@@ -14,6 +15,7 @@ export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
   const infiniteScrollTrigger = useRef(null);
+  const notificationContext = useNotificationContext();
 
   useInfiniteScroll(infiniteScrollTrigger, observeInfiniteScroll);
 
@@ -34,9 +36,14 @@ export default function Feed() {
     }
   }
 
+  const showNotifications = () => {
+    if (notificationContext?.setAreNotificationsVisible !== undefined) {
+      notificationContext.setAreNotificationsVisible(true);
+    }
+  };
+
   return (
     // feed section
-
     <section className='flex'>
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
         <header
@@ -44,9 +51,14 @@ export default function Feed() {
           className='flex items-center justify-between p-4 md:hidden'
         >
           <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
-          <Link to={'/notifications'}>
-            <img src={bellIcon} alt='' className='w-8' />
-          </Link>
+          <button
+            type='button'
+            title='Show notifications'
+            aria-label='Show notifications'
+            onClick={showNotifications}
+          >
+            <img src={bellIcon} alt='' className='w-8' aria-hidden />
+          </button>
         </header>
 
         {posts.map((post: FeedPost) => {
