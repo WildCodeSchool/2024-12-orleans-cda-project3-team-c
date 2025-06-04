@@ -67,60 +67,62 @@ export default function PostComments({
   }
 
   return (
-    <section className='fixed bottom-0 left-0 z-10 h-screen w-dvw bg-purple-950'>
-      <header className='p-4'>
-        <button
-          type='button'
-          className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
-          onClick={() => {
-            displayCommentsModal(false);
-          }}
-        >
-          <img
-            src={backIcon}
-            aria-hidden='true'
-            alt=''
-            className='absolute top-0 left-0 w-8'
-          />
-          {'Comments'}
-        </button>
-      </header>
-      <div className='px-4 pb-4'>
-        <div className='h-[calc(100vh_-_116px)] overflow-y-auto'>
-          {comments.map((comment) => {
-            return <Comment key={comment.id} comment={comment} />;
-          })}
-          <div ref={infiniteScrollTrigger} />
+    <div className='fixed inset-0 z-50 flex items-center justify-center md:bg-black/75'>
+      <section className='relative z-10 w-full bg-purple-950 md:mr-0 md:mb-0 md:ml-[224px] md:w-[400px] lg:mr-[106px] lg:ml-0'>
+        <header className='p-4'>
+          <button
+            type='button'
+            className='font-title relative block h-8 w-full text-center text-base md:text-2xl'
+            onClick={() => {
+              displayCommentsModal(false);
+            }}
+          >
+            <img
+              src={backIcon}
+              aria-hidden='true'
+              alt=''
+              className='absolute top-0 left-0 w-8'
+            />
+            {'Comments'}
+          </button>
+        </header>
+        <div className='px-4 pb-4'>
+          <div className='h-[calc(100vh_-_116px)] overflow-y-auto md:h-[550px]'>
+            {comments.map((comment) => {
+              return <Comment key={comment.id} comment={comment} />;
+            })}
+            <div ref={infiniteScrollTrigger} />
+          </div>
+          <div className='h-fit'>
+            <p>{errorMessage}</p>
+            <form onSubmit={handleSubmitCommentForm}>
+              <label htmlFor='text' className='hidden'>
+                {'Your comment'}
+              </label>
+              <div className='relative'>
+                <textarea
+                  name='text'
+                  id='text'
+                  placeholder='Write a comment'
+                  className='w-full resize-none rounded border border-white bg-purple-900 p-2 text-xs'
+                  value={commentText}
+                  onChange={(event) => {
+                    setCommentText(event.target.value);
+                  }}
+                />
+                <button
+                  type='submit'
+                  aria-label='Send'
+                  title='Send'
+                  className='absolute top-[50%] right-0 flex -translate-y-1/2 justify-center p-2'
+                >
+                  <img src={sendIcon} aria-hidden alt='' className='w-4' />
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className='h-fit'>
-          <p>{errorMessage}</p>
-          <form onSubmit={handleSubmitCommentForm}>
-            <label htmlFor='text' className='hidden'>
-              {'Your comment'}
-            </label>
-            <div className='relative'>
-              <textarea
-                name='text'
-                id='text'
-                placeholder='Write a comment'
-                className='w-full resize-none rounded border border-white p-2 text-xs'
-                value={commentText}
-                onChange={(event) => {
-                  setCommentText(event.target.value);
-                }}
-              />
-              <button
-                type='submit'
-                aria-label='Send'
-                title='Send'
-                className='absolute top-[50%] right-0 flex -translate-y-1/2 justify-center p-2'
-              >
-                <img src={sendIcon} aria-hidden alt='' className='w-4' />
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
