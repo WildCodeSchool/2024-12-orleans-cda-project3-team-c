@@ -62,7 +62,7 @@ export default {
           ),
         ).as('author'),
       ])
-      .where('post.id', '!=', postId)
+      .where('post.id', '=', postId)
       .executeTakeFirst();
   },
 

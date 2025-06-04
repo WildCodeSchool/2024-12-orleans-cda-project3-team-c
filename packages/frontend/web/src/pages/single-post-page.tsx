@@ -9,7 +9,7 @@ import backIcon from '../assets/icons/arrow-left-white.svg';
 export default function SinglePostPage() {
   const post = useLoaderData<FeedPost>();
   const navigate = useNavigate();
-  console.log(post);
+
   return (
     <section className='min-h-screen w-full'>
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
