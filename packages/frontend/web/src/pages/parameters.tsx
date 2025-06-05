@@ -62,7 +62,7 @@ export default function Parameters() {
           </li>
         </div>
 
-        <div className='mb-8 flex h-full items-end sm:items-start'>
+        <div className='mb-8 flex h-full items-start'>
           <li>
             <button
               onClick={logout}
