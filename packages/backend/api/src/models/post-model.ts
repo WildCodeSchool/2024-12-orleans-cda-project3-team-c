@@ -239,6 +239,8 @@ export default {
         .where('comment.post_id', '=', postId)
         .execute();
 
+      await trx.deleteFrom('post_tag').where('post_id', '=', postId).execute();
+
       await trx.deleteFrom('post').where('post.id', '=', postId).execute();
 
       await trx.commit().execute();
