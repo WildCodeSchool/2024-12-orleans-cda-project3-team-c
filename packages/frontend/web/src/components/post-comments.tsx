@@ -68,7 +68,7 @@ export default function PostComments({
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center md:bg-black/75'>
-      <section className='relative z-10 h-full max-h-dvh w-full overflow-y-auto bg-purple-950 md:mr-0 md:mb-0 md:ml-[224px] md:w-[400px] lg:mr-[106px] lg:ml-0'>
+      <section className='relative z-10 h-full max-h-dvh w-full overflow-y-auto bg-purple-950 md:mr-0 md:mb-0 md:ml-[224px] md:h-fit md:w-[400px] lg:mr-[106px] lg:ml-0'>
         <header className='p-4'>
           <button
             type='button'
@@ -87,7 +87,7 @@ export default function PostComments({
           </button>
         </header>
         <div className='px-4 pb-4'>
-          <div className='h-[calc(100vh_-_116px)] overflow-y-auto md:h-[550px]'>
+          <div className='h-[calc(95dvh_-_116px)] overflow-y-auto md:h-[550px]'>
             {comments.map((comment) => {
               return <Comment key={comment.id} comment={comment} />;
             })}
