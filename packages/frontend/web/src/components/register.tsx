@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import RegisterApiConnection from '@/api-connection/register-api-connection';
+import { useLoginContext } from '@/contexts/auth-context';
 import useDisclosure from '@/hooks/use-disclosure';
 
 import hiddenPassword from '../assets/icons/hide-white.svg';
@@ -11,6 +12,7 @@ import Logo from './logo';
 
 export default function Register() {
   const [isTrue, toggleTrue] = useDisclosure();
+  const userLogged = useLoginContext();
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -24,6 +26,17 @@ export default function Register() {
   }>({});
 
   const navigate = useNavigate();
+
+  const isUserLogged = userLogged?.isUserLogged;
+  const isLoading = userLogged?.isLoading;
+
+  if (isLoading === true) {
+    return;
+  }
+
+  if (isUserLogged === true) {
+    return <Navigate to={'/'} />;
+  }
 
   const userRegister = async (event: React.FormEvent) => {
     event.preventDefault();

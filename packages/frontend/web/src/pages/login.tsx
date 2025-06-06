@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import loginApiConnection from '@/api-connection/login-api-connection';
 import Button from '@/components/button';
@@ -20,6 +20,17 @@ export default function Login() {
   const userLogged = useLoginContext();
 
   const navigate = useNavigate();
+
+  const isUserLogged = userLogged?.isUserLogged;
+  const isLoading = userLogged?.isLoading;
+
+  if (isLoading === true) {
+    return;
+  }
+
+  if (isUserLogged === true) {
+    return <Navigate to={'/'} />;
+  }
 
   const login = async (event: React.FormEvent) => {
     event.preventDefault();
