@@ -7,9 +7,9 @@ import registerRouter from './register-router';
 
 const authRouter = express.Router();
 
-authRouter.use('/register', registerRouter);
+authRouter.use('/cookie', cookieRouter);
 authRouter.use('/login', loginRouter);
 authRouter.use('/logout', logoutRouter);
-authRouter.use('/cookie', cookieRouter);
+authRouter.use('/register', registerRouter);
 
 export default authRouter;

@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
-        path: 'parameters',
+        path: '/parameters',
         element: <Parameters />,
       },
       {

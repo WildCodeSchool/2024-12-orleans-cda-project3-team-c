@@ -23,13 +23,4 @@ tagsRouter.get('/:tagIdOrTagName', async function (req, res) {
   }
 });
 
-tagsRouter.get('/tag/:tag/posts', function () {
-  // Getting posts from a specified tag
-});
-
-// POST **************************************************
-
-// UPDATE **************************************************
-
-// DELETE **************************************************
 export default tagsRouter;

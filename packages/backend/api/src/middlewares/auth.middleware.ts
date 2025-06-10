@@ -34,7 +34,6 @@ export default async function authMiddleware(
     );
 
     // If the access token is valid:
-
     req.isAuthenticated = true;
     req.userId = payload.userId;
   } catch (_aterror) {
@@ -52,7 +51,6 @@ export default async function authMiddleware(
       );
 
       // If the refresh token is valid, we  create a new access token and set it in the cookie
-
       const accessToken = await new jose.SignJWT({
         sub: payload.sub,
         userId: payload.userId,

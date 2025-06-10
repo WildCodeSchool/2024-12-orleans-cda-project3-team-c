@@ -215,8 +215,6 @@ postsRouter.post('/:postId/comment', async function (req: Request, res) {
   return;
 });
 
-// UPDATE **************************************************
-
 // DELETE **************************************************
 postsRouter.delete('/:postId', async function (req: Request, res) {
   const userId = req.userId;
@@ -235,7 +233,6 @@ postsRouter.delete('/:postId', async function (req: Request, res) {
     return;
   }
 
-  // vérifier si l'autheur est bien l'utilisateur connecté
   const authorId = await postModel.getPostAuthorId(postId);
 
   if (authorId?.user_id === userId) {

@@ -5,7 +5,6 @@ import { useLoginContext } from '@/contexts/auth-context';
 
 import addIcon from '../assets/icons/add-white.svg';
 import bellIcon from '../assets/icons/bell-white.svg';
-import chatIcon from '../assets/icons/chat-white.svg';
 import homeIcon from '../assets/icons/home-white.svg';
 import searchIcon from '../assets/icons/search-white.svg';
 
@@ -52,8 +51,6 @@ export default function NavBar() {
     { to: '/feed', icon: homeIcon, label: 'Home' },
     { to: '/search', icon: searchIcon, label: 'Search' },
     { to: '/create', icon: addIcon, label: 'Create a post' },
-    { to: '/chat', icon: chatIcon, label: 'Chat' },
-    { to: '/notifications', icon: bellIcon, label: 'Notifications' },
     {
       to: '/profile',
       icon: `/cdn/pictures/users/${user?.profile_picture}`,

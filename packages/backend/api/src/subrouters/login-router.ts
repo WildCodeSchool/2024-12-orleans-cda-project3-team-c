@@ -12,17 +12,13 @@ env();
 const loginRouter = express.Router();
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-
 const FRONTEND_HOST = process.env.FRONTEND_HOST ?? '';
-
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const accessTokenSecret = new TextEncoder().encode(ACCESS_TOKEN_SECRET);
-
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 const refreshTokenSecret = new TextEncoder().encode(REFRESH_TOKEN_SECRET);
 
-// POST LOGIN**************************************************
-
+// POST **************************************************
 loginRouter.post('/', async function (req: Request, res: Response) {
   try {
     const { email, password }: { email: string; password: string } = req.body;

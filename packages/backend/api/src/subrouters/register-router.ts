@@ -4,6 +4,7 @@ import userModel from '@/models/user-model';
 
 const registerRouter = express.Router();
 
+// POST **************************************************
 registerRouter.post('/', async function (req, res) {
   try {
     const {

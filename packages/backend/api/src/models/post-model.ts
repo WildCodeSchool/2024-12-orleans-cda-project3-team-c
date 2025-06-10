@@ -119,8 +119,8 @@ export default {
       .where('post.user_id', '!=', userId)
       .groupBy('post.id')
       .orderBy('post.created_at', 'desc')
-      .limit(4)
-      .offset(page * 4 - 4)
+      .limit(10)
+      .offset(page * 10 - 10)
       .execute();
   },
 
@@ -178,8 +178,8 @@ export default {
       .where('user.username', '=', username)
       .groupBy('post.id')
       .orderBy('post.created_at', 'desc')
-      .limit(4)
-      .offset(page * 4 - 4)
+      .limit(10)
+      .offset(page * 10 - 10)
       .execute();
   },
 
