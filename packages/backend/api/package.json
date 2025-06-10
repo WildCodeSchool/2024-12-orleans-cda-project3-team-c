@@ -20,8 +20,7 @@
     "express-fileupload": "^1.5.1",
     "jose": "^6.0.10",
     "kysely": "^0.28.2",
-    "sharp": "^0.34.1",
-    "socket.io": "^4.8.1"
+    "sharp": "^0.34.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",

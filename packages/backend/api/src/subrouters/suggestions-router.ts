@@ -1,10 +1,11 @@
-import express from 'express';
 import type { Request } from 'express';
+import express from 'express';
 
 import userModel from '@/models/user-model';
 
 const suggestionsRouter = express.Router();
 
+// GET **************************************************
 suggestionsRouter.get('/users', async (req: Request, res) => {
   const userId = req.userId;
 

@@ -1,8 +1,8 @@
-// POST LOGOUT**************************************************
 import express from 'express';
 
 const logoutRouter = express.Router();
 
+// POST **************************************************
 logoutRouter.post('/', function (req, res) {
   try {
     res.clearCookie('accessToken');

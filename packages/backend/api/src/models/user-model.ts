@@ -4,136 +4,62 @@ import { jsonArrayFrom } from 'kysely/helpers/mysql';
 
 import { db } from '@app/backend-shared';
 
-export async function userLogin(credential: string) {
-  return db
-    .selectFrom('user')
-    .select(['user.id', 'user.password', 'user.email'])
-    .where((eb) =>
-      eb.or([eb('email', '=', credential), eb('username', '=', credential)]),
-    )
-    .executeTakeFirst();
-}
-
-export async function userRegister(
-  email: string,
-  username: string,
-  password: string,
-) {
-  try {
-    // Hachage du mot de passe
-    const hashPassword = await argon2.hash(password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      parallelism: 1,
-    });
-
-    // Insert de l'utilisateur dans la base de données
-    await db
-      .insertInto('user')
-      .values({ email, username, password: hashPassword })
-      .executeTakeFirst();
-
-    return true;
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw new Error(
-      error instanceof Error ? error.message : 'Failed to create user',
-    );
-  }
-}
-
-export async function checkIfCredentialsAlreadyExists(
-  email: string,
-  username: string,
-) {
-  const messages: { email?: string; username?: string } = {};
-
-  const results = await db
-    .selectFrom('user')
-    .select(['email', 'username'])
-    .where((eb) =>
-      eb.or([eb('email', '=', email), eb('username', '=', username)]),
-    )
-    .execute();
-
-  if (results.length) {
-    results.forEach((result) => {
-      if (result.email === email) {
-        messages.email = 'This email address is already in use';
-      }
-      if (result.username === username) {
-        messages.username = 'This username is not available';
-      }
-    });
-    return messages;
-  }
-  return false;
-}
-
-export async function getLoggedInUser(userId: number) {
-  return db
-    .selectFrom('user')
-    .select(['id', 'profile_picture'])
-    .where('user.id', '=', userId)
-    .executeTakeFirst();
-}
-
-function userProfilRequest(userId: number) {
-  return db
-    .selectFrom('user as u')
-    .innerJoin('account_status', 'account_status.id', 'u.account_status_id')
-    .select((eb) => [
-      'u.id',
-      'u.username',
-      'u.profile_picture',
-      'u.biography',
-      'u.notoriety',
-      'account_status.name as status',
-      eb
-        .selectFrom('follow_up')
-        .select(({ fn }) => fn.countAll<number>().as('followersCount'))
-        .whereRef('follow_up.followee_id', '=', 'u.id')
-        .as('followersCount'),
-      eb
-        .selectFrom('follow_up')
-        .select(({ fn }) => fn.countAll<number>().as('followingCount'))
-        .whereRef('follow_up.follower_id', '=', 'u.id')
-        .as('followingCount'),
-      jsonArrayFrom(
+export default {
+  userProfilRequest(userId: number) {
+    return db
+      .selectFrom('user as u')
+      .innerJoin('account_status', 'account_status.id', 'u.account_status_id')
+      .select((eb) => [
+        'u.id',
+        'u.username',
+        'u.profile_picture',
+        'u.biography',
+        'u.notoriety',
+        'account_status.name as status',
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) => fn.countAll<number>().as('followersCount'))
+          .whereRef('follow_up.followee_id', '=', 'u.id')
+          .as('followersCount'),
+        eb
+          .selectFrom('follow_up')
+          .select(({ fn }) => fn.countAll<number>().as('followingCount'))
+          .whereRef('follow_up.follower_id', '=', 'u.id')
+          .as('followingCount'),
+        jsonArrayFrom(
+          eb
+            .selectFrom('post')
+            .select(['post.id', 'post.picture'])
+            .whereRef('post.user_id', '=', 'u.id')
+            .groupBy('post.id')
+            .orderBy('post.created_at', 'desc')
+            .limit(8),
+        ).as('posts'),
         eb
           .selectFrom('post')
-          .select(['post.id', 'post.picture'])
+          .select((eb) => [eb.fn.count<number>('post.id').as('postCount')])
           .whereRef('post.user_id', '=', 'u.id')
-          .groupBy('post.id')
-          .orderBy('post.created_at', 'desc')
-          .limit(8),
-      ).as('posts'),
-      eb
-        .selectFrom('post')
-        .select((eb) => [eb.fn.count<number>('post.id').as('postCount')])
-        .whereRef('post.user_id', '=', 'u.id')
-        .as('postCount'),
-      eb
-        .selectFrom('post_like')
-        .innerJoin('post', 'post.id', 'post_like.post_id')
-        .innerJoin('user', 'user.id', 'post.user_id')
-        .select((eb) => [
-          eb.fn.count<number>('post_like.post_id').as('likeCount'),
-        ])
-        .whereRef('post.user_id', '=', 'u.id')
-        .as('likeCount'),
-      eb
-        .selectFrom('follow_up')
-        .select('follow_up.created_at as isFollowing')
-        .where('follow_up.follower_id', '=', userId)
-        .whereRef('follow_up.followee_id', '=', 'u.id')
-        .as('isFollowing'),
-    ]);
-}
+          .as('postCount'),
+        eb
+          .selectFrom('post_like')
+          .innerJoin('post', 'post.id', 'post_like.post_id')
+          .innerJoin('user', 'user.id', 'post.user_id')
+          .select((eb) => [
+            eb.fn.count<number>('post_like.post_id').as('likeCount'),
+          ])
+          .whereRef('post.user_id', '=', 'u.id')
+          .as('likeCount'),
+        eb
+          .selectFrom('follow_up')
+          .select('follow_up.created_at as isFollowing')
+          .where('follow_up.follower_id', '=', userId)
+          .whereRef('follow_up.followee_id', '=', 'u.id')
+          .as('isFollowing'),
+      ]);
+  },
 
-export default {
   async getUserProfileById(userId: number, authenticatedUser: number) {
-    const profile = await userProfilRequest(authenticatedUser)
+    const profile = await this.userProfilRequest(authenticatedUser)
       .where('u.id', '=', userId)
       .executeTakeFirst();
 
@@ -147,7 +73,7 @@ export default {
   },
 
   async getUserProfileByUsername(username: string, authenticatedUser: number) {
-    const profile = await userProfilRequest(authenticatedUser)
+    const profile = await this.userProfilRequest(authenticatedUser)
       .where('u.username', '=', username)
       .executeTakeFirst();
 

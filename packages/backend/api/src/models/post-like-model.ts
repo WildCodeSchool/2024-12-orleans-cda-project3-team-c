@@ -79,6 +79,7 @@ export default {
       console.error('Something went wrong while liking the post', error);
     }
   },
+
   // DELETE **************************************************
   async deletePostLike(postId: number, userId: number) {
     try {

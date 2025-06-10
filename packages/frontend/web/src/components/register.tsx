@@ -23,6 +23,7 @@ export default function Register() {
     email?: string;
     username?: string;
     password?: string;
+    system?: string;
   }>({});
 
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ export default function Register() {
 
       await navigate('/login');
     } catch (error) {
-      console.error(error);
+      setErrorMessages({ system: 'Something went wrong, please retry later' });
     }
   };
 
@@ -207,6 +208,11 @@ export default function Register() {
             className='mb-4 w-full rounded-sm border bg-indigo-900 p-2 text-white outline-indigo-950'
           />
 
+          <p
+            className={`text-danger mb-4 text-left text-xs ${errorMessages.system === undefined ? 'hidden' : ''}`}
+          >
+            {errorMessages.system}
+          </p>
           <Button title={'Sign up'} />
           <p className='text-left text-xs text-black'>
             {'Already have an account ? '}

@@ -5,6 +5,7 @@ import followUpModel from '@/models/follow-up-model';
 
 const followUpsRouter = express.Router();
 
+// POST **************************************************
 followUpsRouter.post('/', async (req: Request, res) => {
   const userId = req.userId;
 
@@ -31,6 +32,7 @@ followUpsRouter.post('/', async (req: Request, res) => {
   }
 });
 
+// DELETE **************************************************
 followUpsRouter.delete('/', async (req: Request, res) => {
   const userId = req.userId;
 
