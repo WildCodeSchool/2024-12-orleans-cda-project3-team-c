@@ -27,9 +27,6 @@ class SearchApiConnection extends ApiConnection {
     try {
       const res = await fetch(
         `${this.ressourceUrl}?search=${query}&userlimit=${userLimit}&posttaglimit=${postByTagLimit}`,
-        {
-          credentials: 'include',
-        },
       );
 
       if (!res.ok) {

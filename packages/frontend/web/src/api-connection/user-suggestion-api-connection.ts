@@ -9,9 +9,7 @@ class UserApiConnection extends ApiConnection {
 
   async getUserSuggestions(): Promise<UserSuggestion[]> {
     try {
-      const response = await fetch(`${this.ressourceUrl}/users`, {
-        credentials: 'include',
-      });
+      const response = await fetch(`${this.ressourceUrl}/users`);
 
       if (response.ok) {
         const usersData: UserSuggestion[] = await response.json();

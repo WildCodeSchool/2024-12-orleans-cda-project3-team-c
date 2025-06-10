@@ -84,7 +84,7 @@ export default {
     text: string,
     respondsTo: number | null,
   ) {
-    const data = db
+    const data = await db
       .insertInto('comment')
       .values({
         post_id: postId,
@@ -93,7 +93,8 @@ export default {
         responds_to: respondsTo,
       })
       .executeTakeFirst();
-    const commentId = Number((await data).insertId);
+
+    const commentId = Number(data.insertId);
     return await this.getCommentById(commentId, userId);
   },
 };
