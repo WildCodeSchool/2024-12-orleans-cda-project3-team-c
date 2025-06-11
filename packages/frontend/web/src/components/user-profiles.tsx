@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import type { UserProfile } from '@app/api';
 
 import certificationIcon from '@/assets/icons/certification-pink.png';
@@ -57,13 +59,13 @@ export default function UserProfiles({
               <span className='text-turquoise-blue-400'>
                 {followersCountOverride ?? profile.followersCount}
               </span>
-              <span>{'followers'}</span>
+              <Link to={`/followers/${profile.id}`}>{'followers'}</Link>
             </li>
             <li className='flex items-center gap-1'>
               <span className='text-turquoise-blue-400'>
                 {profile.followingCount}
               </span>
-              <span>{'following'}</span>
+              <Link to={`/followers/${profile.id}`}>{'following'}</Link>
             </li>
           </ul>
           <p className='pb-2 text-sm'>{profile.biography}</p>

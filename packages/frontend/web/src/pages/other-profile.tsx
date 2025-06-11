@@ -51,7 +51,7 @@ export default function OtherProfile() {
         >
           {'messages'}
         </button>
-        <img src={menuDotsBlue} alt='' className='w-6' />
+        <img src={menuDotsBlue} alt='menu icon dots' className='w-6' />
       </div>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
       <UserProfilesPosts

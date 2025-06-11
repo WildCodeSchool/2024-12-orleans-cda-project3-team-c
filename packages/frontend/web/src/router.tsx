@@ -5,6 +5,7 @@ import App from './app';
 import Register from './components/register';
 import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
+import DisplayFollowers from './pages/display-followers';
 import EditBio from './pages/edit-bio';
 import EditUsername from './pages/edit-username';
 import Feed from './pages/feed';
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         path: '/profile/:username',
         element: <OtherProfile />,
         loader: loaders.userLoaders.getUserProfileByUsername,
+      },
+      {
+        path: '/followers/:userId',
+        element: <DisplayFollowers />,
       },
       {
         path: '/create',
