@@ -59,17 +59,13 @@ export default function UserProfiles({
               <span className='text-turquoise-blue-400'>
                 {followersCountOverride ?? profile.followersCount}
               </span>
-              <Link to={`/followers/${profile.id}`}>
-                <span>{'followers'}</span>
-              </Link>
+              <Link to={`/followers/${profile.id}`}>{'followers'}</Link>
             </li>
             <li className='flex items-center gap-1'>
               <span className='text-turquoise-blue-400'>
                 {profile.followingCount}
               </span>
-              <Link to={`/followers/${profile.id}`}>
-                <span>{'following'}</span>
-              </Link>
+              <Link to={`/followers/${profile.id}`}>{'following'}</Link>
             </li>
           </ul>
           <p className='pb-2 text-sm'>{profile.biography}</p>

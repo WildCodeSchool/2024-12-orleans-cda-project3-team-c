@@ -27,7 +27,6 @@ class UserFollowersApi extends ApiConnection {
       if (response.ok) {
         const followsData: UserFollowersRessource = await response.json();
 
-        console.log('what follows data:', followsData);
         return {
           data: followsData,
           error: '',
