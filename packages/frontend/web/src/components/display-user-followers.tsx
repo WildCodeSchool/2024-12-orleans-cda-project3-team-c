@@ -46,14 +46,16 @@ export default function DisplayUserFollowers({
         const initialFollowCounts: Record<number, number> = {};
 
         if (userFollowersResponse.data) {
-          userFollowersResponse.data.followers.forEach((user: UserFollower) => {
+          userFollowersResponse.data.followers.map((user: UserFollower) => {
             initialfollows[user.id] = false;
+            return null;
           });
 
-          userFollowersResponse.data.followees.forEach((user: UserFollower) => {
+          userFollowersResponse.data.followees.map((user: UserFollower) => {
             initialfollows[user.id] = true;
             initialFollowCounts[user.id] =
               userFollowersResponse.data?.followees.length ?? 0;
+            return null;
           });
         }
 

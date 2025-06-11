@@ -20,9 +20,7 @@ class UserFollowersApi extends ApiConnection {
 
   async getUserFollowers(followerId: number): Promise<Follows> {
     try {
-      const response = await fetch(`${this.ressourceUrl}/${followerId}`, {
-        credentials: 'include',
-      });
+      const response = await fetch(`${this.ressourceUrl}/${followerId}`);
 
       if (response.ok) {
         const followsData: UserFollowersRessource = await response.json();
