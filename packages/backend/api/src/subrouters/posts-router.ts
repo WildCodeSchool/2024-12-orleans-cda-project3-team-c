@@ -94,10 +94,14 @@ postsRouter.get('/:postId/likes', async (req: Request, res) => {
     } else {
       const data = await postLikeModel.getLikesByPost(postId, userId, page);
       res.json(data);
+      return;
     }
+  } else {
+    res
+      .status(400)
+      .json({ error: 'Bad request, you should provide a valid post id' });
+    return;
   }
-
-  return;
 });
 
 // POST **************************************************
@@ -181,6 +185,7 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
   const data = await postLikeModel.addPostLike(postId, userId);
   if (data) {
     res.json(data);
+    return;
   } else {
     res.status(500).json({ error: 'Something went wrong while liking post' });
     return;

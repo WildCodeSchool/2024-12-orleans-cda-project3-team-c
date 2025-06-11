@@ -2,7 +2,6 @@
 import { createBrowserRouter, redirect } from 'react-router-dom';
 
 import App from './app';
-import ForgottenPassword from './components/forgotten-password';
 import Register from './components/register';
 import loaders from './loaders';
 import CreatePostPage from './pages/create-post-page';
@@ -103,10 +102,6 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />,
-  },
-  {
-    path: '/forgotten-password',
-    element: <ForgottenPassword />,
   },
 ]);
 

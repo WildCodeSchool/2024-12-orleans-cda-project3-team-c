@@ -11,7 +11,6 @@ class PostLikeApiConnection extends ApiConnection {
     try {
       const response = await fetch(`${this.ressourceUrl}/${postId}/like`, {
         method: 'POST',
-        credentials: 'include',
       });
 
       if (response.ok) {
@@ -26,7 +25,6 @@ class PostLikeApiConnection extends ApiConnection {
     try {
       const response = await fetch(`${this.ressourceUrl}/${postId}/like`, {
         method: 'DELETE',
-        credentials: 'include',
       });
 
       if (response.ok) {

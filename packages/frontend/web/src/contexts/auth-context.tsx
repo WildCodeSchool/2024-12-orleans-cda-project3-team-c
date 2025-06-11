@@ -31,9 +31,7 @@ export default function AuthContext({
 
   useEffect(() => {
     async function getConnected() {
-      const response = await fetch(`/api/auth/cookie`, {
-        credentials: 'include',
-      });
+      const response = await fetch(`/api/auth/cookie`);
 
       const data = (await response.json()) as {
         ok: boolean;

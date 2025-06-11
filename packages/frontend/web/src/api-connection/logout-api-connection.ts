@@ -9,7 +9,6 @@ class LoginApiConnection extends ApiConnection {
     try {
       const response = await fetch(this.ressourceUrl, {
         method: 'POST',
-        credentials: 'include',
       });
 
       if (!response.ok) {

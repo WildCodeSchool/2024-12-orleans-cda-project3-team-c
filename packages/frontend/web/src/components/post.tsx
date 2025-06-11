@@ -164,7 +164,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
                     title='Copy post link to the clipboard'
                     onClick={async () => {
                       await navigator.clipboard.writeText(
-                        `https://mingo.wilders.dev/post/${post.id}`,
+                        `${window.location.origin}/post/${post.id}`,
                       );
                     }}
                   >
