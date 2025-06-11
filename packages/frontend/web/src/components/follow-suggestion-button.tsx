@@ -1,7 +1,7 @@
 type FollowButtonProps = Readonly<{
-  isFollowing: boolean;
-  handleFollowClick: () => Promise<void>;
-  username: string;
+  isFollowing?: boolean;
+  handleFollowClick?: () => Promise<void>;
+  username?: string;
 }>;
 
 function FollowButton({

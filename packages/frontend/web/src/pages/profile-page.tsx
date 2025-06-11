@@ -24,7 +24,6 @@ export default function ProfilePage() {
           <img src={menu} alt='Menu' />
         </Link>
       </div>
-      <p> {profile.biography} </p>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
       <UserProfilesPosts profile={profile} />
     </section>

@@ -5,6 +5,24 @@ import followUpModel from '@/models/follow-up-model';
 
 const followUpsRouter = express.Router();
 
+// GET **************************************************
+followUpsRouter.get('/:id', async (req: Request, res) => {
+  const userId = Number(req.params.id);
+  if (isNaN(userId)) {
+    res.status(400).json({ error: 'Invalid user id' });
+    return;
+  }
+  try {
+    const followees = await followUpModel.getFollowees(userId);
+    const followers = await followUpModel.getFollowers(userId);
+    res.json({ followees, followers });
+  } catch (error) {
+    console.error('Error fetching followers:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+    return;
+  }
+});
+
 followUpsRouter.post('/', async (req: Request, res) => {
   const userId = req.userId;
 
