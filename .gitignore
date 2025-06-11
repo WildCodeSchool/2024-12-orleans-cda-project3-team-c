@@ -24,6 +24,7 @@ node_modules
 !.vscode/launch.json
 !.vscode/extensions.json
 
+
 # misc
 /.sass-cache
 /connect.lock
@@ -53,5 +54,10 @@ web-build/
 
 *.env*
 !*.env*.sample
-
 deployment/db/
+*-mock.*
+test.js
+**/*.tsbuildinfo
+public/
+!public/*/.gitkeep
+!public/*/user.png

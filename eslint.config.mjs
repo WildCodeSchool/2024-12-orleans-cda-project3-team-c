@@ -40,6 +40,8 @@ export default typescriptPlugin.config([
       'packages/frontend/mobile/ios',
       'packages/frontend/mobile/android',
       'deployment/mysql/data',
+      '**/*.tsbuildinfo',
+      '**/*.rollup.cache',
     ],
   },
   {
@@ -52,7 +54,7 @@ export default typescriptPlugin.config([
       },
     },
     rules: {
-      'no-console': 'warn',
+      'no-console': ['warn', { allow: ['error'] }],
       'no-extra-boolean-cast': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/array-type': [
@@ -99,7 +101,7 @@ export default typescriptPlugin.config([
           selector: 'variable',
           types: ['boolean'],
           format: ['PascalCase'],
-          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+          prefix: ['is', 'should', 'has', 'can', 'did', 'will', 'IS', 'are'],
         },
         {
           selector: [
