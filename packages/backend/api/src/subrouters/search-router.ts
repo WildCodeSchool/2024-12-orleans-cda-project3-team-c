@@ -1,12 +1,10 @@
 import express from 'express';
 
-import {
-  getPostsInfoInTagBySearch,
-  getUsersInfoBySearch,
-} from '@/models/search-model';
+import searchModel from '@/models/search-model';
 
 const searchRouter = express.Router();
 
+// GET **************************************************
 searchRouter.get('/', async (req, res) => {
   const searchQuery = req.query.search as string;
   const userLimit = parseInt(req.query.userLimit as string, 10) || 3;
@@ -19,8 +17,8 @@ searchRouter.get('/', async (req, res) => {
 
   try {
     const [usersResults, postsResults] = await Promise.all([
-      getUsersInfoBySearch(searchQuery, userLimit),
-      getPostsInfoInTagBySearch(searchQuery, postByTagLimit),
+      searchModel.getUsersInfoBySearch(searchQuery, userLimit),
+      searchModel.getPostsInfoInTagBySearch(searchQuery, postByTagLimit),
     ]);
 
     res.json({

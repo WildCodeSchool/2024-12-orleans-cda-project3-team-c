@@ -17,10 +17,10 @@ export default function UserProfiles({
     return <div>{'User profile not found'}</div>;
   }
   return (
-    <section className='flex w-3xs flex-col pt-4'>
-      <div className='flex pb-4 md:pb-8'>
+    <section className='flex w-full flex-col pt-4'>
+      <div className='mx-2 flex pb-4 sm:mx-4 md:pb-8'>
         <img
-          className='size-16 rounded md:size-40'
+          className='size-16 rounded sm:size-40'
           src={
             profile.profile_picture
               ? `/cdn/pictures/users/${profile.profile_picture}`
@@ -43,13 +43,15 @@ export default function UserProfiles({
             ) : null}
             <p className='font-title text-turquoise-blue-400 text-xs sm:text-base'>
               {profile.likeCount}
-              {` like${profile.likeCount !== null && profile.likeCount > 1 ? 's' : ''}`}
+              {` like${
+                profile.likeCount !== null && profile.likeCount > 1 ? 's' : ''
+              }`}
             </p>
           </div>
           <ul className='my-2 flex gap-4 text-xs sm:text-base'>
             <li className='flex items-center gap-1'>
               <span className='text-turquoise-blue-400'>
-                {profile.posts.length}
+                {profile.postCount}
               </span>
               <span>{'posts'}</span>
             </li>
@@ -70,9 +72,9 @@ export default function UserProfiles({
               </Link>
             </li>
           </ul>
+          <p className='pb-2 text-sm'>{profile.biography}</p>
         </div>
       </div>
-      <p className='pb-2 text-sm md:hidden'>{profile.biography}</p>
     </section>
   );
 }

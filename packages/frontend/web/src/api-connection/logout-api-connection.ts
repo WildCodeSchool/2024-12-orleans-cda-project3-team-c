@@ -9,16 +9,17 @@ class LoginApiConnection extends ApiConnection {
     try {
       const response = await fetch(this.ressourceUrl, {
         method: 'POST',
-        credentials: 'include',
       });
 
       if (!response.ok) {
         console.error('Error during logout');
+        return { ok: false };
       }
 
       return (await response.json()) as { ok: boolean };
     } catch (error) {
       console.error('Error during logout', error);
+      return { ok: false };
     }
   }
 }

@@ -21,7 +21,6 @@ class LoginApiConnection extends ApiConnection {
         headers: { 'Content-type': 'application/json' },
         method: 'POST',
         body: JSON.stringify({ email, password }),
-        credentials: 'include',
       });
 
       return (await response.json()) as LoginApiConnectionInterface;

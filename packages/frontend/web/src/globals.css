@@ -3,6 +3,7 @@
 @import 'tailwindcss';
 
 @theme {
+  --breakpoint-xs: 20rem;
   --color-purple-50: #f1f3fc;
   --color-purple-100: #e5eafa;
   --color-purple-200: #d0d6f5;
@@ -48,5 +49,5 @@ body {
 }
 
 button {
-  cursor: pointer;
+  @apply cursor-pointer;
 }

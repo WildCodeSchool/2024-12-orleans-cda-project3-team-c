@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import RegisterApiConnection from '@/api-connection/register-api-connection';
+import { useLoginContext } from '@/contexts/auth-context';
 import useDisclosure from '@/hooks/use-disclosure';
 
 import hiddenPassword from '../assets/icons/hide-white.svg';
@@ -11,6 +12,7 @@ import Logo from './logo';
 
 export default function Register() {
   const [isTrue, toggleTrue] = useDisclosure();
+  const userLogged = useLoginContext();
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -21,9 +23,21 @@ export default function Register() {
     email?: string;
     username?: string;
     password?: string;
+    system?: string;
   }>({});
 
   const navigate = useNavigate();
+
+  const isUserLogged = userLogged?.isUserLogged;
+  const isLoading = userLogged?.isLoading;
+
+  if (isLoading === true) {
+    return;
+  }
+
+  if (isUserLogged === true) {
+    return <Navigate to={'/'} />;
+  }
 
   const userRegister = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -89,7 +103,7 @@ export default function Register() {
 
       await navigate('/login');
     } catch (error) {
-      console.error(error);
+      setErrorMessages({ system: 'Something went wrong, please retry later' });
     }
   };
 
@@ -194,6 +208,11 @@ export default function Register() {
             className='mb-4 w-full rounded-sm border bg-indigo-900 p-2 text-white outline-indigo-950'
           />
 
+          <p
+            className={`text-danger mb-4 text-left text-xs ${errorMessages.system === undefined ? 'hidden' : ''}`}
+          >
+            {errorMessages.system}
+          </p>
           <Button title={'Sign up'} />
           <p className='text-left text-xs text-black'>
             {'Already have an account ? '}

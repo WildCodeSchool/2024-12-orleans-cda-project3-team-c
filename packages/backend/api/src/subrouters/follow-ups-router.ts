@@ -23,6 +23,7 @@ followUpsRouter.get('/:id', async (req: Request, res) => {
   }
 });
 
+// POST **************************************************
 followUpsRouter.post('/', async (req: Request, res) => {
   const userId = req.userId;
 
@@ -49,6 +50,7 @@ followUpsRouter.post('/', async (req: Request, res) => {
   }
 });
 
+// DELETE **************************************************
 followUpsRouter.delete('/', async (req: Request, res) => {
   const userId = req.userId;
 

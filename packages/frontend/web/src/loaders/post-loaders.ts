@@ -9,4 +9,8 @@ export default {
   getUserFeed(username: string, page = 1) {
     return userApiConnection.getUserFeedPage(username, page);
   },
+
+  getPost(postId: number) {
+    return postApiConnection.getPost(postId);
+  },
 };

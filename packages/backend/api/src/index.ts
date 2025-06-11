@@ -30,12 +30,12 @@ app.use(
   ),
 );
 
-app.use('/api', router);
-
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Server is listening on http://${HOST}:${PORT}`);
 });
+
+app.use('/api', router);
 
 export type * from './models/model-types';
 export default app;

@@ -78,4 +78,11 @@ export type UserFollowers = Awaited<
 
 export type UserFollowees = Awaited<
   ReturnType<typeof followModel.getFollowers>
+export type PostLikeItem = Awaited<
+  ReturnType<typeof postLikeModel.getLikesByPost>
+>[number];
+
+export type PostPreview = Awaited<
+  ReturnType<typeof postModel.getUserPostPreviews>
+
 >[number];

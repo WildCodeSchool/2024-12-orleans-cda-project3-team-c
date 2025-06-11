@@ -41,6 +41,69 @@ postsRouter.get('', async function (req: Request, res) {
   res.json(data);
 });
 
+postsRouter.get('/:postId', async function (req: Request, res) {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
+  let postId: number;
+  if (req.params.postId !== '' && req.params.postId !== undefined) {
+    postId = +req.params.postId;
+    if (!postId) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provide a valid post id' });
+      return;
+    } else {
+      const data = await postModel.getPost(postId, userId);
+      res.json(data);
+    }
+  }
+});
+
+postsRouter.get('/:postId/likes', async (req: Request, res) => {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized: user not authenticated' });
+    return;
+  }
+
+  let page = 1;
+  if (req.query.page !== '' && req.query.page !== undefined) {
+    page = +req.query.page;
+    if (!page) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provide a valid page number' });
+      return;
+    }
+  }
+
+  let postId: number;
+  if (req.params.postId !== '' && req.params.postId !== undefined) {
+    postId = +req.params.postId;
+    if (!postId) {
+      res
+        .status(400)
+        .json({ error: 'Bad request, you should provide a valid post id' });
+      return;
+    } else {
+      const data = await postLikeModel.getLikesByPost(postId, userId, page);
+      res.json(data);
+      return;
+    }
+  } else {
+    res
+      .status(400)
+      .json({ error: 'Bad request, you should provide a valid post id' });
+    return;
+  }
+});
+
 // POST **************************************************
 postsRouter.post('', async function (req: Request, res) {
   const picture = req.files?.picture as PictureUploadedFile;
@@ -122,6 +185,7 @@ postsRouter.post('/:postId/like', async function (req: Request, res) {
   const data = await postLikeModel.addPostLike(postId, userId);
   if (data) {
     res.json(data);
+    return;
   } else {
     res.status(500).json({ error: 'Something went wrong while liking post' });
     return;
@@ -156,9 +220,35 @@ postsRouter.post('/:postId/comment', async function (req: Request, res) {
   return;
 });
 
-// UPDATE **************************************************
-
 // DELETE **************************************************
+postsRouter.delete('/:postId', async function (req: Request, res) {
+  const userId = req.userId;
+
+  if (userId === undefined) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+
+  const postId = +req.params.postId;
+
+  if (!postId) {
+    res
+      .status(400)
+      .json({ error: 'Bad request, you should provide a valid post id' });
+    return;
+  }
+
+  const authorId = await postModel.getPostAuthorId(postId);
+
+  if (authorId?.user_id === userId) {
+    const response = await postModel.delete(postId);
+    res.json(response);
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+});
+
 postsRouter.delete('/:postId/like', async function (req: Request, res) {
   const userId = req.userId;
 

@@ -60,6 +60,7 @@ export default {
       return { isFollowing: true, followerCount: followerCount?.follow_count };
     }
   },
+
   getFollowerCount(userId: number) {
     return db
       .selectFrom('follow_up')

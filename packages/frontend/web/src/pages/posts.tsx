@@ -1,17 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import {
-  Route,
-  Router,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-  useRouteLoaderData,
-  useSearchParams,
-} from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 
 import type { FeedPost } from '@app/api';
 
-import postApiConnection from '@/api-connection/post-api-connection';
 import userApiConnection from '@/api-connection/user-api-connection';
 import Post from '@/components/post';
 import useInfiniteScroll from '@/hooks/use-infinite-scroll';
@@ -44,8 +35,9 @@ export default function Posts() {
       await fetchNewPosts();
     }
   }
+
   return (
-    <section className='min-h-screen w-full border border-red-500'>
+    <section className='min-h-screen w-full'>
       <div className='mx-auto max-w-[460px] pb-16 md:pt-8'>
         <header className='p-4'>
           <button

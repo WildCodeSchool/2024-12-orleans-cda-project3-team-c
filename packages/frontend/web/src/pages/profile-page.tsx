@@ -17,15 +17,19 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className='mx-4 flex h-full flex-col pt-4 md:mx-auto md:w-[954px]'>
+    <section className='flex flex-col pt-4 pb-24 md:w-[954px] md:pb-8'>
       <div className='flex justify-between'>
         <UserProfiles profile={profile} />
-        <Link to='/parameters' className='size-6 pt-4 md:size-8'>
+        <Link to='/parameters' className='mr-2 size-6 pt-4 sm:mr-4 md:size-8'>
           <img src={menu} alt='Menu' />
         </Link>
       </div>
       <div className='border-turquoise-blue-400 border-t-2 pt-2' />
-      <UserProfilesPosts profile={profile} />
+      <UserProfilesPosts
+        basePosts={profile.posts}
+        userId={profile.id}
+        username={profile.username}
+      />
     </section>
   );
 }
