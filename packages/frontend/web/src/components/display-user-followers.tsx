@@ -115,7 +115,7 @@ export default function DisplayUserFollowers({
           >
             <div className='flex items-center'>
               <img
-                src={userFollower.profile_picture}
+                src={`/cdn/pictures/users/${userFollower.profile_picture}`}
                 alt={userFollower.username}
               />
               <div className='ml-4 flex flex-col justify-center'>
