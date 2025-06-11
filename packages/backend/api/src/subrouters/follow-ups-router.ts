@@ -13,8 +13,11 @@ followUpsRouter.get('/:id', async (req: Request, res) => {
     return;
   }
   try {
-    const followees = await followUpModel.getFollowees(userId);
-    const followers = await followUpModel.getFollowers(userId);
+    const [followees, followers] = await Promise.all([
+      followUpModel.getFollowees(userId),
+      followUpModel.getFollowers(userId),
+    ]);
+
     res.json({ followees, followers });
   } catch (error) {
     console.error('Error fetching followers:', error);
