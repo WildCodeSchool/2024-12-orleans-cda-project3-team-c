@@ -94,7 +94,7 @@ export default function PostComments({
             <div ref={infiniteScrollTrigger} />
           </div>
           <div className='h-fit'>
-            <p>{errorMessage}</p>
+            <p className='text-danger text-center text-xs'>{errorMessage}</p>
             <form onSubmit={handleSubmitCommentForm}>
               <label htmlFor='text' className='hidden'>
                 {'Your comment'}
