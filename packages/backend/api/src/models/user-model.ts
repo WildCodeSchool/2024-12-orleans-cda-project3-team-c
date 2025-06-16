@@ -193,7 +193,12 @@ export default {
   async userLogin(credential: string) {
     return db
       .selectFrom('user')
-      .select(['user.id', 'user.password', 'user.email'])
+      .select([
+        'user.id',
+        'user.password',
+        'user.email',
+        'user.profile_picture',
+      ])
       .where((eb) =>
         eb.or([eb('email', '=', credential), eb('username', '=', credential)]),
       )
