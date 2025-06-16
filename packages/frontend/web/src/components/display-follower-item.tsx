@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import followUpApiConnection from '@/api-connection/follow-up-api-connection';
 import userFollowersApi from '@/api-connection/user-followers-api';
@@ -21,7 +22,7 @@ type FollowApiResponse = {
   followees: UserFollower[];
 };
 
-export default function DisplayUserFollowers({
+export default function DisplayFollowerItem({
   followerId,
   viewType,
 }: UserFollowersId) {
@@ -109,7 +110,8 @@ export default function DisplayUserFollowers({
         <p className='text-gray-300'>{`You don't have any ${title.toLowerCase()} at the moment.`}</p>
       ) : (
         userFollowersData.map((userFollower: UserFollower) => (
-          <div
+          <Link
+            to={`/profile/${userFollower.username}`}
             key={userFollower.id}
             className='mb-4 flex items-center justify-between'
           >
@@ -117,6 +119,7 @@ export default function DisplayUserFollowers({
               <img
                 src={`/cdn/pictures/users/${userFollower.profile_picture}`}
                 alt={userFollower.username}
+                className='size-8 rounded'
               />
               <div className='ml-4 flex flex-col justify-center'>
                 <p className='text-xs'>{userFollower.username}</p>
@@ -132,7 +135,7 @@ export default function DisplayUserFollowers({
               handleFollowClick={() => handleFollowClick(userFollower.id)}
               username={userFollower.username}
             />
-          </div>
+          </Link>
         ))
       )}
     </div>

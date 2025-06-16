@@ -93,11 +93,17 @@ export default function Search() {
             <ul>
               {results.users.slice(0, userLimit).map((user) => (
                 <li key={user.id} className='flex items-center'>
-                  <img
-                    src={`/cdn/pictures/users/${user.profile_picture}`}
-                    alt={user.username}
-                  />
-                  {user.username}
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className='mb-4 flex items-center justify-between'
+                  >
+                    <img
+                      src={`/cdn/pictures/users/${user.profile_picture}`}
+                      alt={user.username}
+                      className='size-8 rounded'
+                    />
+                    {user.username}
+                  </Link>
                 </li>
               ))}
             </ul>
