@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import DisplayUserFollowers from '@/components/display-user-followers';
+import DisplayFollowerItem from '@/components/display-follower-item';
 
 import arrowLeftIcon from '../assets/icons/arrow-left-white.svg';
 
@@ -42,7 +42,7 @@ export default function DisplayFollowers() {
         </button>
       </div>
       <div className='mx-4 flex items-center justify-between'>
-        <DisplayUserFollowers followerId={followerId} viewType={viewType} />
+        <DisplayFollowerItem followerId={followerId} viewType={viewType} />
       </div>
     </div>
   );

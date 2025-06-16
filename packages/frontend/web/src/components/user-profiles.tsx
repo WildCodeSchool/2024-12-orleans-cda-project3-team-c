@@ -21,11 +21,7 @@ export default function UserProfiles({
       <div className='mx-2 flex pb-4 sm:mx-4 md:pb-8'>
         <img
           className='size-16 rounded sm:size-40'
-          src={
-            profile.profile_picture
-              ? `/cdn/pictures/users/${profile.profile_picture}`
-              : `/cdn/pictures/users/${profile.profile_picture}`
-          }
+          src={`/cdn/pictures/users/${profile.profile_picture}`}
           alt={profile.username}
         />
 
@@ -68,7 +64,9 @@ export default function UserProfiles({
               <Link to={`/followers/${profile.id}`}>{'following'}</Link>
             </li>
           </ul>
-          <p className='pb-2 text-sm'>{profile.biography}</p>
+          <p className='pb-2 text-sm whitespace-pre-wrap'>
+            {profile.biography}
+          </p>
         </div>
       </div>
     </section>
