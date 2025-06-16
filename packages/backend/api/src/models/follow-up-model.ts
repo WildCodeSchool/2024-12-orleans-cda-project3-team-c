@@ -27,6 +27,24 @@ export default {
     }
   },
 
+  async getFollowees(followerId: number) {
+    return db
+      .selectFrom('follow_up as f')
+      .innerJoin('user as u', 'u.id', 'f.followee_id')
+      .select(['u.id', 'u.username', 'u.profile_picture'])
+      .where('f.follower_id', '=', followerId)
+      .execute();
+  },
+
+  async getFollowers(followeeId: number) {
+    return db
+      .selectFrom('follow_up as f')
+      .innerJoin('user as u', 'u.id', 'f.follower_id')
+      .select(['u.id', 'u.username', 'u.profile_picture'])
+      .where('f.followee_id', '=', followeeId)
+      .execute();
+  },
+
   async deleteFollow(followerId: number, followeeId: number) {
     try {
       await db

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import type { UserProfile } from '@app/api';
 
 import certificationIcon from '@/assets/icons/certification-pink.png';
@@ -19,11 +21,7 @@ export default function UserProfiles({
       <div className='mx-2 flex pb-4 sm:mx-4 md:pb-8'>
         <img
           className='size-16 rounded sm:size-40'
-          src={
-            profile.profile_picture
-              ? `/cdn/pictures/users/${profile.profile_picture}`
-              : `/cdn/pictures/users/${profile.profile_picture}`
-          }
+          src={`/cdn/pictures/users/${profile.profile_picture}`}
           alt={profile.username}
         />
 
@@ -57,16 +55,18 @@ export default function UserProfiles({
               <span className='text-turquoise-blue-400'>
                 {followersCountOverride ?? profile.followersCount}
               </span>
-              <span>{'followers'}</span>
+              <Link to={`/followers/${profile.id}`}>{'followers'}</Link>
             </li>
             <li className='flex items-center gap-1'>
               <span className='text-turquoise-blue-400'>
                 {profile.followingCount}
               </span>
-              <span>{'following'}</span>
+              <Link to={`/followers/${profile.id}`}>{'following'}</Link>
             </li>
           </ul>
-          <p className='pb-2 text-sm'>{profile.biography}</p>
+          <p className='pb-2 text-sm whitespace-pre-wrap'>
+            {profile.biography}
+          </p>
         </div>
       </div>
     </section>

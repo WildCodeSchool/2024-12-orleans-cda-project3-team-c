@@ -89,12 +89,21 @@ export default function Search() {
       <ul className='w-[18rem]'>
         {results.users.length > 0 ? (
           <>
-            <h3>{'Users'}</h3>
+            <h3 className='mb-4'>{'Users'}</h3>
             <ul>
               {results.users.slice(0, userLimit).map((user) => (
-                <li key={user.id} className='flex items-center'>
-                  <img src={user.profile_picture} alt={user.username} />
-                  {user.username}
+                <li key={user.id} className='mb-2'>
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className='mb-4 flex items-center gap-2'
+                  >
+                    <img
+                      src={`/cdn/pictures/users/${user.profile_picture}`}
+                      alt={user.username}
+                      className='size-8 rounded'
+                    />
+                    {user.username}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -113,7 +122,7 @@ export default function Search() {
 
         {results.posts.length > 0 ? (
           <>
-            <h3>{'Posts:'}</h3>
+            <h3 className='mb-4'>{'Posts:'}</h3>
             <ul>
               {results.posts.slice(0, postByTagLimit).map((post) => (
                 <li key={post.id}>
