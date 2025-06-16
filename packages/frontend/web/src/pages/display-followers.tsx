@@ -13,10 +13,6 @@ export default function DisplayFollowers() {
     'followers',
   );
 
-  useEffect(() => {
-    //
-  }, []);
-
   return (
     <div className='md:m-auto md:mt-10 md:max-w-md'>
       <div className='flex items-center gap-16 p-4'>
