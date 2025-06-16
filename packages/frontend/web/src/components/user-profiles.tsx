@@ -20,7 +20,7 @@ export default function UserProfiles({
     <section className='flex w-full flex-col pt-4'>
       <div className='mx-2 flex pb-4 sm:mx-4 md:pb-8'>
         <img
-          className='size-16 rounded sm:size-40'
+          className='size-16 shrink-0 rounded sm:size-40'
           src={`/cdn/pictures/users/${profile.profile_picture}`}
           alt={profile.username}
         />
