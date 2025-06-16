@@ -45,7 +45,7 @@ export default function Comment({
           title={`Visit ${comment.author.username}'s profile`}
           className='flex items-center gap-1'
         >
-          <div className='w-4 overflow-hidden rounded'>
+          <div className='w-8 overflow-hidden rounded'>
             <img
               src={`/cdn/pictures/users/${comment.author.profile_picture}`}
               alt={`${comment.author.username} profile picture`}
