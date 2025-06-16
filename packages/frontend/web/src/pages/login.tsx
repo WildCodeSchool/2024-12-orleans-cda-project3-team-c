@@ -42,7 +42,7 @@ export default function Login() {
     }
 
     const loginData = await loginApiConnection.login(credential, password);
-
+    console.log(userLogged);
     if (loginData.ok) {
       userLogged?.setIsUserLogged(true);
       userLogged?.setUser(loginData.user);
