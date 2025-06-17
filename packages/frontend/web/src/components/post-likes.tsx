@@ -38,8 +38,18 @@ export default function PostLikes({
   }
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center md:bg-black/75'>
-      <section className='fixed bottom-0 left-0 z-10 h-dvh w-full overflow-y-auto bg-purple-950 md:relative md:mr-0 md:mb-0 md:ml-[224px] md:h-[685px] md:w-[400px] lg:mr-[106px] lg:ml-0'>
+    <div
+      className='fixed inset-0 z-50 flex items-center justify-center md:bg-black/75'
+      onClick={() => {
+        displayLikesModal(false);
+      }}
+    >
+      <section
+        className='fixed bottom-0 left-0 z-10 h-dvh w-full overflow-y-auto bg-purple-950 md:relative md:mr-0 md:mb-0 md:ml-[224px] md:h-[685px] md:w-[400px] lg:mr-[106px] lg:ml-0'
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
         <header className='p-4'>
           <button
             type='button'
