@@ -59,7 +59,11 @@ export default function Comment({
         <p className='text-placeholder mt-1 text-[10px]'>{timeAgo}</p>
       </header>
       <div className='ml-auto flex items-start'>
+<<<<<<< hotfix/line-break
         <p className='ml-7 w-full text-sm break-all'>{...commentElements}</p>
+=======
+        <p className='ml-7 w-full text-sm'>{...commentElements}</p>
+>>>>>>> develop
         <div className='like-container'>
           <div className='flex items-center gap-1'>
             {/* like btn */}
