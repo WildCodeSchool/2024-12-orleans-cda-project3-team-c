@@ -15,7 +15,7 @@ export default function PostLikesLikeItem({
         to={`/profile/${like.username}`}
         className='mb-2 flex items-center gap-2'
       >
-        <div className='w-8 overflow-hidden rounded'>
+        <div className='size-8 overflow-hidden rounded'>
           <img
             src={`/cdn/pictures/users/${like.profile_picture}`}
             alt={`${like.username} profile picture`}

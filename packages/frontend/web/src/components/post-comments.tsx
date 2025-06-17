@@ -37,8 +37,19 @@ export default function PostComments({
     });
   }
 
-  const handleSubmitCommentForm = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (event.key === 'Enter') {
+      if (event.shiftKey) {
+        return;
+      }
+      await handleSubmitCommentForm();
+    }
+  };
+
+  const handleSubmitCommentForm = async (event?: React.FormEvent) => {
+    event?.preventDefault();
     if (commentText === '') {
       setErrorMessage('Your comment cannot be empty');
       return;
@@ -109,6 +120,7 @@ export default function PostComments({
                   onChange={(event) => {
                     setCommentText(event.target.value);
                   }}
+                  onKeyDown={handleKeyDown}
                 />
                 <button
                   type='submit'
