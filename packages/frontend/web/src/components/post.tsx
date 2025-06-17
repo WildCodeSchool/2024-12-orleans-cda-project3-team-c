@@ -38,6 +38,8 @@ export default function Post({ post }: { readonly post: FeedPost }) {
   const [isSetDeleteSuccessMessage, setIsSetDeleteSuccessMessage] =
     useState(false);
 
+  document.body.style.overflow = 'auto';
+
   const context = useLoginContext();
   const user = context?.user;
 

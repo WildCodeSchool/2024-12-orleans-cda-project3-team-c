@@ -8,8 +8,6 @@ import Post from '@/components/post';
 import UserSuggestionContainer from '@/components/user-suggestion';
 import useInfiniteScroll from '@/hooks/use-infinite-scroll';
 
-import bellIcon from '../assets/icons/bell-white.svg';
-
 export default function Feed() {
   const loaderData = useLoaderData<FeedPost[]>();
   const [posts, setPosts] = useState(loaderData);
