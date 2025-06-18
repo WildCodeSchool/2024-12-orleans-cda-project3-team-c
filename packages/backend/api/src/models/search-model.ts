@@ -4,7 +4,17 @@ export default {
   async getUsersInfoBySearch(search: string, limit: number) {
     return db
       .selectFrom('user')
-      .select(['user.id', 'user.username', 'user.profile_picture'])
+      .innerJoin(
+        'account_status',
+        'account_status.id',
+        'user.account_status_id',
+      )
+      .select([
+        'user.id',
+        'user.username',
+        'user.profile_picture',
+        'account_status.name as status',
+      ])
       .where('user.username', 'like', `%${search}%`)
       .limit(limit)
       .execute();
