@@ -31,7 +31,13 @@ export default {
     return db
       .selectFrom('follow_up as f')
       .innerJoin('user as u', 'u.id', 'f.followee_id')
-      .select(['u.id', 'u.username', 'u.profile_picture'])
+      .innerJoin('account_status', 'account_status.id', 'u.account_status_id')
+      .select([
+        'u.id',
+        'u.username',
+        'u.profile_picture',
+        'account_status.name as status',
+      ])
       .where('f.follower_id', '=', followerId)
       .execute();
   },
@@ -40,7 +46,13 @@ export default {
     return db
       .selectFrom('follow_up as f')
       .innerJoin('user as u', 'u.id', 'f.follower_id')
-      .select(['u.id', 'u.username', 'u.profile_picture'])
+      .innerJoin('account_status', 'account_status.id', 'u.account_status_id')
+      .select([
+        'u.id',
+        'u.username',
+        'u.profile_picture',
+        'account_status.name as status',
+      ])
       .where('f.followee_id', '=', followeeId)
       .execute();
   },

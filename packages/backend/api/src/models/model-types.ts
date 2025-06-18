@@ -3,10 +3,7 @@ import type commentModel from './comment-model';
 import type followModel from './follow-up-model';
 import type postLikeModel from './post-like-model';
 import type postModel from './post-model';
-import type {
-  getPostsInfoInTagBySearch,
-  getUsersInfoBySearch,
-} from './search-model';
+import type searchModel from './search-model';
 import type userModel from './user-model';
 
 // Posts **************************************************
@@ -61,11 +58,11 @@ export type UserSuggestion = Awaited<
 >[number];
 
 export type UserSearchResult = Awaited<
-  ReturnType<typeof getUsersInfoBySearch>
+  ReturnType<typeof searchModel.getUsersInfoBySearch>
 >[number];
 
 export type PostSearchResult = Awaited<
-  ReturnType<typeof getPostsInfoInTagBySearch>
+  ReturnType<typeof searchModel.getPostsInfoInTagBySearch>
 >[number];
 
 export type PostComment = Awaited<
@@ -86,4 +83,8 @@ export type PostLikeItem = Awaited<
 
 export type PostPreview = Awaited<
   ReturnType<typeof postModel.getUserPostPreviews>
+>[number];
+
+export type UserFollower = Awaited<
+  ReturnType<typeof followModel.getFollowers>
 >[number];

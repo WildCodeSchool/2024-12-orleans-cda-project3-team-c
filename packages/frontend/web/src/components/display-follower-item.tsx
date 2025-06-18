@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import type { UserFollower } from '@app/api';
+
 import followUpApiConnection from '@/api-connection/follow-up-api-connection';
 import userFollowersApi from '@/api-connection/user-followers-api';
 
+import certificationIcon from '../assets/icons/certification-pink.png';
 import FollowButton from './follow-suggestion-button';
 
 type UserFollowersId = {
   readonly followerId: number;
   readonly viewType: 'followers' | 'followees';
-};
-
-type UserFollower = {
-  id: number;
-  username: string;
-  profile_picture: string;
 };
 
 type FollowApiResponse = {
@@ -122,7 +119,16 @@ export default function DisplayFollowerItem({
                 className='size-8 rounded'
               />
               <div className='ml-4 flex flex-col justify-center'>
-                <p className='text-xs'>{userFollower.username}</p>
+                <p className='flex gap-1 text-xs md:text-base'>
+                  {userFollower.username}
+                  {userFollower.status === 'certified' ? (
+                    <img
+                      src={certificationIcon}
+                      alt='certification'
+                      className='size-3 md:size-4'
+                    />
+                  ) : null}{' '}
+                </p>
                 <p className='text-[8px] opacity-65'>
                   {followCounts[userFollower.id] || 0}
                   {' followers'}

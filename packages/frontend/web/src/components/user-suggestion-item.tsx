@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import type { UserSuggestion } from '@app/api';
 
 import followUpApiConnection from '../api-connection/follow-up-api-connection';
+import certificationIcon from '../assets/icons/certification-pink.png';
 import FollowButton from './follow-suggestion-button';
 
 function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
@@ -36,8 +37,15 @@ function UserSuggestionItem({ user }: { readonly user: UserSuggestion }) {
           className='mr-1 h-8 w-8 rounded text-center'
         />
         <div className='flex flex-col'>
-          <h2 className='font-title xs:max-w-none xs:truncate-none max-w-[180px] truncate text-sm'>
+          <h2 className='font-title xs:max-w-none xs:truncate-none flex max-w-[180px] gap-1 truncate text-sm'>
             {user.username}
+            {user.status === 'certified' ? (
+              <img
+                src={certificationIcon}
+                alt='certification'
+                className='size-3 md:size-4'
+              />
+            ) : null}
           </h2>
           <p className='text-[8px] opacity-60'>
             {followCount}{' '}

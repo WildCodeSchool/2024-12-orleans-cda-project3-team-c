@@ -107,6 +107,11 @@ export default {
         eb
           .selectFrom('user as u')
           .leftJoin('follow_up as fu', 'fu.follower_id', 'u.id')
+          .innerJoin(
+            'account_status',
+            'account_status.id',
+            'u.account_status_id',
+          )
           .where('u.id', '!=', userId)
           .where('u.id', 'not in', (eb) =>
             eb
@@ -120,6 +125,7 @@ export default {
             'u.id',
             'u.username',
             'u.profile_picture',
+            'account_status.name as status',
             eb
               .selectFrom('follow_up')
               .select(({ fn }) => fn.countAll<number>().as('follower_count'))
@@ -130,6 +136,11 @@ export default {
       .with('usersYouFollow', (eb) =>
         eb
           .selectFrom('user as u')
+          .innerJoin(
+            'account_status',
+            'account_status.id',
+            'u.account_status_id',
+          )
           .where('u.id', '!=', userId)
           .where('u.id', 'in', (eb) =>
             eb
@@ -141,6 +152,7 @@ export default {
             'u.id',
             'u.username',
             'u.profile_picture',
+            'account_status.name as status',
             eb
               .selectFrom('follow_up')
               .select(({ fn }) => fn.countAll<number>().as('follower_count'))
@@ -151,6 +163,11 @@ export default {
       .with('followeesOfUsersYouFollow', (eb) =>
         eb
           .selectFrom('user as u')
+          .innerJoin(
+            'account_status',
+            'account_status.id',
+            'u.account_status_id',
+          )
           .where('u.id', '!=', userId)
           .where('u.id', 'in', (eb) =>
             eb
@@ -165,6 +182,7 @@ export default {
             'u.id',
             'u.username',
             'u.profile_picture',
+            'account_status.name as status',
             eb
               .selectFrom('follow_up')
               .select(({ fn }) => fn.countAll<number>().as('follower_count'))
