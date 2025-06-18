@@ -5,6 +5,7 @@ import type { PostSearchResult, UserSearchResult } from '@app/api';
 
 import searchApiConnection from '@/api-connection/search-api-connection';
 
+import certificationIcon from '../assets/icons/certification-pink.png';
 import searchIcon from '../assets/icons/search-white.svg';
 
 export default function Search() {
@@ -99,7 +100,17 @@ export default function Search() {
                       alt={user.username}
                       className='size-8 rounded'
                     />
-                    {user.username}
+                    <p className='flex gap-1'>
+                      {user.username}
+
+                      {user.status === 'certified' ? (
+                        <img
+                          src={certificationIcon}
+                          alt='certification'
+                          className='size-3 md:size-4'
+                        />
+                      ) : null}
+                    </p>
                   </Link>
                 </li>
               ))}
