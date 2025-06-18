@@ -60,7 +60,13 @@ export default function NavBar() {
   return (
     <>
       <nav className='fixed top-0 z-5 hidden h-dvh w-56 bg-purple-950 pt-8 pl-8 md:block'>
-        <h1 className='font-title pb-8 text-6xl font-bold'>{'Mingo'}</h1>
+        <Link
+          to='/'
+          title='Home'
+          className='font-title pb-8 text-6xl font-bold'
+        >
+          {'Mingo'}
+        </Link>
         <ul className='flex h-[70dvh] list-none flex-col space-y-2 border-r-2 border-purple-900'>
           {navItems.map((item) => (
             <NavItem key={item.to} {...item} />
