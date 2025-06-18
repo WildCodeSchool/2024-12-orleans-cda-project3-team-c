@@ -63,7 +63,7 @@ export default function NavBar() {
         <Link
           to='/'
           title='Home'
-          className='font-title pb-8 text-6xl font-bold'
+          className='font-title mb-8 block text-6xl font-bold'
         >
           {'Mingo'}
         </Link>
