@@ -5,7 +5,7 @@ import path from 'path';
 import sharp from 'sharp';
 
 export default {
-  imageFormat: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
+  imageFormat: ['jpg', 'jpeg', 'png', 'avif'],
   tempFolderPath: path.join(process.cwd(), 'public', 'pictures', 'temp'),
   postPicturesFolderPath: path.join(
     process.cwd(),

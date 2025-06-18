@@ -121,7 +121,7 @@ postsRouter.post('', async function (req: Request, res) {
     return;
   } else if (!fileUploadManager.checkFormat(picture.mimetype)) {
     res.status(400).json({
-      error: 'Wrong picture format. Should be jpg, png, webp or avif',
+      error: 'Wrong picture format. Should be jpg, png or avif',
     });
     return;
   }

@@ -41,7 +41,9 @@ export default function Feed() {
           id='feed-header'
           className='flex items-center justify-between px-2 pt-2 pb-8 md:hidden md:p-4'
         >
-          <h1 className='font-title text-3xl font-black'>{'Mingo'}</h1>
+          <Link to='/' title='Home' className='font-title text-3xl font-black'>
+            {'Mingo'}
+          </Link>
         </header>
         <UserSuggestionContainer className='mx-auto flex flex-col px-2 lg:hidden' />
 

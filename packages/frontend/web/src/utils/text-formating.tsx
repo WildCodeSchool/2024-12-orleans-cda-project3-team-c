@@ -57,7 +57,7 @@ export function getDescriptionElements(
     if (element.startsWith('#')) {
       return (
         <Link
-          className='font-title text-turquoise-blue-100 hover:text-turquoise-blue-400'
+          className='font-title text-turquoise-blue-100 hover:text-turquoise-blue-400 break-all'
           to={`/search/tags/${element.slice(1)}`}
           key={`${index}` + element[-1]}
           title={`See posts related to '${element.slice(1)}'`}

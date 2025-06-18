@@ -19,11 +19,6 @@ export default function Search() {
   const [userLimit, setUserLimit] = useState(3);
   const [postByTagLimit, setPostByTagLimit] = useState(3);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    setSearch(input);
-  };
-
   const getSearchResults = async () => {
     try {
       const { data, error } = await searchApiConnection.search(
@@ -52,7 +47,6 @@ export default function Search() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     void getSearchResults();
-    setSearch('');
   };
 
   const loadMoreUsers = () => {
@@ -69,22 +63,25 @@ export default function Search() {
         {'Search for user or subject'}
       </h2>
       <div className='m-4 flex w-[18rem] items-center rounded-[0.25rem] border border-gray-300 bg-purple-900 p-0.5 pr-2'>
-        <form action='' onSubmit={handleSubmit} className='w-full'>
+        <form onSubmit={handleSubmit} className='w-full'>
           <input
             className='flex-1 bg-transparent px-2 py-1 text-[0.75rem] placeholder-gray-500 focus:border-blue-500 focus:outline-none'
             type='text'
             value={search}
-            onChange={handleSearch}
+            onChange={(event) => {
+              setSearch(event.target.value);
+            }}
             placeholder='Search'
           />
         </form>
-        <Link to='/search'>
+        <button type='submit' aria-label='Search' title='Search'>
           <img
             className='ml-2 size-[1rem]'
             src={searchIcon}
-            alt='search icon'
+            aria-hidden='true'
+            alt=''
           />
-        </Link>
+        </button>
       </div>
       <ul className='w-[18rem]'>
         {results.users.length > 0 ? (

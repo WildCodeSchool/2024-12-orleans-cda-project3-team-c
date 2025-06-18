@@ -257,7 +257,7 @@ export default function Post({ post }: { readonly post: FeedPost }) {
           </div>
 
           {/* post description */}
-          <p className='mb-1 text-sm break-all whitespace-pre-wrap md:text-base'>
+          <p className='mb-1 text-sm whitespace-pre-wrap md:text-base'>
             <span className='font-title'>
               {'@'}
               {post.author?.username}
